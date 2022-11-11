@@ -4,6 +4,7 @@ import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.ProjectComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
+import com.intellij.openapi.project.Project;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.state.DataSourceContainer;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.state.DataSourcesComponentState;
@@ -17,8 +18,8 @@ public class DataSourcesComponent implements ProjectComponent, PersistentStateCo
     private final DataSourcesComponentMetadata componentMetadata;
     private DataSourcesComponentState state;
 
-    public DataSourcesComponent(DataSourcesComponentMetadata componentMetadata) {
-        this.componentMetadata = componentMetadata;
+    public DataSourcesComponent(final Project project) {
+        this.componentMetadata = project.getService(DataSourcesComponentMetadata.class);
     }
 
     public DataSourceContainer getDataSourceContainer() {

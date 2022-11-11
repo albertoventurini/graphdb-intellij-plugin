@@ -14,21 +14,6 @@ public class SettingsComponentImpl implements SettingsComponent {
     private static final String KNOWN_PLUGIN_VERSION = "GraphDbSupport.KnownPluginVersion";
     private static final String GRAPH_VIEW_INVERT_ZOOM = "GraphDbSupport.GraphViewInvertZoom";
 
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "GraphDatabaseSupport.Settings";
-    }
-
-    @Override
-    public void initComponent() {
-    }
-
-
-    @Override
-    public void disposeComponent() {
-    }
-
     @Override
     public String getUserId() {
         if (!properties().isValueSet(USER_ID)) {

@@ -1,5 +1,6 @@
 package com.neueda.jetbrains.plugin.graphdb.jetbrains.component.highlighter;
 
+import com.intellij.openapi.Disposable;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.openapi.application.ApplicationManager;
@@ -7,14 +8,13 @@ import com.intellij.openapi.editor.EditorFactory;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.highlighter.listener.QueryHighlighterCaretListener;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.highlighter.listener.QueryHighlighterDocumentListener;
 
-public class QueryHighlighterComponentImpl implements QueryHighlighterComponent {
+public class QueryHighlighterComponentImpl implements QueryHighlighterComponent, Disposable {
 
     private QueryHighlighterCaretListener queryHighlighterCaretListener;
     private QueryHighlighterDocumentListener queryHighlighterDocumentListener;
     private SyncedElementHighlighter syncedElementHighlighter;
 
-    @Override
-    public void initComponent() {
+    public QueryHighlighterComponentImpl() {
         EditorFactory editorFactory = ApplicationManager.getApplication().getComponent(EditorFactory.class);
 
         syncedElementHighlighter = new SyncedElementHighlighter();
@@ -26,7 +26,7 @@ public class QueryHighlighterComponentImpl implements QueryHighlighterComponent 
     }
 
     @Override
-    public void disposeComponent() {
+    public void dispose() {
         EditorFactory editorFactory = ApplicationManager.getApplication().getComponent(EditorFactory.class);
         if (queryHighlighterCaretListener != null) {
             editorFactory.getEventMulticaster().removeCaretListener(queryHighlighterCaretListener);
@@ -37,11 +37,5 @@ public class QueryHighlighterComponentImpl implements QueryHighlighterComponent 
         if (syncedElementHighlighter != null) {
             syncedElementHighlighter.dispose();
         }
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "GraphDatabaseSupport.QueryHighlighter";
     }
 }

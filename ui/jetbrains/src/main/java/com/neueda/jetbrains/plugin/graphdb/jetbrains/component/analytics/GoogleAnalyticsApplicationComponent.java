@@ -3,6 +3,7 @@ package com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics;
 import com.brsanthu.googleanalytics.EventHit;
 import com.brsanthu.googleanalytics.GoogleAnalytics;
 import com.brsanthu.googleanalytics.GoogleAnalyticsRequest;
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.ApplicationAdapter;
 import com.intellij.openapi.application.ApplicationInfo;
 import com.intellij.openapi.application.ApplicationManager;
@@ -12,21 +13,14 @@ import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.settings.Settings
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.util.PluginUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class GoogleAnalyticsApplicationComponent implements AnalyticsApplicationComponent {
+public class GoogleAnalyticsApplicationComponent implements AnalyticsApplicationComponent, Disposable {
 
     private static final String TRACKING_ID = "UA-67609275-4";
 
     private ApplicationInfo applicationInfo;
     private GoogleAnalytics ga;
 
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "GraphDatabaseSupport.GoogleAnalytics";
-    }
-
-    @Override
-    public void initComponent() {
+    public GoogleAnalyticsApplicationComponent() {
         applicationInfo = ApplicationInfo.getInstance();
         AnalyticsListener.init();
 
@@ -43,7 +37,7 @@ public class GoogleAnalyticsApplicationComponent implements AnalyticsApplication
     }
 
     @Override
-    public void disposeComponent() {
+    public void dispose() {
         ga.close();
     }
 
