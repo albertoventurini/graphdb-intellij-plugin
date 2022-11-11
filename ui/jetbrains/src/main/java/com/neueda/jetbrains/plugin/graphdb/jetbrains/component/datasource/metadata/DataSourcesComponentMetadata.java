@@ -1,6 +1,7 @@
 package com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata;
 
 import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBus;
 import com.neueda.jetbrains.plugin.graphdb.database.api.GraphDatabaseApi;
 import com.neueda.jetbrains.plugin.graphdb.database.api.data.GraphMetadata;
@@ -44,6 +45,16 @@ public class DataSourcesComponentMetadata implements ProjectComponent {
         this.databaseManager = databaseManager;
         this.cypherMetadataProviderService = cypherMetadataProviderService;
         this.executorService = executorService;
+
+        handlers.put(NEO4J_BOLT, this::getNeo4jBoltMetadata);
+        handlers.put(OPENCYPHER_GREMLIN, this::getOpenCypherGremlinMetadata);
+    }
+
+    public DataSourcesComponentMetadata(final Project project) {
+        messageBus = project.getMessageBus();
+        databaseManager = project.getService(DatabaseManagerService.class);
+        cypherMetadataProviderService = project.getService(CypherMetadataProviderService.class);
+        executorService = project.getService(ExecutorService.class);
 
         handlers.put(NEO4J_BOLT, this::getNeo4jBoltMetadata);
         handlers.put(OPENCYPHER_GREMLIN, this::getOpenCypherGremlinMetadata);

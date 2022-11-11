@@ -68,7 +68,7 @@
         ]]></change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="193"/>
+    <idea-version since-build="222"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -76,37 +76,19 @@
     <depends optional="true">com.intellij.modules.java</depends>
     <depends optional="true" config-file="intellilang-cypher-support.xml">org.intellij.intelliLang</depends>
 
-    <application-components>
-        <!-- Settings -->
-        <component>
-            <interface-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.settings.SettingsComponent</interface-class>
-            <implementation-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.settings.SettingsComponentImpl</implementation-class>
-        </component>
-        <!-- Google analytics component -->
-        <component>
-            <interface-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.AnalyticsApplicationComponent</interface-class>
-            <implementation-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.GoogleAnalyticsApplicationComponent</implementation-class>
-        </component>
-        <!-- Graph Database support - query statement highlighting -->
-        <component>
-            <interface-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.highlighter.QueryHighlighterComponent</interface-class>
-            <implementation-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.highlighter.QueryHighlighterComponentImpl</implementation-class>
-        </component>
-    </application-components>
-
     <project-components>
         <!-- Graph Database support - data sources -->
-        <component>
-            <interface-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourcesComponent</interface-class>
-            <implementation-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourcesComponent</implementation-class>
-            <loadForDefaultProject/>
-        </component>
+<!--        <component>-->
+<!--            <interface-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourcesComponent</interface-class>-->
+<!--            <implementation-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourcesComponent</implementation-class>-->
+<!--            <loadForDefaultProject/>-->
+<!--        </component>-->
         <!-- Graph Database support - data sources metadata -->
-        <component>
-            <interface-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata</interface-class>
-            <implementation-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata</implementation-class>
-            <loadForDefaultProject/>
-        </component>
+<!--        <component>-->
+<!--            <interface-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata</interface-class>-->
+<!--            <implementation-class>com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata</implementation-class>-->
+<!--            <loadForDefaultProject/>-->
+<!--        </component>-->
     </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -122,6 +104,22 @@
                     factoryClass="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.DataSourcesToolWindow"
                     icon="GraphIcons.Window.GRAPH"/>
         <actionPromoter implementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.actions.execute.ExecuteQueryActionPromoter"/>
+
+        <!-- Settings -->
+        <applicationService
+                serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.settings.SettingsComponent"
+                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.settings.SettingsComponentImpl" />
+
+        <!-- Google analytics component -->
+        <applicationService
+                serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.AnalyticsApplicationComponent"
+                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.GoogleAnalyticsApplicationComponent" />
+
+        <!-- Graph Database support - query statement highlighting -->
+        <applicationService
+                serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.highlighter.QueryHighlighterComponent"
+                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.highlighter.QueryHighlighterComponentImpl" />
+
         <applicationService serviceInterface="com.neueda.jetbrains.plugin.graphdb.visualization.services.LookAndFeelService"
                             serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.services.IdeaLookAndFeelService"/>
         <applicationService serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.database.DatabaseManagerService"
@@ -129,6 +127,15 @@
         <applicationService
                 serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.services.ExecutorService"
                 serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.services.ExecutorServiceImpl"/>
+
+        <!-- Graph Database support - data sources -->
+        <projectService
+                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourcesComponent" />
+
+        <!-- Graph Database support - data sources metadata -->
+        <projectService
+                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata" />
+
         <projectService serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.GraphConsoleView"
                         serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.GraphConsoleView"/>
         <projectService serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.DataSourcesView"
@@ -142,7 +149,14 @@
         <!-- Update notification -->
         <postStartupActivity implementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.updater.PluginUpdateActivity" />
         <!-- Cypher -->
-        <fileTypeFactory implementation="com.neueda.jetbrains.plugin.graphdb.language.cypher.file.CypherFileTypeFactory"/>
+        <fileType
+                name="Cypher"
+                implementationClass="com.neueda.jetbrains.plugin.graphdb.language.cypher.file.CypherFileType"
+                fieldName="INSTANCE"
+                language="Cypher"
+                extensions="cyp" />
+
+<!--        <fileTypeFactory implementation="com.neueda.jetbrains.plugin.graphdb.language.cypher.file.CypherFileTypeFactory"/>-->
         <lang.parserDefinition
                 language="Cypher" implementationClass="com.neueda.jetbrains.plugin.graphdb.language.cypher.CypherParserDefinition"/>
         <lang.syntaxHighlighterFactory

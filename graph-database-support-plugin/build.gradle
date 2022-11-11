@@ -1,7 +1,7 @@
 apply plugin: "org.jetbrains.intellij"
 
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 17
+targetCompatibility = 17
 
 dependencies {
     project(':language:cypher')
