@@ -5,6 +5,10 @@ plugins {
 sourceCompatibility = 11
 targetCompatibility = 11
 
+configurations {
+    compile
+}
+
 dependencies {
     compile 'org.neo4j.test:neo4j-harness:4.0.0'
     compile project(":testing:database:neo4j-common")

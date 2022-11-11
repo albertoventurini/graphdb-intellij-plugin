@@ -1,7 +1,7 @@
 apply plugin: "org.jetbrains.intellij"
 
 intellij {
-    version intellijSdkVersion
+    version = intellijSdkVersion
     instrumentCode = true
 }
 

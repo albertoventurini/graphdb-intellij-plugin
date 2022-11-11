@@ -1,3 +1,7 @@
+configurations {
+    testCompile
+}
+
 dependencies {
     testCompile project(':database:opencypher')
     testCompile "org.apache.tinkerpop:gremlin-core:$tinkerpopVersion"
