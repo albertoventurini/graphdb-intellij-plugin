@@ -1,8 +1,12 @@
 apply plugin: "org.jetbrains.intellij"
 
 intellij {
-    version intellijSdkVersion
-    plugins 'java'
+    version = intellijSdkVersion
+    plugins = ['java']
+}
+
+configurations {
+    testCompile
 }
 
 dependencies {

@@ -1,9 +1,9 @@
 apply plugin: "org.jetbrains.intellij"
 
 intellij {
-    version intellijSdkVersion
+    version = intellijSdkVersion
     instrumentCode = true
-    plugins 'java'
+    plugins = ['java']
 }
 
 sourceSets {
@@ -13,6 +13,11 @@ sourceSets {
             srcDirs 'src/main/java', 'src/main/gen'
         }
     }
+}
+
+configurations {
+    compile
+    testCompile
 }
 
 dependencies {

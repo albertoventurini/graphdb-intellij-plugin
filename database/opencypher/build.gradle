@@ -1,3 +1,7 @@
+configurations {
+    compile
+}
+
 dependencies {
     compile project(':database:api')
     compile project(':database:neo4j')

@@ -2,6 +2,10 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
 
+configurations {
+    compile
+}
+
 dependencies {
     compile 'org.neo4j.test:neo4j-harness:3.5.0'
     compile project(":testing:database:neo4j-common")

@@ -1,33 +1,33 @@
 apply plugin: "org.jetbrains.intellij"
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 dependencies {
-    compile project(':language:cypher')
-    compile project(':ui:jetbrains')
+    project(':language:cypher')
+    project(':ui:jetbrains')
 }
 
 
 intellij {
-    version intellijSdkVersion
-    pluginName 'GraphDatabaseSupport'
-    updateSinceUntilBuild false
-    sameSinceUntilBuild false
+    version = intellijSdkVersion
+    pluginName = 'GraphDatabaseSupport'
+    updateSinceUntilBuild = false
+    sameSinceUntilBuild = false
 
     publishPlugin {
-        token System.getenv("INTELLIJ_TOKEN")
+        token = System.getenv("INTELLIJ_TOKEN")
     }
 
     if (System.getenv("CI_SERVER") == "yes") {
-        downloadSources false
+        downloadSources = false
     } else {
-        downloadSources true
+        downloadSources = true
     }
 
     def homePath = System.properties['user.home']
-    sandboxDirectory "${homePath}/.intellij/graphdb"
-    plugins 'java'
+    sandboxDir = "${homePath}/.intellij/graphdb"
+    plugins = ['java']
 }
 
 runIde {

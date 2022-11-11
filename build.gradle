@@ -1,7 +1,7 @@
 plugins {
     id 'idea'
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.10'
+    id 'org.jetbrains.intellij' version '1.9.0'
     id 'net.researchgate.release' version '2.8.0'
 }
 
@@ -24,19 +24,20 @@ allprojects {
         mavenCentral()
         mavenLocal()
         jcenter()
-        maven { url 'http://dl.bintray.com/jetbrains/intellij-plugin-service' }
+        maven { url 'https://dl.bintray.com/jetbrains/intellij-plugin-service' }
     }
 
     apply plugin: 'java'
     apply plugin: 'checkstyle'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 11
+    targetCompatibility = 11
 
     intellij {
-        version intellijSdkVersion
-        instrumentCode = true
-        plugins 'java'
+        version = intellijSdkVersion
+        //instrumentCode = true
+        type = "IC"
+        plugins = ['java']
     }
 
     checkstyle {
