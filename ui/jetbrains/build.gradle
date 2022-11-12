@@ -6,35 +6,38 @@ intellij {
     plugins = ['java']
 }
 
-configurations {
-    compile
-    testCompile
-}
-
 dependencies {
-    compile project(":platform")
+    implementation project(":platform")
 
-    compile project(':language:cypher')
-    compile project(':database:neo4j')
-    compile project(':database:opencypher')
+    implementation project(':language:cypher')
+
+    implementation project(':database:neo4j')
+    implementation project(':database:opencypher')
+    implementation project(':database:api')
+
+    implementation "org.neo4j.driver:neo4j-java-driver:$versionNeo4jJavaBoltDriver"
+    implementation "org.apache.tinkerpop:gremlin-driver:$tinkerpopVersion"
+
     annotationProcessor("org.apache.tinkerpop:gremlin-core:$tinkerpopVersion")
 
-    compile project(':ui:visualization')
+    implementation project(':ui:visualization')
 
-    compile("com.brsanthu:google-analytics-java:$versionGoogleAnalytics") {
+    implementation "de.sciss:prefuse-core:$versionPrefuse"
+
+    implementation("com.brsanthu:google-analytics-java:$versionGoogleAnalytics") {
         exclude group: "org.slf4j", module: "slf4j-api"
         exclude group: "org.slf4j", module: "jcl-over-slf4j"
     }
 
-    compile("com.fasterxml.jackson.core:jackson-core:$versionJacksonMapper")
-    compile("com.fasterxml.jackson.core:jackson-databind:$versionJacksonMapper")
+    implementation("com.fasterxml.jackson.core:jackson-core:$versionJacksonMapper")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$versionJacksonMapper")
 
-    testCompile project(':testing:common')
+    testImplementation project(':testing:common')
 
-    testCompile "org.apache.tinkerpop:tinkergraph-gremlin:$tinkerpopVersion"
+    testImplementation "org.apache.tinkerpop:tinkergraph-gremlin:$tinkerpopVersion"
     testAnnotationProcessor("org.apache.tinkerpop:gremlin-core:$tinkerpopVersion")
-    testCompile "junit:junit:$versionJunit"
-    testCompile "org.assertj:assertj-core:$versionAssertj"
-    testCompile "org.mockito:mockito-core:$versionMockito"
+    testImplementation "junit:junit:$versionJunit"
+    testImplementation "org.assertj:assertj-core:$versionAssertj"
+    testImplementation "org.mockito:mockito-core:$versionMockito"
 }
 

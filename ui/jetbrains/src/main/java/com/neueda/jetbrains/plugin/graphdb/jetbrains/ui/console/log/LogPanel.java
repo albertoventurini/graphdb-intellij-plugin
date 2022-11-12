@@ -180,7 +180,7 @@ public class LogPanel implements Disposable {
         JTextArea exceptionDetails = new JTextArea();
         exceptionDetails.setLineWrap(false);
         exceptionDetails.append(details);
-        JLabel jLabel = new JLabel(exception.getMessage(), AllIcons.Process.State.RedExcl, JLabel.LEFT);
+        JLabel jLabel = new JLabel(exception.getMessage(), JLabel.LEFT);
 
         JBScrollPane scrollPane = new JBScrollPane(exceptionDetails);
         scrollPane.setPreferredSize(new Dimension(-1, HEIGHT));

@@ -5,18 +5,15 @@ intellij {
     plugins = ['java']
 }
 
-configurations {
-    testCompile
-}
 
 dependencies {
-    testCompile project(':graph-database-support-plugin')
-    testCompile project(':testing:common')
+    testImplementation project(':graph-database-support-plugin')
+    testImplementation project(':testing:common')
     testAnnotationProcessor("org.apache.tinkerpop:gremlin-core:$tinkerpopVersion")
-    testCompile project(':testing:database:neo4j-common')
-    testCompile 'org.xeustechnologies:jcl-core:2.8'
-    testCompile "org.assertj:assertj-core:$versionAssertj"
-    testCompile "org.mockito:mockito-core:$versionMockito"
+    testImplementation project(':testing:database:neo4j-common')
+    testImplementation 'org.xeustechnologies:jcl-core:2.8'
+    testImplementation "org.assertj:assertj-core:$versionAssertj"
+    testImplementation "org.mockito:mockito-core:$versionMockito"
 }
 
 test {

@@ -53,7 +53,7 @@ public abstract class DataSourceDialog extends DialogWrapper {
         ValidationInfo validationInfo = doValidate();
         if (validationInfo != null) {
             JLabel connectionFailed = new JLabel("Connection failed: " + validationInfo.message,
-                    AllIcons.Process.State.RedExcl, JLabel.LEFT);
+                    JLabel.LEFT);
             popupPanel.add(connectionFailed, BorderLayout.CENTER);
             createPopup(popupPanel, getContentPanel());
         } else {
@@ -107,7 +107,7 @@ public abstract class DataSourceDialog extends DialogWrapper {
             JPanel popupPanel,
             JComponent contentPanel) {
         hideLoading();
-        JLabel connectionSuccessful = new JLabel("Connection successful!", AllIcons.Process.State.GreenOK, JLabel.LEFT);
+        JLabel connectionSuccessful = new JLabel("Connection successful!", JLabel.LEFT);
         popupPanel.add(connectionSuccessful, BorderLayout.CENTER);
 
         createPopup(popupPanel, contentPanel);
@@ -120,7 +120,7 @@ public abstract class DataSourceDialog extends DialogWrapper {
         hideLoading();
 
         JLabel connectionFailed = new JLabel("Connection failed: " +
-                exception.getMessage(), AllIcons.Process.State.RedExcl, JLabel.LEFT);
+                exception.getMessage(), JLabel.LEFT);
 
         JTextArea exceptionCauses = new JTextArea();
         exceptionCauses.setLineWrap(false);

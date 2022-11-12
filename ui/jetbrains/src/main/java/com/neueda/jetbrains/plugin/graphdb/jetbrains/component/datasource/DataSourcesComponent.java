@@ -31,7 +31,7 @@ public class DataSourcesComponent implements ProjectComponent, PersistentStateCo
      * Load persisted state.
      */
     @Override
-    public void loadState(DataSourcesComponentState state) {
+    public void loadState(@NotNull final DataSourcesComponentState state) {
         this.state = state;
     }
 

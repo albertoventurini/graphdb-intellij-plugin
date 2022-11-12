@@ -5,11 +5,7 @@ intellij {
     plugins = ['java']
 }
 
-configurations {
-    compile
-}
-
 dependencies {
-    compile project(':graph-database-support-plugin')
+    implementation project(':graph-database-support-plugin')
     annotationProcessor("org.apache.tinkerpop:gremlin-core:$tinkerpopVersion")
 }

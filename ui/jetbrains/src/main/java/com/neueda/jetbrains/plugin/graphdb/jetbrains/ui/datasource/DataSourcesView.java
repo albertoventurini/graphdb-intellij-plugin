@@ -52,12 +52,12 @@ public class DataSourcesView implements Disposable {
 
     public void initToolWindow(Project project, ToolWindow toolWindow) {
         if (!initialized) {
-            ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+            ContentFactory contentFactory = ContentFactory.getInstance();
             Content content = contentFactory.createContent(toolWindowContent, "", false);
             toolWindow.getContentManager().addContent(content);
 
-            component = project.getComponent(DataSourcesComponent.class);
-            componentMetadata = project.getComponent(DataSourcesComponentMetadata.class);
+            component = project.getService(DataSourcesComponent.class);
+            componentMetadata = project.getService(DataSourcesComponentMetadata.class);
             dataSourceMetadataUi = new DataSourceMetadataUi(componentMetadata);
             treeRoot = new PatchedDefaultMutableTreeNode(new RootTreeNodeModel());
             treeModel = new DefaultTreeModel(treeRoot, false);
