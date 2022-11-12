@@ -166,9 +166,10 @@ public class ParametersPanel implements ParametersProvider {
     }
 
     private String getTabTitle(VirtualFile file) {
-        Window window = WindowManagerEx.getInstanceEx().getMostRecentFocusedWindow();
-        EditorWindow editorWindow = FileEditorManagerEx.getInstanceEx(project).getSplittersFor(window).getCurrentWindow();
-        return EditorTabPresentationUtil.getEditorTabTitle(project, file, editorWindow);
+//        Window window = WindowManagerEx.getInstanceEx().getMostRecentFocusedWindow();
+//        EditorWindow editorWindow = FileEditorManagerEx.getInstanceEx(project).getSplittersFor(window).getCurrentWindow();
+//        return EditorTabPresentationUtil.getEditorTabTitle(project, file, editorWindow);
+        return EditorTabPresentationUtil.getEditorTabTitle(project, file);
     }
 
     private void setInitialContent(Document document) {

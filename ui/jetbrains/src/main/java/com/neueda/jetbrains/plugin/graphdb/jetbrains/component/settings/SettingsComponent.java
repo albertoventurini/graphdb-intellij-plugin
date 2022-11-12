@@ -5,7 +5,7 @@ import com.intellij.openapi.application.ApplicationManager;
 public interface SettingsComponent {
 
     static SettingsComponent getInstance() {
-        return ApplicationManager.getApplication().getComponent(SettingsComponent.class);
+        return ApplicationManager.getApplication().getService(SettingsComponent.class);
     }
 
     String getUserId();

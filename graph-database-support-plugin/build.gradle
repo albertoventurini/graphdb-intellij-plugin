@@ -4,8 +4,8 @@ sourceCompatibility = 17
 targetCompatibility = 17
 
 dependencies {
-    project(':language:cypher')
-    project(':ui:jetbrains')
+    implementation project(':language:cypher')
+    implementation project(':ui:jetbrains')
 }
 
 

@@ -5,13 +5,8 @@ intellij {
     plugins = ['java']
 }
 
-configurations {
-    compile
-    testCompile
-}
-
 dependencies {
-    compile project(':ui:jetbrains')
+    implementation project(':ui:jetbrains')
     testAnnotationProcessor("org.apache.tinkerpop:gremlin-core:$tinkerpopVersion")
 }
 

@@ -15,7 +15,7 @@ import static com.neueda.jetbrains.plugin.graphdb.platform.SupportedLanguage.isS
 public class ExecuteQueryActionPromoter implements ActionPromoter {
 
     @Override
-    public List<AnAction> promote(List<AnAction> actions, DataContext context) {
+    public List<AnAction> promote(List<? extends AnAction> actions, DataContext context) {
         PsiFile psiFile = PlatformDataKeys.PSI_FILE.getData(context);
         if (psiFile != null) {
             String languageId = psiFile.getLanguage().getID();
@@ -27,7 +27,7 @@ public class ExecuteQueryActionPromoter implements ActionPromoter {
         return Collections.emptyList();
     }
 
-    private ArrayList<AnAction> checkForExecuteQueryAction(List<AnAction> actions) {
+    private ArrayList<AnAction> checkForExecuteQueryAction(List<? extends AnAction> actions) {
         ArrayList<AnAction> selectedActions = new ArrayList<>();
 
         for (AnAction action : actions) {

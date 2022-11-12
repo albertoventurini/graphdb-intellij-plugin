@@ -68,7 +68,7 @@
         ]]></change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="222"/>
+    <idea-version since-build="221.*"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -136,12 +136,12 @@
         <projectService
                 serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata" />
 
-        <projectService serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.GraphConsoleView"
-                        serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.GraphConsoleView"/>
-        <projectService serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.DataSourcesView"
-                        serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.DataSourcesView"/>
-        <projectService serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.params.ParametersService"
-                        serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.params.ParametersService"/>
+        <projectService
+                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.GraphConsoleView"/>
+        <projectService
+                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.DataSourcesView"/>
+        <projectService
+                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.params.ParametersService"/>
         <scratch.rootType implementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.interactions.GraphDbEditorsConsoleRootType"/>
         <scratch.rootType implementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.params.ParameterRootType"/>
         <applicationConfigurable groupId="tools"
@@ -154,7 +154,7 @@
                 implementationClass="com.neueda.jetbrains.plugin.graphdb.language.cypher.file.CypherFileType"
                 fieldName="INSTANCE"
                 language="Cypher"
-                extensions="cyp" />
+                extensions="cyp;cql;cypher" />
 
 <!--        <fileTypeFactory implementation="com.neueda.jetbrains.plugin.graphdb.language.cypher.file.CypherFileTypeFactory"/>-->
         <lang.parserDefinition

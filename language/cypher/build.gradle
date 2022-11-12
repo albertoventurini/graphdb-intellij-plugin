@@ -15,15 +15,10 @@ sourceSets {
     }
 }
 
-configurations {
-    compile
-    testCompile
-}
-
 dependencies {
-    compile project(":platform")
+    implementation project(":platform")
 
-    testCompile "org.mockito:mockito-core:$versionMockito"
-    testCompile "org.assertj:assertj-core:$versionAssertj"
+    testImplementation "org.mockito:mockito-core:$versionMockito"
+    testImplementation "org.assertj:assertj-core:$versionAssertj"
 }
 

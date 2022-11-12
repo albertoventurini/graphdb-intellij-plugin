@@ -6,18 +6,13 @@ intellij {
     plugins = ['java']
 }
 
-configurations {
-    compile
-    testCompile
-}
-
 dependencies {
-    compile "de.sciss:prefuse-core:$versionPrefuse"
+    implementation "de.sciss:prefuse-core:$versionPrefuse"
 
-    compile project(":platform")
-    compile project(':database:api')
+    implementation project(":platform")
+    implementation project(':database:api')
 
-    testCompile "org.mockito:mockito-core:$versionMockito"
-    testCompile "org.assertj:assertj-core:$versionAssertj"
-    testCompile "de.sciss:prefuse-demos:$versionPrefuse"
+    testImplementation "org.mockito:mockito-core:$versionMockito"
+    testImplementation "org.assertj:assertj-core:$versionAssertj"
+    testImplementation "de.sciss:prefuse-demos:$versionPrefuse"
 }
