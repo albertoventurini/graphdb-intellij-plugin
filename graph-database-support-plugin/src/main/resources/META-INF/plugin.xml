@@ -110,11 +110,6 @@
                 serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.settings.SettingsComponent"
                 serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.settings.SettingsComponentImpl" />
 
-        <!-- Google analytics component -->
-        <applicationService
-                serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.AnalyticsApplicationComponent"
-                serviceImplementation="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.GoogleAnalyticsApplicationComponent" />
-
         <!-- Graph Database support - query statement highlighting -->
         <applicationService
                 serviceInterface="com.neueda.jetbrains.plugin.graphdb.jetbrains.component.highlighter.QueryHighlighterComponent"

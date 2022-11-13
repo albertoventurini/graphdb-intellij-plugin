@@ -48,7 +48,7 @@ public class GraphDbEditorsConsoleRootType extends ConsoleRootType {
             return Optional.empty();
         }
 
-        DataSourcesComponent component = project.getComponent(DataSourcesComponent.class);
+        final DataSourcesComponent component = project.getService(DataSourcesComponent.class);
         return component.getDataSourceContainer()
                    .findDataSource(NameUtil.extractDataSourceUUID(file.getName()));
     }

@@ -10,7 +10,6 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
 import com.intellij.ui.treeStructure.Tree;
-import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.Analytics;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourcesComponent;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.state.DataSourceApi;
@@ -142,12 +141,10 @@ public class DataSourcesView implements Disposable {
     public CompletableFuture<Boolean> refreshDataSourceMetadata(PatchedDefaultMutableTreeNode treeNode) {
         TreeNodeModelApi userObject = (TreeNodeModelApi) treeNode.getUserObject();
         DataSourceApi nodeDataSource = userObject.getDataSourceApi();
-        Analytics.event(nodeDataSource, "refreshMetadata");
         return dataSourceMetadataUi.updateDataSourceMetadataUi(treeNode, nodeDataSource);
     }
 
     public void createDataSource(DataSourceApi dataSource) {
-        Analytics.event(dataSource, "create");
         component.getDataSourceContainer().addDataSource(dataSource);
         TreeNodeModelApi model = new DataSourceTreeNodeModel(dataSource);
         PatchedDefaultMutableTreeNode treeNode = new PatchedDefaultMutableTreeNode(model);
@@ -157,7 +154,6 @@ public class DataSourcesView implements Disposable {
     }
 
     public void updateDataSource(PatchedDefaultMutableTreeNode treeNode, DataSourceApi oldDataSource, DataSourceApi newDataSource) {
-        Analytics.event(newDataSource, "update");
         component.getDataSourceContainer().updateDataSource(oldDataSource, newDataSource);
         treeNode.setUserObject(new DataSourceTreeNodeModel(newDataSource));
         refreshDataSourceMetadata(treeNode);
@@ -169,7 +165,6 @@ public class DataSourcesView implements Disposable {
 
         dataSourcesForRemoval.stream()
                 .peek((dataSourceApi -> {
-                    Analytics.event(dataSourceApi, "remove");
                     ApplicationManager.getApplication().runWriteAction(() -> {
                         try {
                             FileUtil.getDataSourceFile(project, dataSourceApi).delete(project);

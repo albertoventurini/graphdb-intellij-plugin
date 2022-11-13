@@ -56,7 +56,7 @@ public class CypherExplainWarningInspection extends LocalInspectionTool {
                     .filter(s -> s.startsWith(GraphConstants.BOUND_DATA_SOURCE_PREFIX))
                     .map(this::safeExtractDataSourceUUID)
                     .flatMap(uuid -> statement.getProject()
-                            .getComponent(DataSourcesComponent.class)
+                            .getService(DataSourcesComponent.class)
                             .getDataSourceContainer()
                             .findDataSource(uuid))
                     .map(service::getDatabaseFor)

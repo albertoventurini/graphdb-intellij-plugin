@@ -4,7 +4,6 @@ import com.intellij.notification.*;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
-import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.Analytics;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.settings.SettingsComponent;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.util.PluginUtil;
 import com.neueda.jetbrains.plugin.graphdb.platform.GraphBundle;
@@ -52,7 +51,6 @@ public class PluginUpdateActivity implements StartupActivity, DumbAware {
 
         @Override
         protected void hyperlinkActivated(@NotNull Notification notification, @NotNull HyperlinkEvent event) {
-            Analytics.event("landingPage", "landFromNotification");
             super.hyperlinkActivated(notification, event);
         }
     }

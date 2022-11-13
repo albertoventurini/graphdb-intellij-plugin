@@ -26,18 +26,23 @@ public class ExecuteQueryAction extends QueryAction {
     public ExecuteQueryAction() {
     }
 
-    public ExecuteQueryAction(PsiElement element) {
+    public ExecuteQueryAction(final PsiElement element) {
         super(element);
     }
 
-    protected void actionPerformed(AnActionEvent e, Project project, Editor editor, String query, Map<String, Object> parameters) {
+    protected void actionPerformed(
+            final AnActionEvent e,
+            final Project project,
+            final Editor editor,
+            final String query,
+            final Map<String, Object> parameters) {
         VirtualFile virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE);
         MessageBus messageBus = project.getMessageBus();
-        DataSourcesComponent dataSourcesComponent = project.getComponent(DataSourcesComponent.class);
+        DataSourcesComponent dataSourcesComponent = project.getService(DataSourcesComponent.class);
 
-        query = decorateQuery(query);
+        final String decoratedQuery = decorateQuery(query);
 
-        ExecuteQueryPayload executeQueryPayload = new ExecuteQueryPayload(query, parameters, editor);
+        ExecuteQueryPayload executeQueryPayload = new ExecuteQueryPayload(decoratedQuery, parameters, editor);
         ConsoleToolWindow.ensureOpen(project);
 
         if (nonNull(virtualFile)) {

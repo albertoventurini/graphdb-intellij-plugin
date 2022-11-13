@@ -10,10 +10,6 @@ public interface SettingsComponent {
 
     String getUserId();
 
-    boolean isAnalyticEnabled();
-
-    void enableAnalytics(boolean state);
-
     boolean isGraphViewZoomInverted();
 
     void invertGraphViewZoom(boolean state);

@@ -10,7 +10,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.messages.MessageBus;
-import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.Analytics;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.params.ParametersService;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.util.Notifier;
@@ -59,7 +58,6 @@ public abstract class QueryAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        Analytics.event("query", getQueryExecutionAction(e));
 
         Project project = getEventProject(e);
         Editor editor = e.getData(CommonDataKeys.EDITOR_EVEN_IF_INACTIVE);
@@ -75,11 +73,9 @@ public abstract class QueryAction extends AnAction {
         }
 
         String query = null;
-        String analyticsEvent;
         Map<String, Object> parameters = Collections.emptyMap();
         if (preSetQuery == null) {
             Caret caret = editor.getCaretModel().getPrimaryCaret();
-            analyticsEvent = caret.hasSelection() ? CONTENT_FROM_SELECT_ACTION : CONTENT_FROM_CARET_ACTION;
 
             if (caret.hasSelection()) {
                 query = caret.getSelectedText();
@@ -94,12 +90,9 @@ public abstract class QueryAction extends AnAction {
                 }
             }
         } else {
-            analyticsEvent = CONTENT_FROM_LINE_MARKER_ACTION;
             query = preSetQuery.getText();
             parameters = getParametersFromQuery(preSetQuery, project, editor);
         }
-
-        Analytics.event("query-content", analyticsEvent);
 
         if (isNull(query)) {
             Notifier.error(QUERY_EXECUTION_ERROR_TITLE, NO_QUERY_SELECTED_MESSAGE);
