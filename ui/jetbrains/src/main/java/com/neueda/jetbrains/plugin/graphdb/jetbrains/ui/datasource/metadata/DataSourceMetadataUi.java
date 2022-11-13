@@ -21,7 +21,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.BiFunction;
 
 import static com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourceType.NEO4J_BOLT;
-import static com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourceType.OPENCYPHER_GREMLIN;
 import static com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.tree.Neo4jTreeNodeType.*;
 import static java.util.concurrent.CompletableFuture.completedFuture;
 
@@ -43,7 +42,6 @@ public class DataSourceMetadataUi {
         this.dataSourcesComponent = dataSourcesComponent;
 
         handlers.put(NEO4J_BOLT, this::updateNeo4jBoltCypherMetadataUi);
-        handlers.put(OPENCYPHER_GREMLIN, this::updateOpenCypherGremlinMetadataUi);
     }
 
     public CompletableFuture<Boolean> updateDataSourceMetadataUi(PatchedDefaultMutableTreeNode node, DataSourceApi nodeDataSource) {
@@ -57,20 +55,6 @@ public class DataSourceMetadataUi {
         } else {
             return completedFuture(false);
         }
-    }
-
-    boolean updateOpenCypherGremlinMetadataUi(PatchedDefaultMutableTreeNode dataSourceRootTreeNode,
-                                              Neo4jBoltCypherDataSourceMetadata dataSourceMetadata) {
-        // Remove existing metadata from ui
-        dataSourceRootTreeNode.removeAllChildren();
-        TreeNodeModelApi model = (TreeNodeModelApi) dataSourceRootTreeNode.getUserObject();
-        DataSourceApi dataSourceApi = model.getDataSourceApi();
-
-        dataSourceRootTreeNode.add(createLabelsNode(dataSourceMetadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createRelationshipTypesNode(dataSourceMetadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createPropertyKeysNode(dataSourceMetadata, dataSourceApi));
-
-        return true;
     }
 
     // ui
