@@ -1,6 +1,6 @@
 package com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata;
 
-import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBus;
 import com.neueda.jetbrains.plugin.graphdb.database.api.GraphDatabaseApi;
@@ -28,7 +28,7 @@ import static com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource
 import static com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourceType.OPENCYPHER_GREMLIN;
 import static java.util.stream.Collectors.toList;
 
-public class DataSourcesComponentMetadata implements ProjectComponent {
+public class DataSourcesComponentMetadata {
 
     private final Map<DataSourceType, Function<DataSourceApi, DataSourceMetadata>> handlers = new HashMap<>();
     private CypherMetadataProviderService cypherMetadataProviderService;
@@ -36,25 +36,25 @@ public class DataSourcesComponentMetadata implements ProjectComponent {
     private DatabaseManagerService databaseManager;
     private MessageBus messageBus;
 
-    public DataSourcesComponentMetadata(MessageBus messageBus,
-                                        DatabaseManagerService databaseManager,
-                                        CypherMetadataProviderService cypherMetadataProviderService,
-                                        ExecutorService executorService
-    ) {
-        this.messageBus = messageBus;
-        this.databaseManager = databaseManager;
-        this.cypherMetadataProviderService = cypherMetadataProviderService;
-        this.executorService = executorService;
-
-        handlers.put(NEO4J_BOLT, this::getNeo4jBoltMetadata);
-        handlers.put(OPENCYPHER_GREMLIN, this::getOpenCypherGremlinMetadata);
-    }
+//    public DataSourcesComponentMetadata(MessageBus messageBus,
+//                                        DatabaseManagerService databaseManager,
+//                                        CypherMetadataProviderService cypherMetadataProviderService,
+//                                        ExecutorService executorService
+//    ) {
+//        this.messageBus = messageBus;
+//        this.databaseManager = databaseManager;
+//        this.cypherMetadataProviderService = cypherMetadataProviderService;
+//        this.executorService = executorService;
+//
+//        handlers.put(NEO4J_BOLT, this::getNeo4jBoltMetadata);
+//        handlers.put(OPENCYPHER_GREMLIN, this::getOpenCypherGremlinMetadata);
+//    }
 
     public DataSourcesComponentMetadata(final Project project) {
         messageBus = project.getMessageBus();
-        databaseManager = project.getService(DatabaseManagerService.class);
+        databaseManager = ApplicationManager.getApplication().getService(DatabaseManagerService.class);
         cypherMetadataProviderService = project.getService(CypherMetadataProviderService.class);
-        executorService = project.getService(ExecutorService.class);
+        executorService = ApplicationManager.getApplication().getService(ExecutorService.class);
 
         handlers.put(NEO4J_BOLT, this::getNeo4jBoltMetadata);
         handlers.put(OPENCYPHER_GREMLIN, this::getOpenCypherGremlinMetadata);
@@ -207,27 +207,5 @@ public class DataSourcesComponentMetadata implements ProjectComponent {
             userFunctionMetadata
                     .forEach(row -> container.addUserFunction(row.get("name"), row.get("signature"), row.get("description")));
         }
-    }
-
-    @Override
-    public void initComponent() {
-    }
-
-    @Override
-    public void projectOpened() {
-    }
-
-    @Override
-    public void projectClosed() {
-    }
-
-    @Override
-    public void disposeComponent() {
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "GraphDatabaseSupport.DataSourcesMetadata";
     }
 }

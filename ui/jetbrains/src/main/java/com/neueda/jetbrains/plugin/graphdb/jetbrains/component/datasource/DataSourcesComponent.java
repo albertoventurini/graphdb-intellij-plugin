@@ -13,13 +13,17 @@ import org.jetbrains.annotations.Nullable;
 
 @State(name = "GraphDatabaseSupport.DataSourcesState",
         storages = {@Storage("GraphDatabaseSupport_DataSourcesState.xml")})
-public class DataSourcesComponent implements ProjectComponent, PersistentStateComponent<DataSourcesComponentState> {
+public class DataSourcesComponent implements PersistentStateComponent<DataSourcesComponentState> {
 
     private final DataSourcesComponentMetadata componentMetadata;
     private DataSourcesComponentState state;
 
     public DataSourcesComponent(final Project project) {
         this.componentMetadata = project.getService(DataSourcesComponentMetadata.class);
+
+        if (state == null) {
+            state = new DataSourcesComponentState();
+        }
     }
 
     public DataSourceContainer getDataSourceContainer() {
@@ -44,44 +48,13 @@ public class DataSourcesComponent implements ProjectComponent, PersistentStateCo
         return state;
     }
 
-    /**
-     * Initialization.
-     */
-    @Override
-    public void initComponent() {
-        if (state == null) {
-            state = new DataSourcesComponentState();
-        }
-    }
-
     public void refreshAllMetadata() {
         getDataSourceContainer().getDataSources().forEach(componentMetadata::getMetadata);
     }
-
-    /**
-     * Project is opened.
-     */
-    @Override
-    public void projectOpened() {
-    }
-
-    /**
-     * Project is closing.
-     */
-    @Override
-    public void projectClosed() {
-    }
-
-    /**
-     * Clean up component.
-     */
-    @Override
-    public void disposeComponent() {
-    }
-
-    @NotNull
-    @Override
-    public String getComponentName() {
-        return "GraphDatabaseSupport.DataSources";
-    }
+//
+//    @NotNull
+//    @Override
+//    public String getComponentName() {
+//        return "GraphDatabaseSupport.DataSources";
+//    }
 }
