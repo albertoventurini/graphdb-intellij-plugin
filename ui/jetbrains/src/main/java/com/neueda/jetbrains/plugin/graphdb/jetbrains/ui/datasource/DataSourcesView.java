@@ -19,6 +19,7 @@ import com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.interactions.
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.metadata.DataSourceMetadataUi;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.tree.*;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.util.FileUtil;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -50,7 +51,7 @@ public class DataSourcesView implements Disposable {
         initialized = false;
     }
 
-    public void initToolWindow(Project project, ToolWindow toolWindow) {
+    public void initToolWindow(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         if (!initialized) {
             ContentFactory contentFactory = ContentFactory.getInstance();
             Content content = contentFactory.createContent(toolWindowContent, "", false);

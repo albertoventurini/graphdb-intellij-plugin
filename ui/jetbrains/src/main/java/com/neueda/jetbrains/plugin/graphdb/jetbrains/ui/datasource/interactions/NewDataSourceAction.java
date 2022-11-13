@@ -3,6 +3,7 @@ package com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.interactions
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.DataSourcesView;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.Icon;
 
@@ -19,7 +20,7 @@ public class NewDataSourceAction extends AnAction {
     }
 
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent e) {
         if (dataSourceDialog.go()) {
             window.createDataSource(dataSourceDialog.constructDataSource());
         }
