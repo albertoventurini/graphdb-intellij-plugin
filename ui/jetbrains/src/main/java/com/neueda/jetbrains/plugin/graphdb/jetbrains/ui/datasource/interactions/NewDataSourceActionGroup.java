@@ -17,7 +17,7 @@ public class NewDataSourceActionGroup extends ActionGroup {
     private final DataSourcesView dataSourcesView;
 
     NewDataSourceAction neo4jBoltDataSource;
-    NewDataSourceAction gremlinDataSource;
+//    NewDataSourceAction gremlinDataSource;
 
     public NewDataSourceActionGroup(Project project, DataSourcesView dataSourcesView) {
         this.project = project;
@@ -26,11 +26,11 @@ public class NewDataSourceActionGroup extends ActionGroup {
         neo4jBoltDataSource = new NewDataSourceAction(
                 dataSourcesView, new Neo4jBoltDataSourceDialog(project, dataSourcesView),
                 "Neo4j - Bolt", "Create Neo4j 3.0+ Bolt data source", GraphIcons.Database.NEO4J);
-
-        gremlinDataSource = new NewDataSourceAction(
-                dataSourcesView, new OpenCypherGremlinDataSourceDialog(project, dataSourcesView),
-                "openCypher - Gremlin", "Connect to Gremlin Data Source and " +
-                "translate Cypher to Gremlin", GraphIcons.Database.OPENCYPHER);
+//
+//        gremlinDataSource = new NewDataSourceAction(
+//                dataSourcesView, new OpenCypherGremlinDataSourceDialog(project, dataSourcesView),
+//                "openCypher - Gremlin", "Connect to Gremlin Data Source and " +
+//                "translate Cypher to Gremlin", GraphIcons.Database.OPENCYPHER);
     }
 
     @Override
@@ -44,6 +44,6 @@ public class NewDataSourceActionGroup extends ActionGroup {
 //                "openCypher - Gremlin", "Connect to Gremlin Data Source and " +
 //            "translate Cypher to Gremlin", GraphIcons.Database.OPENCYPHER);
 
-        return new AnAction[]{neo4jBoltDataSource, gremlinDataSource};
+        return new AnAction[]{neo4jBoltDataSource};
     }
 }

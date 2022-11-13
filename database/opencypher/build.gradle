@@ -2,7 +2,7 @@ dependencies {
     implementation project(':database:api')
     implementation project(':database:neo4j')
     implementation ("org.opencypher.gremlin:cypher-gremlin-server-client:$cypherForGremlinVersion") {
-        exclude group: 'org.slf4j', module: 'slf4j-api'
+        exclude group: "org.slf4j", module: "slf4j-api"
         exclude group: "org.slf4j", module: "jcl-over-slf4j"
     }
     implementation("com.fasterxml.jackson.core:jackson-annotations:$versionJacksonMapper")

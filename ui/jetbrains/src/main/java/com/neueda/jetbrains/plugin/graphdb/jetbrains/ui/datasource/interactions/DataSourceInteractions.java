@@ -1,13 +1,11 @@
 package com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.interactions;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.ui.popup.ListPopup;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
 import com.intellij.ui.treeStructure.Tree;
-import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.analytics.Analytics;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourceType;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.state.DataSourceApi;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.DataSourcesView;
@@ -125,7 +123,6 @@ public class DataSourceInteractions {
                     }
 
                     DataSourceApi dataSource = getDataSourceApi(selectedNodes[0]);
-                    Analytics.event(dataSource, "openEditor");
 
                     try {
                         FileUtil.openFile(project, FileUtil.getDataSourceFile(project, dataSource));

@@ -92,7 +92,7 @@ public class ParametersPanel implements ParametersProvider {
                 releaseFileSpecificEditor(event.getOldFile());
                 VirtualFile newFile = event.getNewFile();
                 if (newFile != null && FileTypeExtensionUtil.isCypherFileTypeExtension(newFile.getExtension()) &&
-                        project.getComponent(DataSourcesComponent.class).getDataSourceContainer().isDataSourceExists(getTabTitle(newFile))) {
+                        project.getService(DataSourcesComponent.class).getDataSourceContainer().isDataSourceExists(getTabTitle(newFile))) {
                     setupFileSpecificEditor(project, newFile);
                 }
             }

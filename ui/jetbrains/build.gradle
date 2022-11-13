@@ -12,7 +12,10 @@ dependencies {
     implementation project(':language:cypher')
 
     implementation project(':database:neo4j')
-    implementation project(':database:opencypher')
+    implementation(project(':database:opencypher')) {
+        exclude group: "org.slf4j", module: "slf4j-api"
+        exclude group: "org.slf4j", module: "jcl-over-slf4j"
+    }
     implementation project(':database:api')
 
     implementation "org.neo4j.driver:neo4j-java-driver:$versionNeo4jJavaBoltDriver"
@@ -23,11 +26,6 @@ dependencies {
     implementation project(':ui:visualization')
 
     implementation "de.sciss:prefuse-core:$versionPrefuse"
-
-    implementation("com.brsanthu:google-analytics-java:$versionGoogleAnalytics") {
-        exclude group: "org.slf4j", module: "slf4j-api"
-        exclude group: "org.slf4j", module: "jcl-over-slf4j"
-    }
 
     implementation("com.fasterxml.jackson.core:jackson-core:$versionJacksonMapper")
     implementation("com.fasterxml.jackson.core:jackson-databind:$versionJacksonMapper")
