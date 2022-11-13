@@ -4,7 +4,6 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBus;
 import com.neueda.jetbrains.plugin.graphdb.database.api.GraphDatabaseApi;
-import com.neueda.jetbrains.plugin.graphdb.database.api.data.GraphMetadata;
 import com.neueda.jetbrains.plugin.graphdb.database.api.query.GraphQueryResult;
 import com.neueda.jetbrains.plugin.graphdb.database.api.query.GraphQueryResultColumn;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourceType;
@@ -14,7 +13,6 @@ import com.neueda.jetbrains.plugin.graphdb.jetbrains.services.ExecutorService;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.metadata.MetadataRetrieveEvent;
 import com.neueda.jetbrains.plugin.graphdb.language.cypher.completion.metadata.CypherMetadataContainer;
 import com.neueda.jetbrains.plugin.graphdb.language.cypher.completion.metadata.CypherMetadataProviderService;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +23,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourceType.NEO4J_BOLT;
-import static com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.DataSourceType.OPENCYPHER_GREMLIN;
 import static java.util.stream.Collectors.toList;
 
 public class DataSourcesComponentMetadata {
@@ -36,20 +33,6 @@ public class DataSourcesComponentMetadata {
     private DatabaseManagerService databaseManager;
     private MessageBus messageBus;
 
-//    public DataSourcesComponentMetadata(MessageBus messageBus,
-//                                        DatabaseManagerService databaseManager,
-//                                        CypherMetadataProviderService cypherMetadataProviderService,
-//                                        ExecutorService executorService
-//    ) {
-//        this.messageBus = messageBus;
-//        this.databaseManager = databaseManager;
-//        this.cypherMetadataProviderService = cypherMetadataProviderService;
-//        this.executorService = executorService;
-//
-//        handlers.put(NEO4J_BOLT, this::getNeo4jBoltMetadata);
-//        handlers.put(OPENCYPHER_GREMLIN, this::getOpenCypherGremlinMetadata);
-//    }
-
     public DataSourcesComponentMetadata(final Project project) {
         messageBus = project.getMessageBus();
         databaseManager = ApplicationManager.getApplication().getService(DatabaseManagerService.class);
@@ -57,7 +40,6 @@ public class DataSourcesComponentMetadata {
         executorService = ApplicationManager.getApplication().getService(ExecutorService.class);
 
         handlers.put(NEO4J_BOLT, this::getNeo4jBoltMetadata);
-        handlers.put(OPENCYPHER_GREMLIN, this::getOpenCypherGremlinMetadata);
     }
 
     public CompletableFuture<Optional<DataSourceMetadata>> getMetadata(DataSourceApi dataSource) {
@@ -126,31 +108,6 @@ public class DataSourcesComponentMetadata {
         }
 
         return metadata;
-    }
-
-    private DataSourceMetadata getOpenCypherGremlinMetadata(DataSourceApi dataSource) {
-        GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
-        Neo4jBoltCypherDataSourceMetadata result = new Neo4jBoltCypherDataSourceMetadata();
-
-        GraphMetadata metadata = db.metadata();
-
-        for (Map.Entry<String, Number> entry : metadata.labels().entrySet()) {
-            result.addLabel(new Neo4jLabelMetadata(entry.getKey(), entry.getValue().longValue()));
-        }
-
-        for (Map.Entry<String, Number> entry : metadata.relationships().entrySet()) {
-            result.addRelationshipType(new Neo4jRelationshipTypeMetadata(entry.getKey(), entry.getValue().longValue()));
-        }
-
-        for (String vertexProperty : metadata.vertexProperties()) {
-            result.addPropertyKey(vertexProperty);
-        }
-
-        for (String edgeProperty : metadata.edgeProperties()) {
-            result.addPropertyKey(edgeProperty);
-        }
-
-        return result;
     }
 
     private List<String> extractRelationshipTypes(GraphQueryResult relationshipQueryResult) {

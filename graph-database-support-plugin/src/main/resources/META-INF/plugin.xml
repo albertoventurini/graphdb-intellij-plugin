@@ -217,12 +217,6 @@
                     icon="AllIcons.RunConfigurations.TestState.Run"
                     description="Profile query">
             </action>
-            <action id="GraphDatabaseActionGroup.TranslateQuery"
-                    class="com.neueda.jetbrains.plugin.graphdb.jetbrains.actions.execute.TranslateQueryAction"
-                    text="Translate Query to Gremlin..."
-                    icon="GraphIcons.Database.OPENCYPHER"
-                    description="Profile query">
-            </action>
             <add-to-group group-id="EditorPopupMenu"/>
         </group>
 

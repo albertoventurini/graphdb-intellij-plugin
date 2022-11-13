@@ -9,7 +9,6 @@ intellij {
 dependencies {
     testImplementation project(':graph-database-support-plugin')
     testImplementation project(':testing:common')
-    testAnnotationProcessor("org.apache.tinkerpop:gremlin-core:$tinkerpopVersion")
     testImplementation project(':testing:database:neo4j-common')
     testImplementation 'org.xeustechnologies:jcl-core:2.8'
     testImplementation "org.assertj:assertj-core:$versionAssertj"

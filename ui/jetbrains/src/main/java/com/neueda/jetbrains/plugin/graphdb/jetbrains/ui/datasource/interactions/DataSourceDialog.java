@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
-import static com.neueda.jetbrains.plugin.graphdb.database.opencypher.gremlin.exceptions.ExceptionWrapper.*;
+import static org.apache.commons.lang.exception.ExceptionUtils.getCause;
 
 public abstract class DataSourceDialog extends DialogWrapper {
     public static final int THICKNESS = 10;
@@ -124,7 +124,7 @@ public abstract class DataSourceDialog extends DialogWrapper {
 
         JTextArea exceptionCauses = new JTextArea();
         exceptionCauses.setLineWrap(false);
-        exceptionCauses.append(getCause(exception));
+        exceptionCauses.append(getCause(exception).toString());
 
         JBScrollPane scrollPane = new JBScrollPane(exceptionCauses);
         scrollPane.setPreferredSize(new Dimension(-1, HEIGHT));

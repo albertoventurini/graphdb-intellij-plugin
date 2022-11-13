@@ -12,16 +12,9 @@ dependencies {
     implementation project(':language:cypher')
 
     implementation project(':database:neo4j')
-    implementation(project(':database:opencypher')) {
-        exclude group: "org.slf4j", module: "slf4j-api"
-        exclude group: "org.slf4j", module: "jcl-over-slf4j"
-    }
     implementation project(':database:api')
 
     implementation "org.neo4j.driver:neo4j-java-driver:$versionNeo4jJavaBoltDriver"
-    implementation "org.apache.tinkerpop:gremlin-driver:$tinkerpopVersion"
-
-    annotationProcessor("org.apache.tinkerpop:gremlin-core:$tinkerpopVersion")
 
     implementation project(':ui:visualization')
 
@@ -32,8 +25,6 @@ dependencies {
 
     testImplementation project(':testing:common')
 
-    testImplementation "org.apache.tinkerpop:tinkergraph-gremlin:$tinkerpopVersion"
-    testAnnotationProcessor("org.apache.tinkerpop:gremlin-core:$tinkerpopVersion")
     testImplementation "junit:junit:$versionJunit"
     testImplementation "org.assertj:assertj-core:$versionAssertj"
     testImplementation "org.mockito:mockito-core:$versionMockito"

@@ -16,13 +16,9 @@ public interface DataSourceApi {
     Map<String, String> getConfiguration();
 
     default DataSourceDescription getDescription() {
-        switch (getDataSourceType()) {
-            case NEO4J_BOLT:
-                return DataSourceDescription.NEO4J_BOLT;
-            case OPENCYPHER_GREMLIN:
-                return DataSourceDescription.OPENCYPHER_GREMLIN;
-            default:
-                throw new IllegalStateException("Unknown data source type encountered: " + getDataSourceType());
+        if (getDataSourceType() == DataSourceType.NEO4J_BOLT) {
+            return DataSourceDescription.NEO4J_BOLT;
         }
+        throw new IllegalStateException("Unknown data source type encountered: " + getDataSourceType());
     }
 }

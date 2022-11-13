@@ -13,8 +13,6 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.ui.JBUI;
 import com.neueda.jetbrains.plugin.graphdb.database.api.query.GraphQueryResult;
-import com.neueda.jetbrains.plugin.graphdb.database.opencypher.gremlin.exceptions.ExceptionErrorMessages;
-import com.neueda.jetbrains.plugin.graphdb.database.opencypher.gremlin.exceptions.OpenCypherGremlinException;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.actions.execute.ExecuteQueryPayload;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.neueda.jetbrains.plugin.graphdb.jetbrains.component.datasource.state.DataSourceApi;
@@ -28,9 +26,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-import static com.neueda.jetbrains.plugin.graphdb.database.opencypher.gremlin.exceptions.ExceptionWrapper.*;
 import static com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent.*;
 import static com.neueda.jetbrains.plugin.graphdb.jetbrains.ui.datasource.interactions.DataSourceDialog.*;
+import static org.apache.commons.lang.exception.ExceptionUtils.getCause;
+import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
 
 public class LogPanel implements Disposable {
     private static final String SHOW_DETAILS = "Details...";
@@ -186,14 +185,12 @@ public class LogPanel implements Disposable {
         scrollPane.setPreferredSize(new Dimension(-1, HEIGHT));
         popupPanel.add(jLabel, BorderLayout.NORTH);
         popupPanel.add(scrollPane, BorderLayout.CENTER);
-        String gremlinTranslationWarning = exception instanceof OpenCypherGremlinException ? ExceptionErrorMessages.SYNTAX_WARNING.getDescription() : "";
 
         JBPopupFactory.getInstance()
                 .createComponentPopupBuilder(
                         popupPanel,
                         log.getComponent())
                 .setTitle(title)
-                .setAdText(gremlinTranslationWarning)
                 .setResizable(true)
                 .setMovable(true)
                 .setCancelButton(new IconButton("Close", AllIcons.Actions.Close, AllIcons.Actions.CloseHovered))
