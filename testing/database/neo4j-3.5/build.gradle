@@ -1,3 +1,6 @@
+// Copied and adapted from plugin "Graph Database Support"
+// by Neueda Technologies, Ltd.
+// Modified by Alberto Venturini, 2022
 plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.4'
 }

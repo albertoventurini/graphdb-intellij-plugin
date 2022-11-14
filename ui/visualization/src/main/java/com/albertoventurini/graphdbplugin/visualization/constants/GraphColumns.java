@@ -1,0 +1,13 @@
+/**
+ * Copied and adapted from plugin
+ * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
+ * by Neueda Technologies, Ltd.
+ * Modified by Alberto Venturini, 2022
+ */
+package com.albertoventurini.graphdbplugin.visualization.constants;
+
+public class GraphColumns {
+    public static final String ID = "id";
+    public static final String TYPE = "type";
+    public static final String TITLE = "title";
+}

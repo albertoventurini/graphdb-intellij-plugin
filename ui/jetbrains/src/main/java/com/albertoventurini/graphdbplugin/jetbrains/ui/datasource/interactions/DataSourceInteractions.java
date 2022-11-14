@@ -1,0 +1,149 @@
+/**
+ * Copied and adapted from plugin
+ * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
+ * by Neueda Technologies, Ltd.
+ * Modified by Alberto Venturini, 2022
+ */
+package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.interactions;
+
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.interactions.neo4j.bolt.Neo4jBoltDataSourceDialog;
+import com.albertoventurini.graphdbplugin.jetbrains.util.FileUtil;
+import com.albertoventurini.graphdbplugin.jetbrains.util.Notifier;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.openapi.ui.popup.ListPopup;
+import com.intellij.ui.ToolbarDecorator;
+import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
+import com.intellij.ui.treeStructure.Tree;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.DataSourcesView;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.Neo4jTreeNodeType;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.TreeNodeModelApi;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class DataSourceInteractions {
+
+    private final DataSourcesView dataSourcesView;
+    private final ToolbarDecorator decorator;
+    private final Project project;
+    private final Tree dataSourceTree;
+
+    public DataSourceInteractions(Project project, DataSourcesView dataSourcesView) {
+        this.project = project;
+        this.dataSourcesView = dataSourcesView;
+        this.decorator = dataSourcesView.getDecorator();
+        this.dataSourceTree = dataSourcesView.getDataSourceTree();
+
+        initAddAction();
+        initRemoveAction();
+        initEditAction();
+        initQuickEditorAction();
+    }
+
+    private void initAddAction() {
+        decorator.setAddAction(anActionButton -> {
+            ListPopup popup = JBPopupFactory.getInstance().createActionGroupPopup(
+                    "New Data Source",
+                    new NewDataSourceActionGroup(project, dataSourcesView),
+                    anActionButton.getDataContext(),
+                    JBPopupFactory.ActionSelectionAid.NUMBERING,
+                    true
+            );
+            popup.show(anActionButton.getPreferredPopupPoint());
+        });
+    }
+
+    private void initRemoveAction() {
+        decorator.setRemoveAction(anActionButton -> {
+            DefaultMutableTreeNode[] selectedNodes = dataSourceTree.getSelectedNodes(DefaultMutableTreeNode.class,
+                    this::isDataSource);
+
+            List<DataSourceApi> dataSourcesForRemoval = Arrays.stream(selectedNodes)
+                    .map(this::getDataSourceApi)
+                    .collect(Collectors.toList());
+
+            if (dataSourcesForRemoval.size() > 0) {
+                dataSourcesView.removeDataSources(project, dataSourcesForRemoval);
+            }
+        });
+        decorator.setRemoveActionUpdater(e -> {
+            DefaultMutableTreeNode[] selectedNodes = dataSourceTree.getSelectedNodes(DefaultMutableTreeNode.class,
+                    this::isDataSource);
+
+            return selectedNodes.length > 0;
+        });
+    }
+
+    private void initEditAction() {
+        decorator.setEditActionUpdater(e -> {
+            DefaultMutableTreeNode[] selectedNodes = dataSourceTree.getSelectedNodes(DefaultMutableTreeNode.class,
+                    this::isDataSource);
+
+            return selectedNodes.length == 1;
+        });
+        decorator.setEditAction(anActionButton -> {
+            PatchedDefaultMutableTreeNode[] selectedNodes = dataSourceTree.getSelectedNodes(PatchedDefaultMutableTreeNode.class,
+                    (node) -> node.getUserObject() instanceof TreeNodeModelApi);
+
+            if (selectedNodes.length == 1) {
+                PatchedDefaultMutableTreeNode treeNode = selectedNodes[0];
+
+                DataSourceApi dataSourceToEdit = getDataSourceApi(treeNode);
+
+                DataSourceDialog dialog = null;
+                if (dataSourceToEdit.getDataSourceType().equals(DataSourceType.NEO4J_BOLT)) {
+                    dialog = new Neo4jBoltDataSourceDialog(project, dataSourcesView, dataSourceToEdit);
+                }
+
+                if (dialog != null) {
+                    if (dialog.go()) {
+                        dataSourcesView.updateDataSource(treeNode, dataSourceToEdit, dialog.constructDataSource());
+                    }
+                }
+            }
+        });
+    }
+
+    private void initQuickEditorAction() {
+        MouseAdapter mouseAdapter = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int clickCount = e.getClickCount();
+                if (clickCount == 2) {
+                    DefaultMutableTreeNode[] selectedNodes = dataSourceTree.getSelectedNodes(DefaultMutableTreeNode.class,
+                            DataSourceInteractions.this::isDataSource);
+
+                    if (selectedNodes.length != 1) {
+                        return;
+                    }
+
+                    DataSourceApi dataSource = getDataSourceApi(selectedNodes[0]);
+
+                    try {
+                        FileUtil.openFile(project, FileUtil.getDataSourceFile(project, dataSource));
+                    } catch (IOException exception) {
+                        Notifier.error("Open editor error", exception.getMessage());
+                    }
+                }
+            }
+        };
+        dataSourceTree.addMouseListener(mouseAdapter);
+    }
+
+    private boolean isDataSource(DefaultMutableTreeNode node) {
+        return node.getUserObject() instanceof TreeNodeModelApi
+                && ((TreeNodeModelApi) node.getUserObject()).getType() == Neo4jTreeNodeType.DATASOURCE;
+    }
+
+    private DataSourceApi getDataSourceApi(DefaultMutableTreeNode node) {
+        return ((TreeNodeModelApi) node.getUserObject()).getDataSourceApi();
+    }
+}

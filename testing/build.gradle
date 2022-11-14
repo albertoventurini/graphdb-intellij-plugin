@@ -1,2 +1,5 @@
+// Copied and adapted from plugin "Graph Database Support"
+// by Neueda Technologies, Ltd.
+// Modified by Alberto Venturini, 2022
 dependencies {
 }
