@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin>
     <id>com.albertoventurini.jetbrains.graphdbplugin</id>
     <name>Graph Database</name>
     <!-- Should be automatically replaced by gradle build -->
@@ -60,7 +60,7 @@
         ]]></change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="221.*"/>
+    <idea-version since-build="221.0" until-build="222.*" />
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
@@ -166,6 +166,9 @@
         <lang.formatter language="Cypher" implementationClass="com.albertoventurini.graphdbplugin.language.cypher.formatter.CypherFormattingModelBuilder"/>
         <preFormatProcessor implementation="com.albertoventurini.graphdbplugin.language.cypher.formatter.CypherPreFormatter" />
         <codeInsight.lineMarkerProvider language="Cypher" implementationClass="com.albertoventurini.graphdbplugin.jetbrains.component.linemarker.CypherLineMarkerProvider"/>
+
+        <notificationGroup id="GraphDatabaseSupportUpdateNotification"
+                           displayType="STICKY_BALLOON" />
     </extensions>
 
     <actions>

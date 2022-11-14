@@ -72,7 +72,7 @@ public class ExecutionStatusBarWidget extends JPanel implements CustomStatusBarW
 
     @Nullable
     @Override
-    public WidgetPresentation getPresentation(@NotNull PlatformType type) {
+    public WidgetPresentation getPresentation() {
         return null;
     }
 

@@ -60,9 +60,7 @@ public interface CypherInvocation extends PsiElement, CypherTyped {
     }
 
     default List<InvokableInformation> resolve() {
-        CypherMetadataProviderService svc = ServiceManager.getService(
-                getProject(),
-                CypherMetadataProviderService.class);
+        CypherMetadataProviderService svc = getProject().getService(CypherMetadataProviderService.class);
         final List<InvokableInformation> matchedInvocations = newArrayList();
 
         if (this instanceof CypherProcedureInvocation) {

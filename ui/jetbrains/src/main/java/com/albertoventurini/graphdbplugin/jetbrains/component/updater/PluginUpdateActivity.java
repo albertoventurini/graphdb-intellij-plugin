@@ -39,26 +39,15 @@ public class PluginUpdateActivity implements StartupActivity, DumbAware {
     }
 
     private void showNotification(Project project, String currentVersion) {
-        NotificationGroup group = new NotificationGroup(NOTIFICATION_ID, NotificationDisplayType.STICKY_BALLOON, true);
+        NotificationGroup group = NotificationGroupManager.getInstance()
+                .getNotificationGroup("GraphDatabaseSupportUpdateNotification");
+
         Notification notification = group.createNotification(
                 GraphBundle.message("updater.title", currentVersion),
                 GraphBundle.message("updater.notification"),
-                NotificationType.INFORMATION,
-                new UrlOpeningListenerWithAnalytics(false)
+                NotificationType.INFORMATION
         );
+
         Notifications.Bus.notify(notification, project);
     }
-
-    static class UrlOpeningListenerWithAnalytics extends NotificationListener.UrlOpeningListener {
-
-        UrlOpeningListenerWithAnalytics(boolean expireNotification) {
-            super(expireNotification);
-        }
-
-        @Override
-        protected void hyperlinkActivated(@NotNull Notification notification, @NotNull HyperlinkEvent event) {
-            super.hyperlinkActivated(notification, event);
-        }
-    }
-
 }
