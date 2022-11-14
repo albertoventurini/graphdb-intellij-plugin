@@ -3,12 +3,12 @@
     <name>Graph Database Support</name>
     <!-- Should be automatically replaced by gradle build -->
     <version>9.9.9</version>
-    <vendor email="aventurini@gmail.com" url="https://github.com/albertoventurini/">Alberto Venturini</vendor>
+    <vendor email="aventurini@gmail.com" url="https://github.com/albertoventurini/graphdb-intellij-plugin">Alberto Venturini</vendor>
 
     <description><![CDATA[
         <p>
-            <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">
-                Integration with Graph Databases
+            <a href="https://github.com/albertoventurini/graphdb-intellij-plugin">
+                Graph database plugin for the IntelliJ Platform
             </a>
         </p>
 
@@ -25,14 +25,6 @@
             <b>Supported databases:</b>
         <ul>
             <li>Neo4j 3.4+ (Bolt)</li>
-            <li>TinkerPop databases (<a href="https://github.com/opencypher/cypher-for-gremlin">Cypher for Gremlin</a> translation)
-                <ul>
-                    <li>AWS Neptune</li>
-                    <li>JanusGraph</li>
-                    <li>Azure Cosmos DB</li>
-                    <li>Other TinkerPop-enabled databases</li>
-                </ul>
-            </li>
         </ul>
         </p>
 
@@ -64,7 +56,7 @@
 
     <change-notes><![CDATA[
         See
-        <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support/releases">https://github.com/neueda/jetbrains-plugin-graph-database-support/releases</a>
+        <a href="https://github.com/albertoventurini/graphdb-intellij-plugin/releases">https://github.com/albertoventurini/graphdb-intellij-plugin/releases</a>
         ]]></change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
@@ -75,21 +67,6 @@
     <depends>com.intellij.modules.lang</depends>
     <depends optional="true">com.intellij.modules.java</depends>
     <depends optional="true" config-file="intellilang-cypher-support.xml">org.intellij.intelliLang</depends>
-
-    <project-components>
-        <!-- Graph Database support - data sources -->
-<!--        <component>-->
-<!--            <interface-class>datasource.component.jetbrains.com.albertoventurini.graphdbplugin.DataSourcesComponent</interface-class>-->
-<!--            <implementation-class>datasource.component.jetbrains.com.albertoventurini.graphdbplugin.DataSourcesComponent</implementation-class>-->
-<!--            <loadForDefaultProject/>-->
-<!--        </component>-->
-        <!-- Graph Database support - data sources metadata -->
-<!--        <component>-->
-<!--            <interface-class>metadata.datasource.component.jetbrains.com.albertoventurini.graphdbplugin.DataSourcesComponentMetadata</interface-class>-->
-<!--            <implementation-class>metadata.datasource.component.jetbrains.com.albertoventurini.graphdbplugin.DataSourcesComponentMetadata</implementation-class>-->
-<!--            <loadForDefaultProject/>-->
-<!--        </component>-->
-    </project-components>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Graph database support -->
