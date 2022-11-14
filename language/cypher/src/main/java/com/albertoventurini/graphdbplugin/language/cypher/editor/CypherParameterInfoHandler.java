@@ -64,23 +64,6 @@ public class CypherParameterInfoHandler
         return CypherInvocation.class;
     }
 
-    @Override
-    public boolean couldShowInLookup() {
-        return true;
-    }
-
-    @Nullable
-    @Override
-    public Object[] getParametersForLookup(LookupElement item, ParameterInfoContext context) {
-        return ArrayUtil.EMPTY_OBJECT_ARRAY;
-    }
-
-    @Nullable
-    @Override
-    public Object[] getParametersForDocumentation(CypherInvocation p, ParameterInfoContext context) {
-        return ArrayUtil.EMPTY_OBJECT_ARRAY;
-    }
-
     @Nullable
     @Override
     public CypherInvocation findElementForParameterInfo(@NotNull CreateParameterInfoContext context) {
@@ -109,18 +92,6 @@ public class CypherParameterInfoHandler
                         context.getOffset(),
                         CypherTypes.OP_COMMA));
     }
-
-    @Nullable
-    @Override
-    public String getParameterCloseChars() {
-        return ",(";
-    }
-
-    @Override
-    public boolean tracksParameterIndex() {
-        return true;
-    }
-
 
     @Override
     public void updateUI(CypherInvocation ci, @NotNull ParameterInfoUIContext context) {

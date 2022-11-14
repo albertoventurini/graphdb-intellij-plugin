@@ -7,17 +7,9 @@
 package com.albertoventurini.graphdbplugin.language.cypher.formatter;
 
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes;
-import com.intellij.formatting.Alignment;
-import com.intellij.formatting.FormattingModel;
-import com.intellij.formatting.FormattingModelBuilder;
-import com.intellij.formatting.FormattingModelProvider;
-import com.intellij.formatting.Indent;
-import com.intellij.formatting.SpacingBuilder;
-import com.intellij.formatting.Wrap;
-import com.intellij.formatting.WrapType;
+import com.intellij.formatting.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.albertoventurini.graphdbplugin.language.cypher.CypherLanguage;
@@ -25,14 +17,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class CypherFormattingModelBuilder implements FormattingModelBuilder {
+
     @NotNull
     @Override
-    public FormattingModel createModel(PsiElement element, CodeStyleSettings settings) {
+    public FormattingModel createModel(final @NotNull FormattingContext formattingContext) {
+        final var element = formattingContext.getPsiElement();
+        final var settings = formattingContext.getCodeStyleSettings();
+
         CypherBlock block = new CypherBlock(element.getNode(), Alignment.createAlignment(),
-                Indent.getNoneIndent(), Wrap.createWrap(WrapType.NONE, false),
-                settings,
-                CypherFormattingModelBuilder.createSpacingBuilder(settings)
+            Indent.getNoneIndent(), Wrap.createWrap(WrapType.NONE, false),
+            settings,
+            CypherFormattingModelBuilder.createSpacingBuilder(settings)
         );
+
         return FormattingModelProvider.createFormattingModelForPsiFile(element.getContainingFile(), block, settings);
     }
 

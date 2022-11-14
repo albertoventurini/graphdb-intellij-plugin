@@ -115,7 +115,7 @@ public class GraphConsoleView implements Disposable {
 
         if (!initialized) {
             updateLookAndFeel();
-            initializeWidgets(project);
+            //initializeWidgets(project);
             initializeUiComponents(project);
 
             // Hide standard tabs
@@ -203,11 +203,11 @@ public class GraphConsoleView implements Disposable {
         parametersPanel.initialize(this, project);
     }
 
-    private void initializeWidgets(Project project) {
-        StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
-        executionStatusBarWidget = new ExecutionStatusBarWidget(project.getMessageBus());
-        statusBar.addWidget(executionStatusBarWidget, "before Position");
-    }
+//    private void initializeWidgets(Project project) {
+//        StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
+//        executionStatusBarWidget = new ExecutionStatusBarWidget(project.getMessageBus());
+//        statusBar.addWidget(executionStatusBarWidget, "before Position");
+//    }
 
     private void createNewQueryPlanTab(String originalQuery,
                                        GraphQueryResult result, int tabId) {

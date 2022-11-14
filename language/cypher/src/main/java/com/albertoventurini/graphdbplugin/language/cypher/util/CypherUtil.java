@@ -54,8 +54,8 @@ public class CypherUtil {
     }
 
     public static <T extends CypherNamedElement> List<T> findAllAndFilter(Project project, IElementType elementType, Filter filter) {
-        Collection<VirtualFile> virtualFiles = FileBasedIndex.getInstance()
-                .getContainingFiles(FileTypeIndex.NAME, CypherFileType.INSTANCE, GlobalSearchScope.allScope(project));
+        final Collection<VirtualFile> virtualFiles =
+                FileTypeIndex.getFiles(CypherFileType.INSTANCE, GlobalSearchScope.allScope(project));
 
         List<T> result = new ArrayList<>();
         for (VirtualFile virtualFile : virtualFiles) {
