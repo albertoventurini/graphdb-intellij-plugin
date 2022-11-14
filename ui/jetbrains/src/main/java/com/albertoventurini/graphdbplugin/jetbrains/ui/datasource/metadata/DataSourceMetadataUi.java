@@ -160,7 +160,7 @@ public class DataSourceMetadataUi {
                         GraphIcons.Nodes.INDEX));
         indexesMetadata
                 .forEach(row -> indexTreeNode.add(of(new MetadataTreeNodeModel(INDEX, dataSourceApi,
-                        row.get("description").substring(6) + " " + row.get("state")))));
+                        row.get("name").substring(6) + " " + row.get("state")))));
 
         return indexTreeNode;
     }
