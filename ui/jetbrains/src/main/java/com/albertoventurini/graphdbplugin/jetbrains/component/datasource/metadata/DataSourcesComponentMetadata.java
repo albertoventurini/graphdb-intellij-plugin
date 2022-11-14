@@ -78,12 +78,12 @@ public class DataSourcesComponentMetadata {
         GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
         Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
 
-        GraphQueryResult indexesResult = db.execute("CALL db.indexes()");
-        GraphQueryResult constraintsResult = db.execute("CALL db.constraints()");
+        GraphQueryResult indexesResult = db.execute("SHOW INDEXES");
+        GraphQueryResult constraintsResult = db.execute("SHOW CONSTRAINTS");
         GraphQueryResult labelsQueryResult = db.execute("CALL db.labels()");
         GraphQueryResult relationshipQueryResult = db.execute("CALL db.relationshipTypes()");
         GraphQueryResult propertyKeysResult = db.execute("CALL db.propertyKeys()");
-        GraphQueryResult storedProceduresResult = db.execute("CALL dbms.procedures()");
+        GraphQueryResult storedProceduresResult = db.execute("SHOW PROCEDURES YIELD name, signature, description");
 
         metadata.addIndexes(indexesResult);
         metadata.addConstraints(constraintsResult);

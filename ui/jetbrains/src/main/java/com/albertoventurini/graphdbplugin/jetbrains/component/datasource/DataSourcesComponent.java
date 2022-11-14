@@ -29,6 +29,8 @@ public class DataSourcesComponent implements PersistentStateComponent<DataSource
         if (state == null) {
             state = new DataSourcesComponentState();
         }
+
+        refreshAllMetadata();
     }
 
     public DataSourceContainer getDataSourceContainer() {
@@ -42,6 +44,7 @@ public class DataSourcesComponent implements PersistentStateComponent<DataSource
     @Override
     public void loadState(@NotNull final DataSourcesComponentState state) {
         this.state = state;
+        refreshAllMetadata();
     }
 
     /**
@@ -54,7 +57,9 @@ public class DataSourcesComponent implements PersistentStateComponent<DataSource
     }
 
     public void refreshAllMetadata() {
-        getDataSourceContainer().getDataSources().forEach(componentMetadata::getMetadata);
+        getDataSourceContainer().getDataSources().forEach(d -> {
+            componentMetadata.getMetadata(d);
+        });
     }
 //
 //    @NotNull
