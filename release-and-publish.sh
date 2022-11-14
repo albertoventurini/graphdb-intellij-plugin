@@ -4,4 +4,4 @@ if [ "$TRAVIS_SECURE_ENV_VARS" = false ]; then
     exit 0;
 fi
 ./gradlew buildPlugin
-./gradlew :graph-database-support-plugin:publishPlugin
+./gradlew :graph-database-plugin:publishPlugin

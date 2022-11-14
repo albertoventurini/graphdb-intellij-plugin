@@ -9,5 +9,5 @@ intellij {
 }
 
 dependencies {
-    implementation project(':graph-database-support-plugin')
+    implementation project(':graph-database-plugin')
 }
