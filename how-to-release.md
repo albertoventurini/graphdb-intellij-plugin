@@ -47,4 +47,4 @@ Just for reference. Travis is not used in this case
 4.2. Build the plugin:  
 `./gradlew buildPlugin`  
 4.3. Publish the plugin:  
-`./gradlew :graph-database-support-plugin:publishPlugin`  
+`./gradlew :graph-database-plugin:publishPlugin`  

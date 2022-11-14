@@ -13,7 +13,7 @@ include 'ui:visualization'
 include 'ui:jetbrains'
 
 // Plugin
-include 'graph-database-support-plugin'
+include 'graph-database-plugin'
 include 'platform'
 
 // Testing

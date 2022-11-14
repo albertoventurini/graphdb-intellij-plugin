@@ -10,7 +10,7 @@ intellij {
 
 
 dependencies {
-    testImplementation project(':graph-database-support-plugin')
+    testImplementation project(':graph-database-plugin')
     testImplementation project(':testing:common')
     testImplementation project(':testing:database:neo4j-common')
     testImplementation 'org.xeustechnologies:jcl-core:2.8'

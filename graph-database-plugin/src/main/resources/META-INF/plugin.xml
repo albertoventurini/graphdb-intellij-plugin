@@ -1,6 +1,6 @@
 <idea-plugin version="2">
     <id>com.albertoventurini.jetbrains.graphdbplugin</id>
-    <name>Graph Database Support</name>
+    <name>Graph Database</name>
     <!-- Should be automatically replaced by gradle build -->
     <version>9.9.9</version>
     <vendor email="aventurini@gmail.com" url="https://github.com/albertoventurini/graphdb-intellij-plugin">Alberto Venturini</vendor>
