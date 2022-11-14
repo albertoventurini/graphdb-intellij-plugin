@@ -1,0 +1,41 @@
+/**
+ * Copied and adapted from plugin
+ * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
+ * by Neueda Technologies, Ltd.
+ * Modified by Alberto Venturini, 2022
+ */
+package com.albertoventurini.graphdbplugin.jetbrains.ui.helpers;
+
+public class KeyValuePair {
+
+    private final String key;
+    private final Object value;
+    private final boolean isValueData;
+
+    public KeyValuePair(String key, Object value) {
+        this(key, value, false);
+    }
+
+    public KeyValuePair(String key, Object value, boolean isValueData) {
+        this.key = key;
+        this.value = value;
+        this.isValueData = isValueData;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Object getValue() {
+        return value;
+    }
+
+    public boolean isValueData() {
+        return isValueData;
+    }
+
+    @Override
+    public String toString() {
+        return key + ": " + value.toString();
+    }
+}
