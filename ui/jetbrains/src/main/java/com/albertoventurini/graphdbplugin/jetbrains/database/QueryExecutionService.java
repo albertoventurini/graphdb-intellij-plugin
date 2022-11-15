@@ -9,6 +9,7 @@ package com.albertoventurini.graphdbplugin.jetbrains.database;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBus;
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
@@ -26,9 +27,11 @@ public class QueryExecutionService {
     private final MessageBus messageBus;
     private Future<?> runningQuery;
 
-    public QueryExecutionService(MessageBus messageBus) {
+    public QueryExecutionService(
+            @NotNull final Project project,
+            final MessageBus messageBus) {
         this.messageBus = messageBus;
-        this.databaseManager = ServiceManager.getService(DatabaseManagerService.class);
+        this.databaseManager = project.getService(DatabaseManagerService.class);
     }
 
     public void executeQuery(DataSourceApi dataSource, ExecuteQueryPayload payload) {

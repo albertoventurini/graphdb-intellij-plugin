@@ -22,7 +22,7 @@ public class DiffService {
     private final QueryExecutionService service;
 
     public DiffService(Project project) {
-        this.service = new QueryExecutionService(project.getMessageBus());
+        this.service = new QueryExecutionService(project, project.getMessageBus());
     }
 
     public void updateNode(DataSourceApi api, GraphEntity oldNode, GraphEntity newNode) {

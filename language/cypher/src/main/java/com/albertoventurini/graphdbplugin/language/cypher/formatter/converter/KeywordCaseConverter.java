@@ -35,9 +35,9 @@ public class KeywordCaseConverter extends AbstractCypherConverter {
             CypherTypes.K_SINGLE
     );
 
-    private static final Map<IElementType, String> SPECIAL_FUNCTIONS = ContainerUtil.newHashMap(
-            Pair.create(CypherTypes.K_SHORTESTPATH, "shortestPath"),
-            Pair.create(CypherTypes.K_ALLSHORTESTPATHS, "allShortestPaths")
+    private static final Map<IElementType, String> SPECIAL_FUNCTIONS = Map.of(
+            CypherTypes.K_SHORTESTPATH, "shortestPath",
+            CypherTypes.K_ALLSHORTESTPATHS, "allShortestPaths"
     );
 
     public KeywordCaseConverter(CypherPreFormatter.FormatterTask formatterTask, @NotNull Document document) {

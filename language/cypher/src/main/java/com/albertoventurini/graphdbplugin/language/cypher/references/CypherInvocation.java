@@ -22,10 +22,7 @@ import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.el
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherUserFunctionElement;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.InvokableInformation;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherSimpleType.ANY;
@@ -61,7 +58,7 @@ public interface CypherInvocation extends PsiElement, CypherTyped {
 
     default List<InvokableInformation> resolve() {
         CypherMetadataProviderService svc = getProject().getService(CypherMetadataProviderService.class);
-        final List<InvokableInformation> matchedInvocations = newArrayList();
+        final List<InvokableInformation> matchedInvocations = new ArrayList<>();
 
         if (this instanceof CypherProcedureInvocation) {
             svc.findProcedure(getFullName())
@@ -71,10 +68,9 @@ public interface CypherInvocation extends PsiElement, CypherTyped {
         }
 
         matchedInvocations.addAll(CypherBuiltInFunctions.FUNCTIONS.stream()
-            .filter(func -> Objects.equals(func.getInvokable().getName(), getFullName()))
-            .map(CypherBuiltInFunctionElement::getInvokable)
-            .filter(Objects::nonNull)
-            .collect(toList()));
+                .map(CypherBuiltInFunctionElement::getInvokable)
+                .filter(invokable -> Objects.equals(invokable.getName(), getFullName()))
+                .collect(toList()));
         if (matchedInvocations.isEmpty()) {
             svc.findUserFunction(getFullName())
                 .map(CypherUserFunctionElement::getInvokableInformation)

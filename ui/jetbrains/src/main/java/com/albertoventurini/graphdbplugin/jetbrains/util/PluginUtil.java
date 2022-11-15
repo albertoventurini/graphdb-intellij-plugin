@@ -8,6 +8,7 @@ package com.albertoventurini.graphdbplugin.jetbrains.util;
 
 import com.intellij.ide.plugins.IdeaPluginDescriptor;
 import com.intellij.ide.plugins.PluginManager;
+import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.extensions.PluginId;
 import com.albertoventurini.graphdbplugin.platform.GraphConstants;
 
@@ -25,7 +26,7 @@ public class PluginUtil {
 
     private static IdeaPluginDescriptor plugin() {
         if (plugin == null) {
-            plugin = PluginManager.getPlugin(PluginId.getId(GraphConstants.PLUGIN_ID));
+            plugin = PluginManagerCore.getPlugin(PluginId.getId(GraphConstants.PLUGIN_ID));
         }
         return plugin;
     }

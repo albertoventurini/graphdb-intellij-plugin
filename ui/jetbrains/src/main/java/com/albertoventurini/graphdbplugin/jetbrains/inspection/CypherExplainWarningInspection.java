@@ -12,7 +12,6 @@ import com.albertoventurini.graphdbplugin.jetbrains.util.NameUtil;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalInspectionToolSession;
 import com.intellij.codeInspection.ProblemsHolder;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
@@ -27,19 +26,13 @@ import java.util.Optional;
 
 public class CypherExplainWarningInspection extends LocalInspectionTool {
 
-    private DatabaseManagerService service;
-
-    public CypherExplainWarningInspection() {
-        this.service = ServiceManager.getService(DatabaseManagerService.class);
-    }
-
     @NotNull
     @Override
     public PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly,
                                           @NotNull LocalInspectionToolSession session) {
         return new PsiElementVisitor() {
             @Override
-            public void visitElement(PsiElement element) {
+            public void visitElement(@NotNull PsiElement element) {
                 checkStatement(element, holder);
             }
         };
@@ -50,7 +43,7 @@ public class CypherExplainWarningInspection extends LocalInspectionTool {
     public PsiElementVisitor buildVisitor(@NotNull ProblemsHolder holder, boolean isOnTheFly) {
         return new PsiElementVisitor() {
             @Override
-            public void visitElement(PsiElement element) {
+            public void visitElement(@NotNull PsiElement element) {
                 checkStatement(element, holder);
             }
         };
@@ -58,14 +51,19 @@ public class CypherExplainWarningInspection extends LocalInspectionTool {
 
     private void checkStatement(@NotNull PsiElement statement, @NotNull ProblemsHolder problemsHolder) {
         if (statement.getNode().getElementType() == CypherTypes.SINGLE_QUERY) {
+            final DatabaseManagerService databaseManagerService =
+                    statement.getProject().getService(DatabaseManagerService.class);
+
+            final DataSourcesComponent dataSourcesComponent =
+                    statement.getProject().getService(DataSourcesComponent.class);
+
             Optional.of(statement.getContainingFile().getName())
                     .filter(s -> s.startsWith(GraphConstants.BOUND_DATA_SOURCE_PREFIX))
                     .map(this::safeExtractDataSourceUUID)
-                    .flatMap(uuid -> statement.getProject()
-                            .getService(DataSourcesComponent.class)
+                    .flatMap(uuid -> dataSourcesComponent
                             .getDataSourceContainer()
                             .findDataSource(uuid))
-                    .map(service::getDatabaseFor)
+                    .map(databaseManagerService::getDatabaseFor)
                     .map(api -> this.executeExplainQuery(api, statement.getText()))
                     .filter(Objects::nonNull)
                     .map(GraphQueryResult::getNotifications)

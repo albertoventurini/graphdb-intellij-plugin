@@ -52,7 +52,7 @@ public class ParametersPanel implements ParametersProvider {
     public void initialize(GraphConsoleView graphConsoleView, Project project) {
         this.graphConsoleView = graphConsoleView;
         this.messageBus = project.getMessageBus();
-        this.service = ServiceManager.getService(project, ParametersService.class);
+        this.service = project.getService(ParametersService.class);
         this.project = project;
         setupEditor(project);
         FileEditor selectedEditor = FileEditorManager.getInstance(project).getSelectedEditor();

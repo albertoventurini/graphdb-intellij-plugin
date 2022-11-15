@@ -24,25 +24,22 @@ import com.intellij.psi.codeStyle.CodeStyleSettings;
 import com.intellij.psi.formatter.FormatterUtil;
 import com.intellij.psi.impl.source.tree.TreeUtil;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.util.containers.ContainerUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 
-import static com.intellij.openapi.util.Pair.pair;
-import static com.intellij.util.containers.ContainerUtil.list;
-
 public class CypherBlock implements ASTBlock {
 
-    private static final Map<IElementType, List<IElementType>> ALIGNMENT_MAPPING = ContainerUtil.newHashMap(
-            pair(CypherTypes.PATTERN, list(CypherTypes.PATTERN_PART, CypherTypes.RELATIONSHIPS_PATTERN)),
-            pair(CypherTypes.MAP_LITERAL, list(CypherTypes.PROPERTY_KEY_NAME, CypherTypes.EXPRESSION)),
-            pair(CypherTypes.RETURN_ITEMS, list(CypherTypes.OP_MUL, CypherTypes.RETURN_ITEM, CypherTypes.WHERE)),
-            pair(CypherTypes.FILTER_EXPRESSION, list(CypherTypes.ID_IN_COLL, CypherTypes.WHERE))
+    private static final Map<IElementType, List<IElementType>> ALIGNMENT_MAPPING = Map.ofEntries(
+            Map.entry(CypherTypes.PATTERN, Arrays.asList(CypherTypes.PATTERN_PART, CypherTypes.RELATIONSHIPS_PATTERN)),
+            Map.entry(CypherTypes.MAP_LITERAL, Arrays.asList(CypherTypes.PROPERTY_KEY_NAME, CypherTypes.EXPRESSION)),
+            Map.entry(CypherTypes.RETURN_ITEMS, Arrays.asList(CypherTypes.OP_MUL, CypherTypes.RETURN_ITEM, CypherTypes.WHERE)),
+            Map.entry(CypherTypes.FILTER_EXPRESSION, Arrays.asList(CypherTypes.ID_IN_COLL, CypherTypes.WHERE))
     );
 
     private ASTNode node;

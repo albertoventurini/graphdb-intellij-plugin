@@ -33,6 +33,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.PluginSetti
 import com.albertoventurini.graphdbplugin.platform.GraphConstants.ToolWindow.Tabs;
 import com.albertoventurini.graphdbplugin.visualization.PrefuseVisualization;
 import com.albertoventurini.graphdbplugin.visualization.services.LookAndFeelService;
+import org.jetbrains.annotations.NotNull;
 import prefuse.visual.VisualItem;
 
 import javax.swing.tree.DefaultTreeModel;
@@ -60,7 +61,7 @@ public class GraphPanel {
         entityDetailsTreeModel = new DefaultTreeModel(null);
     }
 
-    public void initialize(GraphConsoleView graphConsoleView, Project project) {
+    public void initialize(@NotNull final GraphConsoleView graphConsoleView, @NotNull final Project project) {
         MessageBus messageBus = project.getMessageBus();
         this.lookAndFeelService = graphConsoleView.getLookAndFeelService();
         this.entityDetailsTree = graphConsoleView.getEntityDetailsTree();
@@ -113,6 +114,7 @@ public class GraphPanel {
 
         // Interactions
         this.interactions = new GraphPanelInteractions(
+                project,
                 graphConsoleView,
                 messageBus,
                 visualization);

@@ -20,6 +20,7 @@ import com.intellij.ui.treeStructure.Tree;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.DataSourcesView;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.Neo4jTreeNodeType;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.TreeNodeModelApi;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.MouseAdapter;
@@ -36,7 +37,9 @@ public class DataSourceInteractions {
     private final Project project;
     private final Tree dataSourceTree;
 
-    public DataSourceInteractions(Project project, DataSourcesView dataSourcesView) {
+    public DataSourceInteractions(
+            @NotNull final Project project,
+            @NotNull final DataSourcesView dataSourcesView) {
         this.project = project;
         this.dataSourcesView = dataSourcesView;
         this.decorator = dataSourcesView.getDecorator();

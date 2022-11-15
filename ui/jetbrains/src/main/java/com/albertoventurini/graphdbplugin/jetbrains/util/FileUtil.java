@@ -55,7 +55,7 @@ public class FileUtil {
             return "{}";
         }
 
-        try (DataInputStream is = QUERY_PARAMS_FILE_ATTRIBUTE.readAttribute(file)) {
+        try (DataInputStream is = QUERY_PARAMS_FILE_ATTRIBUTE.readFileAttribute(file)) {
             if (is == null || is.available() <= 0) {
                 return "{}";
             }
@@ -75,7 +75,7 @@ public class FileUtil {
     public static void setParams(VirtualFile file, String params) {
         file.putUserData(MY_KEY, params);
         if (file instanceof NewVirtualFile) {
-            try (DataOutputStream os = QUERY_PARAMS_FILE_ATTRIBUTE.writeAttribute(file)) {
+            try (DataOutputStream os = QUERY_PARAMS_FILE_ATTRIBUTE.writeFileAttribute(file)) {
                 IOUtil.writeString(StringUtil.notNullize(params), os);
             } catch (IOException e) {
             }

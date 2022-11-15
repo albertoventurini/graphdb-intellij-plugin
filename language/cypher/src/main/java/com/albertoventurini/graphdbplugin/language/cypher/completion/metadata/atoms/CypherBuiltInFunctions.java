@@ -106,7 +106,7 @@ public final class CypherBuiltInFunctions {
             element("toString", "(expression :: STRING)", CypherSimpleType.STRING)
     );
 
-    public static final List<CypherBuiltInFunctionElement> FUNCTIONS = new ArrayList<CypherBuiltInFunctionElement>() {{
+    public static final List<CypherBuiltInFunctionElement> FUNCTIONS = new ArrayList<>() {{
         addAll(FUNCTIONS_PREDICATE);
         addAll(FUNCTIONS_SHORTEST_PATH);
         addAll(FUNCTIONS_SCALAR);

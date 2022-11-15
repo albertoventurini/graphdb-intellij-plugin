@@ -23,6 +23,8 @@ import com.intellij.util.containers.ContainerUtil;
 import com.albertoventurini.graphdbplugin.language.cypher.CypherLanguage;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 public class CypherPreFormatter implements PreFormatProcessor {
 
     @NotNull
@@ -74,7 +76,7 @@ public class CypherPreFormatter implements PreFormatProcessor {
         @Override
         public void run() {
             if (myDocument != null) {
-                for (AbstractCypherConverter converter : ContainerUtil.list(
+                for (AbstractCypherConverter converter : Arrays.asList(
                         new KeywordCaseConverter(this, myDocument),
                         new FunctionCaseConverter(this, myDocument),
                         new QuotesConverter(this, myDocument)
