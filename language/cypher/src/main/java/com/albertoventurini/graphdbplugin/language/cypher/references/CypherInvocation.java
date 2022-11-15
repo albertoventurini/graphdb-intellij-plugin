@@ -67,10 +67,13 @@ public interface CypherInvocation extends PsiElement, CypherTyped {
             return matchedInvocations;
         }
 
+        String name = getFullName();
+
         matchedInvocations.addAll(CypherBuiltInFunctions.FUNCTIONS.stream()
                 .map(CypherBuiltInFunctionElement::getInvokable)
-                .filter(invokable -> Objects.equals(invokable.getName(), getFullName()))
+                .filter(invokable -> Objects.equals(invokable.getName(), name))
                 .collect(toList()));
+
         if (matchedInvocations.isEmpty()) {
             svc.findUserFunction(getFullName())
                 .map(CypherUserFunctionElement::getInvokableInformation)

@@ -11,7 +11,6 @@
                 Graph database plugin for the IntelliJ Platform
             </a>
         </p>
-
         <p>
             <b>Features:</b>
         <ul>
@@ -51,6 +50,16 @@
                 </li>
             </ul>
         </ul>
+        </p>
+        <p>
+            This plugin is based on the 'Graph Database Support plugin'
+            developed by Neueda Technologies, Ltd. The original plugin has not been updated
+            in a long time.
+        </p>
+        <p>
+            This plugin has been updated to run with modern versions of IntelliJ and related IDEs.
+            Just like the original plugin, it supports Neo4j and Cypher data sources; however, support for
+            Gremlin data sources (such as Cosmos DB) has been dropped.
         </p>
         ]]></description>
 
