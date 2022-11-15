@@ -128,7 +128,6 @@
                 language="Cypher"
                 extensions="cyp;cql;cypher" />
 
-<!--        <fileTypeFactory implementation="file.com.albertoventurini.graphdbplugin.language.cypher.CypherFileTypeFactory"/>-->
         <lang.parserDefinition
                 language="Cypher" implementationClass="com.albertoventurini.graphdbplugin.language.cypher.CypherParserDefinition"/>
         <lang.syntaxHighlighterFactory

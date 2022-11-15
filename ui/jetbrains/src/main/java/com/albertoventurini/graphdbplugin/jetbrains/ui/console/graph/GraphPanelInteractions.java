@@ -13,11 +13,13 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.D
 import com.albertoventurini.graphdbplugin.jetbrains.database.QueryExecutionService;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryExecutionProcessEvent;
 import com.intellij.codeInsight.hint.HintManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBus;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.GraphConsoleView;
 import com.albertoventurini.graphdbplugin.visualization.VisualizationApi;
 import com.albertoventurini.graphdbplugin.visualization.events.EventType;
+import org.jetbrains.annotations.NotNull;
 
 public class GraphPanelInteractions {
 
@@ -26,12 +28,15 @@ public class GraphPanelInteractions {
     private final QueryExecutionService queryExecutionService;
     private final VisualizationApi visualization;
 
-    public GraphPanelInteractions(GraphConsoleView graphConsoleView,
-                                  MessageBus messageBus, VisualizationApi visualization) {
+    public GraphPanelInteractions(
+            @NotNull final Project project,
+            final GraphConsoleView graphConsoleView,
+            final MessageBus messageBus,
+            final VisualizationApi visualization) {
         this.graphConsoleView = graphConsoleView;
         this.messageBus = messageBus;
         this.visualization = visualization;
-        this.queryExecutionService = new QueryExecutionService(messageBus);
+        this.queryExecutionService = new QueryExecutionService(project, messageBus);
 
         registerMessageBusSubscribers();
         registerVisualisationEvents();

@@ -20,7 +20,9 @@ public class NewDataSourceActionGroup extends ActionGroup {
 
     NewDataSourceAction neo4jBoltDataSource;
 
-    public NewDataSourceActionGroup(Project project, DataSourcesView dataSourcesView) {
+    public NewDataSourceActionGroup(
+            @NotNull final Project project,
+            @NotNull final DataSourcesView dataSourcesView) {
         neo4jBoltDataSource = new NewDataSourceAction(
                 dataSourcesView, new Neo4jBoltDataSourceDialog(project, dataSourcesView),
                 "Neo4j - Bolt", "Create Neo4j 3.0+ Bolt data source", GraphIcons.Database.NEO4J);

@@ -15,9 +15,9 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.highlighter.listen
 
 public class QueryHighlighterComponentImpl implements QueryHighlighterComponent, Disposable {
 
-    private QueryHighlighterCaretListener queryHighlighterCaretListener;
-    private QueryHighlighterDocumentListener queryHighlighterDocumentListener;
-    private SyncedElementHighlighter syncedElementHighlighter;
+    private final QueryHighlighterCaretListener queryHighlighterCaretListener;
+    private final QueryHighlighterDocumentListener queryHighlighterDocumentListener;
+    private final SyncedElementHighlighter syncedElementHighlighter;
 
     public QueryHighlighterComponentImpl() {
         EditorFactory editorFactory = ApplicationManager.getApplication().getComponent(EditorFactory.class);
@@ -26,8 +26,8 @@ public class QueryHighlighterComponentImpl implements QueryHighlighterComponent,
         queryHighlighterCaretListener = new QueryHighlighterCaretListener(syncedElementHighlighter);
         queryHighlighterDocumentListener = new QueryHighlighterDocumentListener(syncedElementHighlighter, editorFactory);
 
-        editorFactory.getEventMulticaster().addCaretListener(queryHighlighterCaretListener);
-        editorFactory.getEventMulticaster().addDocumentListener(queryHighlighterDocumentListener);
+        editorFactory.getEventMulticaster().addCaretListener(queryHighlighterCaretListener, this);
+        editorFactory.getEventMulticaster().addDocumentListener(queryHighlighterDocumentListener, this);
     }
 
     @Override

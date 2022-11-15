@@ -43,21 +43,22 @@ public class CypherLineMarkerProvider implements LineMarkerProvider {
     }
 
     @Override
-    public LineMarkerInfo getLineMarkerInfo(@NotNull final PsiElement element) {
+    public LineMarkerInfo<?> getLineMarkerInfo(@NotNull final PsiElement element) {
         PsiElement queryElement = PsiTraversalUtilities.Cypher.getCypherStatement(element);
         PsiElement lastQueryChild = isNull(queryElement) ? null : getFirstLeaf(queryElement);
         if (element == lastQueryChild) {
-            return new LineMarkerInfo<PsiElement>(element,
+            return new LineMarkerInfo<>(element,
                     element.getTextRange(),
                     AllIcons.Actions.Execute,
                     element1 -> "Execute Query",
                     (mouseEvent, psiElement) ->
                             getDataContext().ifPresent(c ->
                                     ActionUtil.invokeAction(new ExecuteQueryAction(queryElement), c, "", mouseEvent, null)),
-                    GutterIconRenderer.Alignment.CENTER) {
+                    GutterIconRenderer.Alignment.CENTER,
+                    () -> "Execute Query") {
                 @Override
                 public GutterIconRenderer createGutterRenderer() {
-                    return new LineMarkerGutterIconRenderer<PsiElement>(this) {
+                    return new LineMarkerGutterIconRenderer<>(this) {
                         @Override
                         public AnAction getClickAction() {
                             return new ExecuteQueryAction(queryElement);

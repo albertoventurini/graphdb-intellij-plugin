@@ -9,6 +9,7 @@ package com.albertoventurini.graphdbplugin.language.cypher.highlight;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.*;
 import com.intellij.lang.annotation.AnnotationHolder;
 import com.intellij.lang.annotation.Annotator;
+import com.intellij.lang.annotation.HighlightSeverity;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.colors.TextAttributesKey;
 import com.intellij.openapi.editor.markup.TextAttributes;
@@ -74,9 +75,19 @@ public class CypherSyntaxHighlighterAnnotator implements Annotator {
         }
     }
 
-    private static void setHighlighting(@NotNull PsiElement element, @NotNull AnnotationHolder holder, @NotNull TextAttributesKey key) {
-        holder.createInfoAnnotation(element, null).setEnforcedTextAttributes(TextAttributes.ERASE_MARKER);
-        String description = ApplicationManager.getApplication().isUnitTestMode() ? key.getExternalName() : null;
-        holder.createInfoAnnotation(element, description).setTextAttributes(key);
+    private static void setHighlighting(
+            @NotNull final PsiElement element,
+            @NotNull final AnnotationHolder holder,
+            @NotNull final TextAttributesKey key) {
+
+        holder.newAnnotation(HighlightSeverity.INFORMATION, "")
+                .enforcedTextAttributes(TextAttributes.ERASE_MARKER)
+                .create();
+
+        String description = ApplicationManager.getApplication().isUnitTestMode() ? key.getExternalName() : "";
+
+        holder.newAnnotation(HighlightSeverity.INFORMATION, description)
+                .textAttributes(key)
+                .create();
     }
 }

@@ -18,6 +18,7 @@ import com.albertoventurini.graphdbplugin.database.neo4j.bolt.Neo4jBoltConfigura
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.DataSourcesView;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.interactions.DataSourceDialog;
 import org.apache.commons.lang.StringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -42,12 +43,17 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
     private JPanel loadingPanel;
     private AsyncProcessIcon loadingIcon;
 
-    public Neo4jBoltDataSourceDialog(Project project, DataSourcesView dataSourcesView, DataSourceApi dataSourceToEdit) {
+    public Neo4jBoltDataSourceDialog(
+            @NotNull final Project project,
+            @NotNull final DataSourcesView dataSourcesView,
+            @NotNull final DataSourceApi dataSourceToEdit) {
         this(project, dataSourcesView);
         this.dataSourceToEdit = dataSourceToEdit;
     }
 
-    public Neo4jBoltDataSourceDialog(Project project, DataSourcesView dataSourcesView) {
+    public Neo4jBoltDataSourceDialog(
+            @NotNull final Project project,
+            @NotNull final DataSourcesView dataSourcesView) {
         super(project, dataSourcesView);
         loadingPanel.setVisible(false);
         dataSourcesComponent = dataSourcesView.getComponent();

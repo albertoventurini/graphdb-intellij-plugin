@@ -21,6 +21,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.ui.console.ConsoleToolWindow
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParametersService;
 import com.albertoventurini.graphdbplugin.jetbrains.util.Notifier;
 import com.albertoventurini.graphdbplugin.language.cypher.file.CypherFileType;
+import org.jetbrains.annotations.NotNull;
 
 public class ExecuteAllAction extends AnAction {
     @Override
@@ -34,14 +35,14 @@ public class ExecuteAllAction extends AnAction {
     }
 
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent e) {
         Project project = getEventProject(e);
         if (project == null) {
             Notifier.error("Query execution error", "No project present.");
             return;
         }
         MessageBus messageBus = project.getMessageBus();
-        ParametersService parameterService = ServiceManager.getService(project, ParametersService.class);
+        ParametersService parameterService = project.getService(ParametersService.class);
         PsiFile psiFile = e.getData(CommonDataKeys.PSI_FILE);
 
         StatementCollector statementCollector = new StatementCollector(messageBus, parameterService);
@@ -49,6 +50,7 @@ public class ExecuteAllAction extends AnAction {
         // This should never happen
         if (psiFile == null) {
             Notifier.error("Internal error", "No PsiFile present.");
+            return;
         }
         psiFile.acceptChildren(statementCollector);
         if (!statementCollector.hasErrors()) {

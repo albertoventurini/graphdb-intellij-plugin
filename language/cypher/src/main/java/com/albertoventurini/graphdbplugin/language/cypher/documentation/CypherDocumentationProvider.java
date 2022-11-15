@@ -44,9 +44,11 @@ public class CypherDocumentationProvider extends AbstractDocumentationProvider {
 
     @Nullable
     @Override
-    public PsiElement getCustomDocumentationElement(@NotNull Editor editor,
-                                                    @NotNull PsiFile file,
-                                                    @Nullable PsiElement contextElement) {
+    public PsiElement getCustomDocumentationElement(
+            final @NotNull Editor editor,
+            final @NotNull PsiFile file,
+            final @Nullable PsiElement contextElement,
+            final int targetOffset) {
         return TraverseUtil.findParent(contextElement, SEARCH_TYPES).orElse(null);
     }
 
@@ -144,6 +146,6 @@ public class CypherDocumentationProvider extends AbstractDocumentationProvider {
     }
 
     private CypherMetadataProviderService getMetadataService(PsiElement element) {
-        return ServiceManager.getService(element.getProject(), CypherMetadataProviderService.class);
+        return element.getProject().getService(CypherMetadataProviderService.class);
     }
 }

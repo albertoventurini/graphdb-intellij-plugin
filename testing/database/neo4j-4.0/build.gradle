@@ -5,9 +5,6 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
 
-sourceCompatibility = 17
-targetCompatibility = 17
-
 dependencies {
     implementation 'org.neo4j.test:neo4j-harness:4.0.0'
     implementation project(":testing:database:neo4j-common")

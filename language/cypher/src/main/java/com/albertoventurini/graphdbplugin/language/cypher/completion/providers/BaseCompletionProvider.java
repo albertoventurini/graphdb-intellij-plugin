@@ -17,7 +17,7 @@ public abstract class BaseCompletionProvider extends CompletionProvider<Completi
     protected void withCypherMetadataProvider(CompletionParameters parameters, ProjectRunnable runnable) {
         Project project = parameters.getEditor().getProject();
         if (project != null) {
-            CypherMetadataProviderService provider = ServiceManager.getService(project, CypherMetadataProviderService.class);
+            CypherMetadataProviderService provider = project.getService(CypherMetadataProviderService.class);
             runnable.run(provider);
         }
     }

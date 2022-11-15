@@ -29,17 +29,14 @@ public class CypherLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSe
         return new SmartIndentOptionsEditor();
     }
 
-    @Nullable
     @Override
-    public CommonCodeStyleSettings getDefaultCommonSettings() {
-        CommonCodeStyleSettings settings = new CommonCodeStyleSettings(getLanguage());
-        CommonCodeStyleSettings.IndentOptions indentOptions = settings.initIndentOptions();
+    public void customizeDefaults(
+            @NotNull final CommonCodeStyleSettings commonSettings,
+            @NotNull final CommonCodeStyleSettings.IndentOptions indentOptions) {
         indentOptions.INDENT_SIZE = 2;
         indentOptions.CONTINUATION_INDENT_SIZE = 2;
         indentOptions.TAB_SIZE = 2;
         indentOptions.USE_TAB_CHARACTER = false;
-
-        return settings;
     }
 
     @Override

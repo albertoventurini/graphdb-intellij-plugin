@@ -23,7 +23,7 @@ import com.intellij.util.ui.JBUI;
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.DataSourcesView;
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,8 +34,11 @@ public abstract class DataSourceDialog extends DialogWrapper {
     public static final int THICKNESS = 10;
     public static final int HEIGHT = 150;
 
-    protected DataSourceDialog(@Nullable Project project, DataSourcesView dataSourcesView) {
+    private final Project project;
+
+    protected DataSourceDialog(@NotNull final Project project, DataSourcesView dataSourcesView) {
         super(project);
+        this.project = project;
         Disposer.register(project, myDisposable);
         init();
     }
@@ -72,7 +75,7 @@ public abstract class DataSourceDialog extends DialogWrapper {
             JBPopupFactory.getInstance()
                     .createComponentPopupBuilder(popupPanel, getPreferredFocusedComponent())
                     .setCancelButton(new IconButton("Close", AllIcons.Actions.Close))
-                    .setTitle("Test connection")
+                    .setTitle("Test Connection")
                     .setResizable(true)
                     .setMovable(true)
                     .setCancelButton(new IconButton("Close", AllIcons.Actions.Close, AllIcons.Actions.CloseHovered))
@@ -84,7 +87,7 @@ public abstract class DataSourceDialog extends DialogWrapper {
     private void validateConnection(
             JPanel popupPanel,
             JComponent contentPanel) {
-        ExecutorService executorService = ServiceManager.getService(ExecutorService.class);
+        ExecutorService executorService = project.getService(ExecutorService.class);
         showLoading();
         executorService.runInBackground(
                 this::executeOkQuery,
@@ -96,7 +99,7 @@ public abstract class DataSourceDialog extends DialogWrapper {
 
     private String executeOkQuery() {
         DataSourceApi dataSource = constructDataSource();
-        DatabaseManagerService databaseManager = ServiceManager.getService(DatabaseManagerService.class);
+        DatabaseManagerService databaseManager = project.getService(DatabaseManagerService.class);
         GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
         GraphQueryResult result = db.execute("RETURN 'ok'");
 

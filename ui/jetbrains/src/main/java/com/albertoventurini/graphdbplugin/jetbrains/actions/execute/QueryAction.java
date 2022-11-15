@@ -19,6 +19,7 @@ import com.intellij.util.messages.MessageBus;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParametersService;
 import com.albertoventurini.graphdbplugin.jetbrains.util.Notifier;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.event.KeyEvent;
 import java.util.Collections;
@@ -63,7 +64,7 @@ public abstract class QueryAction extends AnAction {
     }
 
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull AnActionEvent e) {
 
         Project project = getEventProject(e);
         Editor editor = e.getData(CommonDataKeys.EDITOR_EVEN_IF_INACTIVE);
@@ -112,7 +113,7 @@ public abstract class QueryAction extends AnAction {
 
     private Map<String, Object> getParametersFromQuery(PsiElement query, Project project, Editor editor) {
         try { // support parameters for PsiElement only
-            ParametersService service = ServiceManager.getService(project, ParametersService.class);
+            ParametersService service = project.getService(ParametersService.class);
             return service.getParameters(query);
         } catch (Exception exception) {
             sendParametersRetrievalErrorEvent(project.getMessageBus(), exception, editor);

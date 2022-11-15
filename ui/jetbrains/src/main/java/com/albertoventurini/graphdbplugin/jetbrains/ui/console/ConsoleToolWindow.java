@@ -32,6 +32,6 @@ public class ConsoleToolWindow implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        ServiceManager.getService(project, GraphConsoleView.class).initToolWindow(project, toolWindow);
+        project.getService(GraphConsoleView.class).initToolWindow(project, toolWindow);
     }
 }

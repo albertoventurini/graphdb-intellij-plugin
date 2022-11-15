@@ -40,6 +40,7 @@ import com.intellij.util.ui.UIUtil;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.platform.GraphConstants;
 import com.albertoventurini.graphdbplugin.platform.GraphConstants.ToolWindow.Tabs;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -98,17 +99,17 @@ public class GraphConsoleView implements Disposable {
             .appendValue(SECOND_OF_MINUTE, 2)
             .toFormatter();
 
-    public GraphConsoleView() {
+    public GraphConsoleView(@NotNull final Project project) {
         initialized = false;
 
         tablePanel = new TablePanel();
         graphPanel = new GraphPanel();
         logPanel = new LogPanel();
         parametersPanel = new ParametersPanel();
-        lookAndFeelService = ServiceManager.getService(LookAndFeelService.class);
+        lookAndFeelService = project.getService(LookAndFeelService.class);
     }
 
-    public void initToolWindow(Project project, ToolWindow toolWindow) {
+    public void initToolWindow(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
         ContentFactory contentFactory = ContentFactory.getInstance();
         Content content = contentFactory.createContent(consoleToolWindowContent, "", false);
         toolWindow.getContentManager().addContent(content);
@@ -196,7 +197,7 @@ public class GraphConsoleView implements Disposable {
         parametersTab.setBorder(JBUI.Borders.empty());
     }
 
-    private void initializeUiComponents(Project project) {
+    private void initializeUiComponents(@NotNull final Project project) {
         graphPanel.initialize(this, project);
         tablePanel.initialize(this, project);
         logPanel.initialize(this, project);

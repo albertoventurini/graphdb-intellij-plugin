@@ -14,6 +14,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.albertoventurini.graphdbplugin.database.api.data.GraphNode;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
@@ -29,10 +30,10 @@ public class NodeDeleteAction extends AnAction {
     }
 
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull final AnActionEvent e) {
         Project project = getEventProject(e);
         if (project != null) {
-            QueryExecutionService service = new QueryExecutionService(project.getMessageBus());
+            QueryExecutionService service = new QueryExecutionService(project, project.getMessageBus());
 
             service.executeQuery(dataSource, new ExecuteQueryPayload("MATCH (n) WHERE ID(n) = $id DETACH DELETE n",
                     ImmutableMap.of("id", Long.parseLong(node.getId())),

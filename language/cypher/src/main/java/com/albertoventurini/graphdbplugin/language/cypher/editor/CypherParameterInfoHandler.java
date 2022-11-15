@@ -21,16 +21,16 @@ import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 public class CypherParameterInfoHandler
         implements ParameterInfoHandlerWithTabActionSupport<CypherInvocation, CypherInvocation, PsiElement> {
 
-    @NotNull
     @Override
     @SuppressWarnings("unchecked")
-    public PsiElement[] getActualParameters(@NotNull CypherInvocation o) {
+    public PsiElement @NotNull [] getActualParameters(@NotNull CypherInvocation o) {
         return ArrayUtil.toObjectArray(o.arguments(), PsiElement.class);
     }
 
@@ -49,13 +49,13 @@ public class CypherParameterInfoHandler
     @NotNull
     @Override
     public Set<Class<?>> getArgumentListAllowedParentClasses() {
-        return ContainerUtil.newHashSet();
+        return new HashSet<>();
     }
 
     @NotNull
     @Override
     public Set<? extends Class<?>> getArgListStopSearchClasses() {
-        return ContainerUtil.newHashSet();
+        return new HashSet<>();
     }
 
     @NotNull

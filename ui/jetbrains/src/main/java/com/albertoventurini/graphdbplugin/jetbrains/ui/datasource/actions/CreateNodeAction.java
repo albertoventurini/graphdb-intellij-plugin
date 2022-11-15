@@ -11,6 +11,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.database.DiffService;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.interactions.EditEntityDialog;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class CreateNodeAction extends AnAction {
     private final DataSourceApi dataSourceApi;
@@ -21,7 +22,7 @@ public class CreateNodeAction extends AnAction {
     }
 
     @Override
-    public void actionPerformed(AnActionEvent e) {
+    public void actionPerformed(@NotNull final AnActionEvent e) {
         EditEntityDialog dialog = new EditEntityDialog(e.getProject(), null);
         if (dialog.showAndGet()) {
             DiffService diffService = new DiffService(e.getProject());

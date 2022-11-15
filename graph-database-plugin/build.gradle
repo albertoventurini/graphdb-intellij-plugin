@@ -3,9 +3,6 @@
 // Modified by Alberto Venturini, 2022
 apply plugin: "org.jetbrains.intellij"
 
-sourceCompatibility = 17
-targetCompatibility = 17
-
 dependencies {
     implementation project(':language:cypher')
     implementation project(':ui:jetbrains')
@@ -14,8 +11,8 @@ dependencies {
 
 intellij {
     version = intellijSdkVersion
-    pluginName = 'GraphDatabaseSupport'
-    updateSinceUntilBuild = false
+    pluginName = 'GraphDatabase'
+    //updateSinceUntilBuild = false
     sameSinceUntilBuild = false
 
     publishPlugin {
@@ -31,6 +28,11 @@ intellij {
     def homePath = System.properties['user.home']
     sandboxDir = "${homePath}/.intellij/graphdb"
     plugins = ['java']
+}
+
+patchPluginXml {
+    sinceBuild = "222.0"
+    untilBuild = "222.*"
 }
 
 runIde {
