@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.language.cypher.references;
 
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherSimpleType;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherMaybeVariableLength;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherNodePattern;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherPatternPart;
@@ -15,6 +16,8 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherList;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherType;
+import com.intellij.psi.PsiReferenceService;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -43,16 +46,13 @@ public interface CypherVariableElement extends CypherNamedElement, CypherTyped {
                     } else if (node instanceof CypherPatternPart) {
                         return PATH;
                     } else if (node instanceof CypherRelationshipDetail) {
-                        return resolveRelationshipType((CypherRelationshipDetail) node);
+                        CypherMaybeVariableLength maybeVariableLength =
+                                ((CypherRelationshipDetail) node).getMaybeVariableLength();
+                        return nonNull(maybeVariableLength) ? CypherList.of(RELATIONSHIP) : RELATIONSHIP;
                     }
 
                     return null;
                 })
                 .orElse(ANY);
-    }
-
-    default CypherType resolveRelationshipType(CypherRelationshipDetail relationshipDetail) {
-        CypherMaybeVariableLength maybeVariableLength = relationshipDetail.getMaybeVariableLength();
-        return nonNull(maybeVariableLength) ? CypherList.of(RELATIONSHIP) : RELATIONSHIP;
     }
 }

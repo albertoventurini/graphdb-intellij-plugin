@@ -12,6 +12,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.util.NameUtil;
 import com.intellij.codeInspection.LocalInspectionTool;
 import com.intellij.codeInspection.LocalInspectionToolSession;
 import com.intellij.codeInspection.ProblemsHolder;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
@@ -52,7 +53,7 @@ public class CypherExplainWarningInspection extends LocalInspectionTool {
     private void checkStatement(@NotNull PsiElement statement, @NotNull ProblemsHolder problemsHolder) {
         if (statement.getNode().getElementType() == CypherTypes.SINGLE_QUERY) {
             final DatabaseManagerService databaseManagerService =
-                    statement.getProject().getService(DatabaseManagerService.class);
+                    ApplicationManager.getApplication().getService(DatabaseManagerService.class);
 
             final DataSourcesComponent dataSourcesComponent =
                     statement.getProject().getService(DataSourcesComponent.class);
