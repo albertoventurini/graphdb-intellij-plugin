@@ -3,8 +3,14 @@
 // Modified by Alberto Venturini, 2022
 plugins {
     id 'idea'
+
+    // Java support
     id 'java'
+
+    // Gradle IntelliJ Plugin
     id 'org.jetbrains.intellij' version '1.9.0'
+
+    // https://github.com/researchgate/gradle-release
     id 'net.researchgate.release' version '2.8.0'
 }
 
@@ -54,6 +60,7 @@ test {
     systemProperty 'graphDatabaseSupportDevelopment', 'true'
 }
 
+// See https://github.com/researchgate/gradle-release
 release {
     failOnCommitNeeded = true
     failOnPublishNeeded = true

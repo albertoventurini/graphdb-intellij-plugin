@@ -69,7 +69,8 @@
         ]]></change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="221.0" until-build="222.*" />
+    <!-- These versions are automatically replaced by the patchPluginXml task -->
+    <idea-version since-build="999.0" until-build="999.0" />
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
