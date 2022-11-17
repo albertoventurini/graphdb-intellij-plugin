@@ -13,11 +13,9 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadat
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
-import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j34ServerLoader;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
-import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j35ServerLoader;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j40ServerLoader;
 import com.albertoventurini.graphdbplugin.test.mocks.services.DummyExecutorService;
 
@@ -28,8 +26,6 @@ import java.util.Map;
 
 public abstract class BaseIntegrationTest extends LightCodeInsightFixtureTestCase {
 
-    private static final String NEO4J34 = "neo4j34";
-    private static final String NEO4J35 = "neo4j35";
     private static final String NEO4J40 = "neo4j40";
     private static final String UNAVAILABLE_DS = "unavailable";
     protected CypherMetadataContainer metadata;
@@ -118,24 +114,8 @@ public abstract class BaseIntegrationTest extends LightCodeInsightFixtureTestCas
      * Some tests might even don't need running Neo4j server!
      */
     public final class DataSources {
-        private DataSourceApi neo4j34DataSource;
-        private DataSourceApi neo4j35DataSource;
         private DataSourceApi neo4j40DataSource;
         private DataSourceApi unavailableDataSource;
-
-        public DataSourceApi neo4j34() {
-            if (neo4j34DataSource == null) {
-                neo4j34DataSource = getNeo4jDataSource(NEO4J34, Neo4j34ServerLoader.getInstance());
-            }
-            return neo4j34DataSource;
-        }
-
-        public DataSourceApi neo4j35() {
-            if (neo4j35DataSource == null) {
-                neo4j35DataSource = getNeo4jDataSource(NEO4J35, Neo4j35ServerLoader.getInstance());
-            }
-            return neo4j35DataSource;
-        }
 
         public DataSourceApi neo4j40() {
             if (neo4j40DataSource == null) {

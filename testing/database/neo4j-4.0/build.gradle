@@ -2,7 +2,7 @@
 // by Neueda Technologies, Ltd.
 // Modified by Alberto Venturini, 2022
 plugins {
-    id 'com.github.johnrengelman.shadow' version '4.0.4'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 dependencies {
