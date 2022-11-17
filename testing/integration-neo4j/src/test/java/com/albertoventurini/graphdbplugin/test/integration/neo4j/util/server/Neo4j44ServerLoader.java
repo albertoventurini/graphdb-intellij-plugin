@@ -8,13 +8,13 @@ package com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server;
 
 import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
 
-public class Neo4j40ServerLoader extends Neo4jServerLoader {
+public class Neo4j44ServerLoader extends Neo4jServerLoader {
 
-    private static Neo4j40ServerLoader neo4jServer;
+    private static Neo4j44ServerLoader neo4jServer;
 
     public static synchronized Neo4jServer getInstance() {
         if (neo4jServer == null) {
-            neo4jServer = new Neo4j40ServerLoader();
+            neo4jServer = new Neo4j44ServerLoader();
             neo4jServer.start();
         }
         return neo4jServer;
@@ -22,11 +22,11 @@ public class Neo4j40ServerLoader extends Neo4jServerLoader {
 
     @Override
     protected String getLibraryPath() {
-        return System.getProperty("neo4j-package-4.0");
+        return System.getProperty("neo4j-package-4.4");
     }
 
     @Override
     protected String getNeo4jServerClass() {
-        return "com.neueda.jetbrains.plugin.graphdb.test.database.neo4j_4_0.Neo4j40Server";
+        return "com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.Neo4j44Server";
     }
 }

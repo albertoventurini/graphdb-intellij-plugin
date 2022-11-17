@@ -6,6 +6,8 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.editor;
 
+import com.albertoventurini.graphdbplugin.language.cypher.editor.CypherParameterInfoHandler;
+import com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation;
 import com.intellij.codeInsight.hint.ParameterInfoComponent;
 import com.intellij.lang.parameterInfo.CreateParameterInfoContext;
 import com.intellij.lang.parameterInfo.ParameterInfoUIContextEx;
@@ -79,7 +81,7 @@ public class ArgumentHintTest extends BaseIntegrationTest {
     }
 
     public void testUserDefinedFunction() {
-        doTest("RETURN com.neueda.jetbrains.plugin.graphdb.test.database.neo4j_4_0.secondTestFunction(<caret>\"test\");",
+        doTest("RETURN com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.secondTestFunction(<caret>\"test\");",
                 "<html>(<b color=1d1d1d>param :: STRING?</b>)</html>");
     }
 

@@ -6,11 +6,12 @@
  */
 package com.albertoventurini.graphdbplugin;
 
+import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.Neo4jBoltConfiguration;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.Neo4jBoltDatabase;
 import com.albertoventurini.graphdbplugin.jetbrains.services.IdeaLookAndFeelService;
-
-
-
-
+import com.albertoventurini.graphdbplugin.visualization.PrefuseVisualization;
+import com.albertoventurini.graphdbplugin.visualization.events.EventType;
 
 
 import javax.swing.JFrame;

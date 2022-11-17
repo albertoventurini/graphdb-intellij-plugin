@@ -4,7 +4,7 @@
  * by Neueda Technologies, Ltd.
  * Modified by Alberto Venturini, 2022
  */
-package com.albertoventurini.graphdbplugin.test.database.neo4j_3_5;
+package com.albertoventurini.graphdbplugin.test.database.neo4j_4_4;
 
 import org.neo4j.procedure.Name;
 import org.neo4j.procedure.UserFunction;

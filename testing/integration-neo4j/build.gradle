@@ -8,23 +8,23 @@ intellij {
     plugins = ['java']
 }
 
-
 dependencies {
     testImplementation project(':graph-database-plugin')
     testImplementation project(':testing:common')
     testImplementation project(':testing:database:neo4j-common')
+    testImplementation project(':ui:jetbrains')
+    testImplementation project(':language:cypher')
+    testImplementation project(':database:neo4j')
+    testImplementation project(':platform')
     testImplementation 'org.xeustechnologies:jcl-core:2.8'
     testImplementation "org.assertj:assertj-core:$versionAssertj"
     testImplementation "org.mockito:mockito-core:$versionMockito"
+    testImplementation "org.neo4j.driver:neo4j-java-driver:$versionNeo4jJavaBoltDriver"
 }
 
 test {
-    systemProperty "neo4j-package-3.4", "${project(":testing:database:neo4j-3.4").projectDir}/build/libs/neo4j34-shadow.jar"
-    systemProperty "neo4j-package-3.5", "${project(":testing:database:neo4j-3.5").projectDir}/build/libs/neo4j35-shadow.jar"
-    systemProperty "neo4j-package-4.0", "${project(":testing:database:neo4j-4.0").projectDir}/build/libs/neo4j40-shadow.jar"
+    systemProperty "neo4j-package-4.4", "${project(":testing:database:neo4j-4.4").projectDir}/build/libs/neo4j40-shadow.jar"
     jvmArgs '-Xms2048m', '-Xmx2048m'
 }
 
-test.dependsOn ":testing:database:neo4j-3.4:assemble"
-test.dependsOn ":testing:database:neo4j-3.5:assemble"
-test.dependsOn ":testing:database:neo4j-4.0:assemble"
+test.dependsOn ":testing:database:neo4j-4.4:assemble"

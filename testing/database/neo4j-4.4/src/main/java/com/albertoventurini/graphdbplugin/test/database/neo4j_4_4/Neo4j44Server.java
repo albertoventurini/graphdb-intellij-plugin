@@ -4,14 +4,14 @@
  * by Neueda Technologies, Ltd.
  * Modified by Alberto Venturini, 2022
  */
-package com.albertoventurini.graphdbplugin.test.database.neo4j_4_0;
+package com.albertoventurini.graphdbplugin.test.database.neo4j_4_4;
 
 import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
 import org.neo4j.harness.Neo4j;
 import org.neo4j.harness.internal.InProcessNeo4jBuilder;
 
 @SuppressWarnings("Duplicates")
-public class Neo4j40Server implements Neo4jServer {
+public class Neo4j44Server implements Neo4jServer {
 
     private Neo4j serverControls;
 

@@ -6,6 +6,8 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.inspection;
 
+import com.albertoventurini.graphdbplugin.jetbrains.inspection.CypherExplainWarningInspection;
+import com.albertoventurini.graphdbplugin.platform.GraphConstants;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.util.BaseInspectionTest;
 import com.intellij.codeInspection.LocalInspectionTool;
 

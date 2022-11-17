@@ -10,5 +10,9 @@ intellij {
 
 dependencies {
     implementation project(':ui:jetbrains')
+    implementation project(':ui:visualization')
+    implementation project(':database:api')
+    implementation project(':database:neo4j')
+    implementation "de.sciss:prefuse-core:$versionPrefuse"
 }
 

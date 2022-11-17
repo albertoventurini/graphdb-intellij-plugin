@@ -6,6 +6,8 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.parameters;
 
+import com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParametersProvider;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParametersService;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.base.BaseIntegrationTest;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.intellij.psi.PsiElement;

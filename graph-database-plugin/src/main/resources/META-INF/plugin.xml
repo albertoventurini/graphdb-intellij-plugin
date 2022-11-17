@@ -108,7 +108,8 @@
                             serviceImplementation="com.albertoventurini.graphdbplugin.jetbrains.database.DatabaseManagerServiceImpl"/>
         <applicationService
                 serviceInterface="com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorService"
-                serviceImplementation="com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorServiceImpl"/>
+                serviceImplementation="com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorServiceImpl"
+                testServiceImplementation="com.albertoventurini.graphdbplugin.test.mocks.services.DummyExecutorService" />
 
         <!-- Graph Database support - data sources -->
         <projectService

@@ -57,7 +57,7 @@ public class DataSourceMetadataUiTest {
         propertyKeys.put("propertyKey", PROPERTY);
 
         HashMap<String, String> indexes = new HashMap<>();
-        indexes.put("description", "index ON (:aaa)");
+        indexes.put("name", "DummyIndexName");
         indexes.put("state", "ONLINE");
 
         HashMap<String, String> constraints = new HashMap<>();
