@@ -27,8 +27,8 @@ public class UserFunctionCompletionTest extends BaseCompletionTest {
         List<String> strings = myFixture.getLookupElementStrings();
         assertThat(strings)
                 .contains(
-                        "com.albertoventurini.graphdbplugin.test.database.neo4j_4_0.firstTestFunction",
-                        "com.albertoventurini.graphdbplugin.test.database.neo4j_4_0.secondTestFunction"
+                        "com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.firstTestFunction",
+                        "com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.secondTestFunction"
                 );
     }
 
@@ -36,13 +36,13 @@ public class UserFunctionCompletionTest extends BaseCompletionTest {
         myFixture.configureByText("test.cyp", "RETURN firstTestFuncti<caret>");
         myFixture.completeBasic();
         myFixture.finishLookup(Lookup.REPLACE_SELECT_CHAR);
-        myFixture.checkResult("RETURN com.albertoventurini.graphdbplugin.test.database.neo4j_4_0.firstTestFunction()<caret>");
+        myFixture.checkResult("RETURN com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.firstTestFunction()<caret>");
     }
 
     public void testCompletionCaretAtParentheses() throws Exception {
         myFixture.configureByText("test.cyp", "RETURN secondTestFuncti<caret>");
         myFixture.completeBasic();
         myFixture.finishLookup(Lookup.REPLACE_SELECT_CHAR);
-        myFixture.checkResult("RETURN com.albertoventurini.graphdbplugin.test.database.neo4j_4_0.secondTestFunction(<caret>)");
+        myFixture.checkResult("RETURN com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.secondTestFunction(<caret>)");
     }
 }

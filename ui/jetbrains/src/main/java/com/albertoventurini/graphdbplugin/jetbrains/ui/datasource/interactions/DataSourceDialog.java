@@ -10,6 +10,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.D
 import com.albertoventurini.graphdbplugin.jetbrains.database.DatabaseManagerService;
 import com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorService;
 import com.intellij.icons.AllIcons;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
@@ -99,7 +100,8 @@ public abstract class DataSourceDialog extends DialogWrapper {
 
     private String executeOkQuery() {
         DataSourceApi dataSource = constructDataSource();
-        DatabaseManagerService databaseManager = project.getService(DatabaseManagerService.class);
+        DatabaseManagerService databaseManager =
+                ApplicationManager.getApplication().getService(DatabaseManagerService.class);
         GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
         GraphQueryResult result = db.execute("RETURN 'ok'");
 

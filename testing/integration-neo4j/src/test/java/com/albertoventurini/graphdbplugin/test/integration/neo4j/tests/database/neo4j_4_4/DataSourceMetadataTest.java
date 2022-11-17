@@ -4,7 +4,7 @@
  * by Neueda Technologies, Ltd.
  * Modified by Alberto Venturini, 2022
  */
-package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.neo4j_4_0;
+package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.neo4j_4_4;
 
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.data.StoredProcedure;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.common.AbstractDataSourceMetadataTest;
@@ -31,8 +31,8 @@ public class DataSourceMetadataTest extends AbstractDataSourceMetadataTest {
                 procedure("db.labels",
                         "db.labels() :: (label :: STRING?)",
                         "List all available labels in the database.",
-                        "READ",
-                        "true")
+                        null,
+                        null)
         );
     }
 
@@ -41,6 +41,6 @@ public class DataSourceMetadataTest extends AbstractDataSourceMetadataTest {
         List<Map<String, String>> userFunctionsMetadata = metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.USER_FUNCTIONS);
         assertThat(userFunctionsMetadata)
                 .isNotNull()
-                .hasSize(124);
+                .hasSize(145);
     }
 }

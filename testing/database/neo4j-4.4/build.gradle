@@ -6,9 +6,9 @@ plugins {
 }
 
 dependencies {
-    implementation 'org.neo4j.test:neo4j-harness:4.0.0'
+    implementation 'org.neo4j.test:neo4j-harness:4.4.14'
     implementation project(":testing:database:neo4j-common")
-    annotationProcessor("org.neo4j.test:neo4j-harness:4.0.0")
+    annotationProcessor("org.neo4j.test:neo4j-harness:4.4.14")
 }
 
 shadowJar {

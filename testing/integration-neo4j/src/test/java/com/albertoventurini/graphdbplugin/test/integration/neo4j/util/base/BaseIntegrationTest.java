@@ -14,7 +14,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.D
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
 import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
-import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j40ServerLoader;
+import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j44ServerLoader;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 
 import java.util.ArrayList;
@@ -116,7 +116,7 @@ public abstract class BaseIntegrationTest extends LightJavaCodeInsightFixtureTes
 
         public DataSourceApi neo4j40() {
             if (neo4j40DataSource == null) {
-                neo4j40DataSource = getNeo4jDataSource(NEO4J40, Neo4j40ServerLoader.getInstance());
+                neo4j40DataSource = getNeo4jDataSource(NEO4J40, Neo4j44ServerLoader.getInstance());
             }
             return neo4j40DataSource;
         }
