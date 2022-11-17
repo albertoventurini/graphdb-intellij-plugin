@@ -10,7 +10,7 @@ import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.ut
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 
-import static com.neueda.jetbrains.plugin.graphdb.language.cypher.util.PsiTraversalUtilities.Cypher.getCypherStatementAtOffset;
+import static com.albertoventurini.graphdbplugin.language.cypher.util.PsiTraversalUtilities.Cypher.getCypherStatementAtOffset;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StatementTraversingTest extends BaseGenericTest {

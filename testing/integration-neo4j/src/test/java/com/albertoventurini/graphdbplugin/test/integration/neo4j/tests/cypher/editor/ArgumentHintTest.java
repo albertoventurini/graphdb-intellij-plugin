@@ -6,6 +6,8 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.editor;
 
+import com.albertoventurini.graphdbplugin.language.cypher.editor.CypherParameterInfoHandler;
+import com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation;
 import com.intellij.codeInsight.hint.ParameterInfoComponent;
 import com.intellij.lang.parameterInfo.CreateParameterInfoContext;
 import com.intellij.lang.parameterInfo.ParameterInfoUIContextEx;

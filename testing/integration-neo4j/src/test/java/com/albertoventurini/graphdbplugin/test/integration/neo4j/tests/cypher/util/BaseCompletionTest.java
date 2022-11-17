@@ -6,7 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.util;
 
-
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
 
 public abstract class BaseCompletionTest extends BaseGenericTest {
 

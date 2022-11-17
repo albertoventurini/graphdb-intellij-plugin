@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.util;
 
+import com.albertoventurini.graphdbplugin.language.cypher.CypherParserDefinition;
 import com.google.common.io.Resources;
 import com.intellij.testFramework.ParsingTestCase;
 

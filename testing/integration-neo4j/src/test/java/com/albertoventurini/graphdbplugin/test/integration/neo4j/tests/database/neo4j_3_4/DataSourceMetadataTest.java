@@ -6,12 +6,11 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.neo4j_3_4;
 
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.data.StoredProcedure;
-
-
-
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.common.AbstractDataSourceMetadataTest;
-
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

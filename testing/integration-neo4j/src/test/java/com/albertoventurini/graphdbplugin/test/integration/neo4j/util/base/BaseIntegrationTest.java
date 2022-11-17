@@ -6,16 +6,16 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.util.base;
 
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.Neo4jBoltConfiguration;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourcesComponent;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j34ServerLoader;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
-
-
-
-
-
-
-
 import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j35ServerLoader;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j40ServerLoader;

@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.test.mocks.services;
 
+import com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorService;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.application.ModalityState;
 import com.intellij.testFramework.LightPlatformTestCase;
@@ -18,7 +19,7 @@ import java.util.function.Consumer;
 public class DummyExecutorService implements ExecutorService {
 
     public static void register() {
-        LightPlatformTestCase.initApplication();
+        //LightPlatformTestCase.initApplication();
         MutablePicoContainer container = (MutablePicoContainer) ApplicationManager.getApplication().getPicoContainer();
 
         container.unregisterComponent(ExecutorService.class.getName());

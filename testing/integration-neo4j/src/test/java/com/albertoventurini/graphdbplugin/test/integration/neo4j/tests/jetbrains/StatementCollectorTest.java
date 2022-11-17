@@ -6,15 +6,16 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.jetbrains;
 
+import com.albertoventurini.graphdbplugin.jetbrains.actions.execute.StatementCollector;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParametersProvider;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParametersService;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.util.BaseGenericTest;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.messages.MessageBus;
-
-
-
-
 import org.mockito.Mockito;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 public class StatementCollectorTest extends BaseGenericTest {

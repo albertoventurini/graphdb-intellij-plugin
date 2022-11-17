@@ -8,14 +8,18 @@ intellij {
     plugins = ['java']
 }
 
-
 dependencies {
     testImplementation project(':graph-database-plugin')
     testImplementation project(':testing:common')
     testImplementation project(':testing:database:neo4j-common')
+    testImplementation project(':ui:jetbrains')
+    testImplementation project(':language:cypher')
+    testImplementation project(':database:neo4j')
+    testImplementation project(':platform')
     testImplementation 'org.xeustechnologies:jcl-core:2.8'
     testImplementation "org.assertj:assertj-core:$versionAssertj"
     testImplementation "org.mockito:mockito-core:$versionMockito"
+    testImplementation "org.neo4j.driver:neo4j-java-driver:$versionNeo4jJavaBoltDriver"
 }
 
 test {

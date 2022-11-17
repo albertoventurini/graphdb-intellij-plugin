@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.completion;
 
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherKeywords;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.util.BaseCompletionTest;
 import com.intellij.codeInsight.completion.CompletionType;
 

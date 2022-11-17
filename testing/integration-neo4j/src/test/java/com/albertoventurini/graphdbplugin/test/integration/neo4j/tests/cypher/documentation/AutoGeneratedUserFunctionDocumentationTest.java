@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.documentation;
 
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.util.BaseDocumentationTest;
 
 
