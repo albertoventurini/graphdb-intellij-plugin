@@ -13,18 +13,16 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadat
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.testFramework.fixtures.LightCodeInsightFixtureTestCase;
 import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j40ServerLoader;
-import com.albertoventurini.graphdbplugin.test.mocks.services.DummyExecutorService;
+import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class BaseIntegrationTest extends LightCodeInsightFixtureTestCase {
+public abstract class BaseIntegrationTest extends LightJavaCodeInsightFixtureTestCase {
 
     private static final String NEO4J40 = "neo4j40";
     private static final String UNAVAILABLE_DS = "unavailable";
@@ -35,7 +33,6 @@ public abstract class BaseIntegrationTest extends LightCodeInsightFixtureTestCas
 
     @Override
     public void setUp() throws Exception {
-        DummyExecutorService.register();
         super.setUp();
 
         components = new Components();
@@ -95,17 +92,17 @@ public abstract class BaseIntegrationTest extends LightCodeInsightFixtureTestCas
 
     public final class Services {
         public CypherMetadataProviderService cypherMetadataProvider() {
-            return ServiceManager.getService(getProject(), CypherMetadataProviderService.class);
+            return getProject().getService(CypherMetadataProviderService.class);
         }
     }
 
     public final class Components {
         public DataSourcesComponent dataSources() {
-            return getProject().getComponent(DataSourcesComponent.class);
+            return getProject().getService(DataSourcesComponent.class);
         }
 
         public DataSourcesComponentMetadata dataSourcesMetadata() {
-            return getProject().getComponent(DataSourcesComponentMetadata.class);
+            return getProject().getService(DataSourcesComponentMetadata.class);
         }
     }
 

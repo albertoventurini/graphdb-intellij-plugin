@@ -27,6 +27,6 @@ public class Neo4j40ServerLoader extends Neo4jServerLoader {
 
     @Override
     protected String getNeo4jServerClass() {
-        return "com.neueda.jetbrains.plugin.graphdb.test.database.neo4j_4_0.Neo4j40Server";
+        return "com.albertoventurini.graphdbplugin.test.database.neo4j_4_0.Neo4j40Server";
     }
 }
