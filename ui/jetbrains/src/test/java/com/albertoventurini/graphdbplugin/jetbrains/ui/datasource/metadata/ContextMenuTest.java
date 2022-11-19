@@ -7,10 +7,10 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
-import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.DataSourceMetadataUi;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.dto.DataSourceContextMenu;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.dto.MetadataContextMenu;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.*;
+import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jLabelMetadata;
@@ -20,6 +20,8 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.i
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -30,13 +32,16 @@ import java.util.HashMap;
 import static com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata.*;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 /**
  * Test that the correct context menu is associated with
  * each node in the metadata tree.
  */
-public class ContextMenuTest {
+@RunWith(JUnit4.class)
+public class ContextMenuTest extends LightJavaCodeInsightFixtureTestCase {
 
     private static final String UUID = "uuid";
     private static final String LABEL = "label";
@@ -49,16 +54,16 @@ public class ContextMenuTest {
     private PatchedDefaultMutableTreeNode datasource;
 
     @Before
-    public void setUp() {
+    public void setUp() throws Exception {
+        super.setUp();
+
         root = new PatchedDefaultMutableTreeNode(RootTreeNodeModel.ROOT_NAME);
-        DataSourceMetadataUi ui = new DataSourceMetadataUi(null);
         dataSourceApi = new DataSourceV1(UUID, "local", DataSourceType.NEO4J_BOLT, new HashMap<>());
         TreeNodeModelApi model = new DataSourceTreeNodeModel(dataSourceApi);
         datasource = new PatchedDefaultMutableTreeNode(model);
 
         root.add(datasource);
         Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
-
 
         HashMap<String, String> propertyKeys = new HashMap<>();
         propertyKeys.put("propertyKey", PROPERTY);
@@ -83,7 +88,8 @@ public class ContextMenuTest {
         metadata.addDataSourceMetadata(INDEXES, singletonList(indexes));
         metadata.addDataSourceMetadata(CONSTRAINTS, singletonList(constraints));
 
-        ui.updateNeo4jBoltCypherMetadataUi(datasource, metadata);
+        var neo4jHandler = new Neo4jBoltTreeUpdater();
+        neo4jHandler.updateTree(datasource, metadata);
     }
 
     @Test
@@ -180,4 +186,29 @@ public class ContextMenuTest {
         return null;
     }
 
+    @Test
+    public void labelsArePopulatedAsExpected() {
+        final var labelsNode = (DefaultMutableTreeNode) getChildByType(datasource, Neo4jTreeNodeType.LABELS);
+
+        assertNotNull(labelsNode);
+        assertNotNull(labelsNode.getUserObject());
+
+        final var metadata = (MetadataTreeNodeModel) labelsNode.getUserObject();
+
+        assertTrue(metadata.getText().isPresent());
+        assertEquals("labels (1)", metadata.getText().get());
+
+        assertEquals(1, labelsNode.getChildCount());
+
+        final var labelNodes = labelsNode.children();
+        final var labelNode = (DefaultMutableTreeNode) labelNodes.nextElement();
+
+        assertNotNull(labelNode);
+        assertNotNull(labelNode.getUserObject());
+
+        final var model = (LabelTreeNodeModel) labelNode.getUserObject();
+        assertTrue(model.getText().isPresent());
+
+        assertEquals(LABEL + " (3)", model.getText().get());
+    }
 }
