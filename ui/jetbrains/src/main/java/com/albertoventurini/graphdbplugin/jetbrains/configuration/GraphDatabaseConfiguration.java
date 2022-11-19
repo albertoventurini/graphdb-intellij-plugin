@@ -16,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
-public class GraphDatabaseSupportConfiguration implements Configurable {
+public class GraphDatabaseConfiguration implements Configurable {
 
     private boolean isModified = false;
     private JBCheckBox invertZoomCheckBox;
@@ -30,7 +30,7 @@ public class GraphDatabaseSupportConfiguration implements Configurable {
     @Nullable
     @Override
     public String getHelpTopic() {
-        return "Graph Database support plugin configuration";
+        return "Graph Database plugin configuration";
     }
 
     @Nullable

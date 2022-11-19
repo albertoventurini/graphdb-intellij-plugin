@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.Future;
 
+// TODO: consider making this a plugin service.
 public class QueryExecutionService {
 
     private final DatabaseManagerService databaseManager;

@@ -7,22 +7,25 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.DataSourceMetadataUi;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.dto.DataSourceContextMenu;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.dto.MetadataContextMenu;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.*;
+import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jLabelMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jRelationshipTypeMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.impl.DataSourceV1;
-import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.*;
-import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
+
 import org.jetbrains.annotations.NotNull;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata.*;
 import static java.util.Collections.singletonList;
@@ -30,20 +33,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 /**
- * Test for the {@link DataSourceMetadataUi} class and related classes.
+ * Test that the correct context menu is associated with
+ * each node in the metadata tree.
  */
-public class DataSourceMetadataUiTest {
+public class ContextMenuTest {
 
     private static final String UUID = "uuid";
+    private static final String LABEL = "label";
     private static final String REL = "rel";
     private static final String PROPERTY = "prop";
 
-    private static final List<Neo4jLabelMetadata> LABEL_METADATA = List.of(
-            new Neo4jLabelMetadata("first label", 3L),
-            new Neo4jLabelMetadata("second label", 100_000L));
-
     private PatchedDefaultMutableTreeNode root;
     private DataSourceV1 dataSourceApi;
+    private ContextMenuService sut = new ContextMenuService();
     private PatchedDefaultMutableTreeNode datasource;
 
     @Before
@@ -56,6 +58,7 @@ public class DataSourceMetadataUiTest {
 
         root.add(datasource);
         Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
+
 
         HashMap<String, String> propertyKeys = new HashMap<>();
         propertyKeys.put("propertyKey", PROPERTY);
@@ -72,7 +75,7 @@ public class DataSourceMetadataUiTest {
         procedures.put("name", "db.labels");
         procedures.put("description", "List all labels in the database.");
 
-        LABEL_METADATA.forEach(metadata::addLabel);
+        metadata.addLabel(new Neo4jLabelMetadata(LABEL, 3L));
         metadata.addRelationshipType(new Neo4jRelationshipTypeMetadata(REL, 4L));
         metadata.addDataSourceMetadata(PROPERTY_KEYS, singletonList(propertyKeys));
         metadata.addDataSourceMetadata(STORED_PROCEDURES, singletonList(procedures));
@@ -84,33 +87,62 @@ public class DataSourceMetadataUiTest {
     }
 
     @Test
-    public void labelsArePopulatedAsExpected() {
-        final var labelsNode = (DefaultMutableTreeNode) getChildByType(datasource, Neo4jTreeNodeType.LABELS);
+    public void personLabelClicked() {
+        TreePath path = new TreePath(getTreePath(Neo4jTreeNodeType.LABELS, Neo4jTreeNodeType.LABEL));
 
-        assertNotNull(labelsNode);
-        assertNotNull(labelsNode.getUserObject());
+        assertThat(sut.getContextMenu(path).get())
+                .isEqualToComparingFieldByField(new MetadataContextMenu(Neo4jTreeNodeType.LABEL, dataSourceApi, LABEL));
+    }
 
-        final var metadata = (MetadataTreeNodeModel) labelsNode.getUserObject();
+    @Test
+    public void labelParentClicked() {
+        TreePath path = new TreePath(getTreePath(Neo4jTreeNodeType.LABELS));
 
-        assertTrue(metadata.getText().isPresent());
-        assertEquals("labels (%s)".formatted(LABEL_METADATA.size()), metadata.getText().get());
+        assertThat(sut.getContextMenu(path)).isNotPresent();
+    }
 
-        assertEquals(LABEL_METADATA.size(), labelsNode.getChildCount());
+    @Test
+    public void storedProcedureClicked() {
+        TreePath path = new TreePath(getTreePath(Neo4jTreeNodeType.STORED_PROCEDURES, Neo4jTreeNodeType.STORED_PROCEDURE));
 
-        final var labelNodes = labelsNode.children();
-        for (Neo4jLabelMetadata labelMetadata : LABEL_METADATA) {
-            final var labelNode = (DefaultMutableTreeNode) labelNodes.nextElement();
+        assertThat(sut.getContextMenu(path)).isNotPresent();
+    }
 
-            assertNotNull(labelNode);
-            assertNotNull(labelNode.getUserObject());
+    @Test
+    public void storedProcedureParentClicked() {
+        TreePath path = new TreePath(getTreePath(Neo4jTreeNodeType.STORED_PROCEDURES));
 
-            final var model = (LabelTreeNodeModel) labelNode.getUserObject();
-            assertTrue(model.getText().isPresent());
+        assertThat(sut.getContextMenu(path)).isNotPresent();
+    }
 
-            final String labelName = labelMetadata.getName();
-            final int count = labelMetadata.getCount().intValue();
-            assertEquals(labelName + " (" + count + ")", model.getText().get());
-        }
+    @Test
+    public void relationshipClicked() {
+        TreePath path = new TreePath(getTreePath(Neo4jTreeNodeType.RELATIONSHIPS, Neo4jTreeNodeType.RELATIONSHIP));
+
+        assertThat(sut.getContextMenu(path).get())
+                .isEqualToComparingFieldByField(new MetadataContextMenu(Neo4jTreeNodeType.RELATIONSHIP, dataSourceApi, REL));
+    }
+
+    @Test
+    public void relationshipParentClicked() {
+        TreePath path = new TreePath(getTreePath(Neo4jTreeNodeType.RELATIONSHIPS));
+
+        assertThat(sut.getContextMenu(path)).isNotPresent();
+    }
+
+    @Test
+    public void propertyClicked() {
+        TreePath path = new TreePath(getTreePath(Neo4jTreeNodeType.PROPERTY_KEYS, Neo4jTreeNodeType.PROPERTY_KEY));
+
+        assertThat(sut.getContextMenu(path).get())
+                .isEqualToComparingFieldByField(new MetadataContextMenu(Neo4jTreeNodeType.PROPERTY_KEY, dataSourceApi, PROPERTY));
+    }
+
+    @Test
+    public void propertyParentClicked() {
+        TreePath path = new TreePath(getTreePath(Neo4jTreeNodeType.PROPERTY_KEYS));
+
+        assertThat(sut.getContextMenu(path)).isNotPresent();
     }
 
     @NotNull
@@ -125,6 +157,16 @@ public class DataSourceMetadataUiTest {
         return new Object[]{root, datasource, node, last};
     }
 
+    @Test
+    public void datasourceClicked() {
+        Object[] pathObjects = new Object[]{
+                root,
+                datasource};
+        TreePath path = new TreePath(pathObjects);
+
+        assertThat(sut.getContextMenu(path).get())
+                .isEqualToComparingFieldByField(new DataSourceContextMenu(dataSourceApi));
+    }
 
     private TreeNode getChildByType(TreeNode node, Neo4jTreeNodeType type) {
         final Enumeration<? extends TreeNode> children = node.children();

@@ -128,7 +128,7 @@
         <scratch.rootType implementation="com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.interactions.GraphDbEditorsConsoleRootType"/>
         <scratch.rootType implementation="com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParameterRootType"/>
         <applicationConfigurable groupId="tools"
-                                 instance="com.albertoventurini.graphdbplugin.jetbrains.configuration.GraphDatabaseSupportConfiguration"/>
+                                 instance="com.albertoventurini.graphdbplugin.jetbrains.configuration.GraphDatabaseConfiguration"/>
         <!-- Update notification -->
         <postStartupActivity implementation="com.albertoventurini.graphdbplugin.jetbrains.component.updater.PluginUpdateActivity" />
         <!-- Cypher -->
