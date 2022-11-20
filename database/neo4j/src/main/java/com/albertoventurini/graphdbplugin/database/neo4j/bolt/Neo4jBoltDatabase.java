@@ -36,15 +36,24 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
     }
 
     public Neo4jBoltDatabase(Neo4jBoltConfiguration configuration) {
-        String host = configuration.getHost();
-        Integer port = configuration.getPort();
-        String username = configuration.getUser();
-        String password = configuration.getPassword();
-        if (host.startsWith("bolt://") || host.startsWith("bolt+routing://")) {
-            this.url = String.format("%s:%s", host, port);
+        final String host = configuration.getHost();
+        final int port = configuration.getPort();
+        final String username = configuration.getUser();
+        final String password = configuration.getPassword();
+
+        final String authType = configuration.getAuthType();
+        final String protocol = configuration.getProtocol();
+
+        if (protocol == null) {
+            if (host.startsWith("bolt://") || host.startsWith("bolt+routing://")) {
+                url = String.format("%s:%s", host, port);
+            } else {
+                url = String.format("bolt://%s:%s", host, port);
+            }
         } else {
-            this.url = String.format("bolt://%s:%s", host, port);
+            url = "%s://%s:%s".formatted(protocol, host, port);
         }
+
         if (username != null && password != null) {
             auth = AuthTokens.basic(username, password);
         } else {
@@ -60,6 +69,7 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
     @Override
     public GraphQueryResult execute(String query, Map<String, Object> statementParameters) {
         try {
+            // TODO: driver can be instantiated when this object is constructed. No need to create a new driver every time a query is executed.
             Driver driver = GraphDatabase.driver(url, auth);
             try {
                 try (Session session = driver.session()) {

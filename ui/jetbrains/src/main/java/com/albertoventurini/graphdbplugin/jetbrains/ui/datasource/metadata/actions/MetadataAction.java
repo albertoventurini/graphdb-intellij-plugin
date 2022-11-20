@@ -12,6 +12,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSou
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -46,7 +47,8 @@ public abstract class MetadataAction extends AnAction {
 
         ExecuteQueryPayload payload = new ExecuteQueryPayload(getQuery(data));
 
-        DataSourcesComponent dataSourcesComponent = project.getComponent(DataSourcesComponent.class);
+        DataSourcesComponent dataSourcesComponent =
+                project.getService(DataSourcesComponent.class);
         Optional<DataSourceApi> dataSource = dataSourcesComponent.getDataSourceContainer().findDataSource(dataSourceUuid);
 
         dataSource.ifPresent(dataSourceApi -> executeQueryEvent.executeQuery(dataSourceApi, payload));

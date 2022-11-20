@@ -125,6 +125,7 @@
                 serviceImplementation="com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.DataSourcesView"/>
         <projectService
                 serviceImplementation="com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParametersService"/>
+
         <scratch.rootType implementation="com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.interactions.GraphDbEditorsConsoleRootType"/>
         <scratch.rootType implementation="com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParameterRootType"/>
         <applicationConfigurable groupId="tools"

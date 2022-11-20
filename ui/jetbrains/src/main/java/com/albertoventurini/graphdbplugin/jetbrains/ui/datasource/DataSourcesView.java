@@ -10,12 +10,13 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSou
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.actions.RefreshDataSourcesAction;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.interactions.DataSourceInteractions;
-import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.DataSourceMetadataUi;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.DataSourceMetadataUpdateService;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.*;
 import com.albertoventurini.graphdbplugin.jetbrains.util.FileUtil;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.ActionToolbarPosition;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.ToolbarDecorator;
@@ -37,7 +38,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
+import static java.util.concurrent.CompletableFuture.completedFuture;
+
 public class DataSourcesView implements Disposable {
+
+    private static final Logger LOG = Logger.getInstance(DataSourcesView.class);
 
     private boolean initialized;
 
@@ -51,7 +56,7 @@ public class DataSourcesView implements Disposable {
     private JPanel treePanel;
     private Tree dataSourceTree;
     private ToolbarDecorator decorator;
-    private DataSourceMetadataUi dataSourceMetadataUi;
+    private DataSourceMetadataUpdateService dataSourceMetadataUpdateService;
 
     public DataSourcesView() {
         initialized = false;
@@ -65,7 +70,7 @@ public class DataSourcesView implements Disposable {
 
             component = project.getService(DataSourcesComponent.class);
             componentMetadata = project.getService(DataSourcesComponentMetadata.class);
-            dataSourceMetadataUi = new DataSourceMetadataUi(componentMetadata);
+            dataSourceMetadataUpdateService = project.getService(DataSourceMetadataUpdateService.class); //  new DataSourceMetadataUi(componentMetadata);
             treeRoot = new PatchedDefaultMutableTreeNode(new RootTreeNodeModel());
             treeModel = new DefaultTreeModel(treeRoot, false);
             decorator = ToolbarDecorator.createDecorator(dataSourceTree);
@@ -148,7 +153,12 @@ public class DataSourcesView implements Disposable {
     public CompletableFuture<Boolean> refreshDataSourceMetadata(PatchedDefaultMutableTreeNode treeNode) {
         TreeNodeModelApi userObject = (TreeNodeModelApi) treeNode.getUserObject();
         DataSourceApi nodeDataSource = userObject.getDataSourceApi();
-        return dataSourceMetadataUi.updateDataSourceMetadataUi(treeNode, nodeDataSource);
+        if (nodeDataSource != null) {
+            return dataSourceMetadataUpdateService.updateDataSourceMetadataUi(treeNode, nodeDataSource);
+        } else {
+            LOG.warn("Attempting to refresh data source metadata on a node that doesn't have metadata. This shouldn't have happened.");
+            return completedFuture(false);
+        }
     }
 
     public void createDataSource(DataSourceApi dataSource) {

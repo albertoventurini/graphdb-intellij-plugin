@@ -32,7 +32,7 @@ public class QueryExecutionService {
             @NotNull final Project project,
             final MessageBus messageBus) {
         this.messageBus = messageBus;
-        this.databaseManager = project.getService(DatabaseManagerService.class);
+        this.databaseManager = ApplicationManager.getApplication().getService(DatabaseManagerService.class);
     }
 
     public void executeQuery(DataSourceApi dataSource, ExecuteQueryPayload payload) {

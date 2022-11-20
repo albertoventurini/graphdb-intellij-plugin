@@ -22,7 +22,6 @@ import javax.swing.tree.TreeNode;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata.*;
 import static java.util.Collections.singletonList;
@@ -30,9 +29,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
 
 /**
- * Test for the {@link DataSourceMetadataUi} class and related classes.
+ * Test for the {@link Neo4jBoltTreeUpdater} class.
  */
-public class DataSourceMetadataUiTest {
+public class Neo4JBoltTreeUpdaterTest {
 
     private static final String UUID = "uuid";
     private static final String REL = "rel";
@@ -43,14 +42,12 @@ public class DataSourceMetadataUiTest {
             new Neo4jLabelMetadata("second label", 100_000L));
 
     private PatchedDefaultMutableTreeNode root;
-    private DataSourceV1 dataSourceApi;
     private PatchedDefaultMutableTreeNode datasource;
 
     @Before
     public void setUp() {
         root = new PatchedDefaultMutableTreeNode(RootTreeNodeModel.ROOT_NAME);
-        DataSourceMetadataUi ui = new DataSourceMetadataUi(null);
-        dataSourceApi = new DataSourceV1(UUID, "local", DataSourceType.NEO4J_BOLT, new HashMap<>());
+        final var dataSourceApi = new DataSourceV1(UUID, "local", DataSourceType.NEO4J_BOLT, new HashMap<>());
         TreeNodeModelApi model = new DataSourceTreeNodeModel(dataSourceApi);
         datasource = new PatchedDefaultMutableTreeNode(model);
 
@@ -80,7 +77,8 @@ public class DataSourceMetadataUiTest {
         metadata.addDataSourceMetadata(INDEXES, singletonList(indexes));
         metadata.addDataSourceMetadata(CONSTRAINTS, singletonList(constraints));
 
-        ui.updateNeo4jBoltCypherMetadataUi(datasource, metadata);
+        var neo4jHandler = new Neo4jBoltTreeUpdater();
+        neo4jHandler.updateTree(datasource, metadata);
     }
 
     @Test
