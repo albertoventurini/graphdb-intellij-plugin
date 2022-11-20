@@ -22,26 +22,29 @@ import static com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.Ne
 /**
  * Updates the data source tree for Neo4j data source metadata.
  */
-final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jBoltCypherDataSourceMetadata> {
+final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
 
     @Override
     public void updateTree(
             final PatchedDefaultMutableTreeNode dataSourceRootTreeNode,
-            final Neo4jBoltCypherDataSourceMetadata metadata) {
+            final DataSourceMetadata metadata) {
+
+        final var neo4jMetadata = (Neo4jBoltCypherDataSourceMetadata) metadata;
+
         // Remove existing metadata from ui
         dataSourceRootTreeNode.removeAllChildren();
         TreeNodeModelApi model = (TreeNodeModelApi) dataSourceRootTreeNode.getUserObject();
         DataSourceApi dataSourceApi = model.getDataSourceApi();
 
-        dataSourceRootTreeNode.add(createConstraintsNode(metadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createIndexesNode(metadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createLabelsNode(metadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createRelationshipTypesNode(metadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createPropertyKeysNode(metadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createStoredProceduresNode(metadata, dataSourceApi));
+        dataSourceRootTreeNode.add(createConstraintsNode(neo4jMetadata, dataSourceApi));
+        dataSourceRootTreeNode.add(createIndexesNode(neo4jMetadata, dataSourceApi));
+        dataSourceRootTreeNode.add(createLabelsNode(neo4jMetadata, dataSourceApi));
+        dataSourceRootTreeNode.add(createRelationshipTypesNode(neo4jMetadata, dataSourceApi));
+        dataSourceRootTreeNode.add(createPropertyKeysNode(neo4jMetadata, dataSourceApi));
+        dataSourceRootTreeNode.add(createStoredProceduresNode(neo4jMetadata, dataSourceApi));
 
         if (metadata.isMetadataExists(Neo4jBoltCypherDataSourceMetadata.USER_FUNCTIONS)) {
-            dataSourceRootTreeNode.add(createUserFunctionNode(metadata, dataSourceApi));
+            dataSourceRootTreeNode.add(createUserFunctionNode(neo4jMetadata, dataSourceApi));
         }
     }
 

@@ -1,7 +1,6 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.intellij.openapi.components.Service;
 
 import java.util.Map;
@@ -13,7 +12,7 @@ import java.util.Optional;
 @Service
 final class DataSourceTreeUpdaters {
 
-    private final Map<DataSourceType, DataSourceTreeUpdater<? extends DataSourceMetadata>> handlers;
+    private final Map<DataSourceType, DataSourceTreeUpdater> handlers;
 
     DataSourceTreeUpdaters() {
         this.handlers = Map.of(
@@ -21,7 +20,7 @@ final class DataSourceTreeUpdaters {
         );
     }
 
-    Optional<DataSourceTreeUpdater<? extends DataSourceMetadata>> get(final DataSourceType dataSourceType) {
+    Optional<DataSourceTreeUpdater> get(final DataSourceType dataSourceType) {
         return Optional.ofNullable(handlers.get(dataSourceType));
     }
 }

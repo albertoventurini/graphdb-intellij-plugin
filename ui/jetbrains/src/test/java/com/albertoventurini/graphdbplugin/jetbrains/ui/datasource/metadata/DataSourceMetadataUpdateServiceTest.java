@@ -31,20 +31,20 @@ public class DataSourceMetadataUpdateServiceTest extends LightJavaCodeInsightFix
         super.setUp();
 
         final var metadataComponent = mock(DataSourcesComponentMetadata.class);
-        final var metadataHandlers = mock(DataSourceTreeUpdaters.class);
+        final var treeUpdaters = mock(DataSourceTreeUpdaters.class);
 
         ServiceContainerUtil.replaceService(
                 getProject(), DataSourcesComponentMetadata.class, metadataComponent, getTestRootDisposable());
         ServiceContainerUtil.replaceService(
-                getProject(), DataSourceTreeUpdaters.class, metadataHandlers, getTestRootDisposable());
+                getProject(), DataSourceTreeUpdaters.class, treeUpdaters, getTestRootDisposable());
 
         final var dataSourceMetadata = mock(DataSourceMetadata.class);
         when(metadataComponent.getMetadata(any()))
                 .thenReturn(CompletableFuture.completedFuture(Optional.of(dataSourceMetadata)));
 
-        final var metadataHandler = mock(DataSourceTreeUpdater.class);
-        when(metadataHandlers.get(DataSourceType.NEO4J_BOLT))
-                .thenReturn(Optional.of(metadataHandler));
+        final var treeUpdater = mock(DataSourceTreeUpdater.class);
+        when(treeUpdaters.get(DataSourceType.NEO4J_BOLT))
+                .thenReturn(Optional.of(treeUpdater));
 
         service = getProject().getService(DataSourceMetadataUpdateService.class);
     }

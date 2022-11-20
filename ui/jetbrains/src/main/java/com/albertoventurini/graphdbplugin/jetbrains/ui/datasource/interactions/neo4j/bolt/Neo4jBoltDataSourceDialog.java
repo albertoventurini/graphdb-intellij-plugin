@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,17 +32,17 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
     private final DataSourcesComponent dataSourcesComponent;
     private DataSourceApi dataSourceToEdit;
 
-    private Data data;
-
     private JPanel content;
     private JBTextField dataSourceNameField;
+    private JComboBox<String> protocolComboBox;
     private JBTextField hostField;
+    private JBTextField portField;
     private JBTextField userField;
     private JBPasswordField passwordField;
-    private JBTextField portField;
     private JButton testConnectionButton;
     private JPanel loadingPanel;
     private AsyncProcessIcon loadingIcon;
+    private JComboBox<String> authTypeComboBox;
 
     public Neo4jBoltDataSourceDialog(
             @NotNull final Project project,
@@ -57,7 +58,8 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
         super(project, dataSourcesView);
         loadingPanel.setVisible(false);
         dataSourcesComponent = dataSourcesView.getComponent();
-        testConnectionButton.addActionListener(e -> this.validationPopup());
+        testConnectionButton.addActionListener(e -> validationPopup());
+        authTypeComboBox.addActionListener(this::handleAuthTypeChanged);
     }
 
     @Nullable
@@ -73,7 +75,7 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
             return validation("Port must be numeric", portField);
         }
 
-        extractData();
+        final var data = extractData();
 
         if (dataSourcesComponent.getDataSourceContainer().isDataSourceExists(data.dataSourceName)) {
             if (!(dataSourceToEdit != null && dataSourceToEdit.getName().equals(data.dataSourceName))) {
@@ -89,12 +91,29 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
     protected JComponent createCenterPanel() {
         if (dataSourceToEdit != null) {
             Map<String, String> conf = dataSourceToEdit.getConfiguration();
+            String protocol = conf.get(Neo4jBoltConfiguration.PROTOCOL);
             String host = conf.get(Neo4jBoltConfiguration.HOST);
             String port = conf.get(Neo4jBoltConfiguration.PORT);
+            String authType = conf.get(Neo4jBoltConfiguration.AUTH_TYPE);
             String user = conf.get(Neo4jBoltConfiguration.USER);
             String password = conf.get(Neo4jBoltConfiguration.PASSWORD);
 
             dataSourceNameField.setText(dataSourceToEdit.getName());
+
+            for (int i = 0; i < protocolComboBox.getItemCount(); i++) {
+                if (protocolComboBox.getItemAt(i).equals(protocol)) {
+                    protocolComboBox.setSelectedIndex(i);
+                    break;
+                }
+            }
+
+            for (int i = 0; i < authTypeComboBox.getItemCount(); i++) {
+                if (authTypeComboBox.getItemAt(i).equals(authType)) {
+                    authTypeComboBox.setSelectedIndex(i);
+                    break;
+                }
+            }
+
             hostField.setText(host);
             portField.setText(port);
             userField.setText(user);
@@ -103,11 +122,26 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
         return content;
     }
 
+    private void handleAuthTypeChanged(final ActionEvent e) {
+        final boolean authFieldsEnabled =
+                !authTypeComboBox.getItemAt(authTypeComboBox.getSelectedIndex()).equals("No auth");
+
+        userField.setEnabled(authFieldsEnabled);
+        passwordField.setEnabled(authFieldsEnabled);
+
+        if (!authFieldsEnabled) {
+            userField.setText("");
+            passwordField.setText("");
+        }
+    }
+
     @Override
     public DataSourceApi constructDataSource() {
-        extractData();
+        final var data = extractData();
 
         Map<String, String> configuration = new HashMap<>();
+        configuration.put(Neo4jBoltConfiguration.PROTOCOL, data.protocol);
+        configuration.put(Neo4jBoltConfiguration.AUTH_TYPE, data.authType);
         configuration.put(Neo4jBoltConfiguration.HOST, data.host);
         configuration.put(Neo4jBoltConfiguration.PORT, data.port);
         configuration.put(Neo4jBoltConfiguration.USER, data.user);
@@ -135,24 +169,28 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
         loadingPanel.setVisible(false);
     }
 
-    private void extractData() {
-        data = new Data();
-        data.dataSourceName = dataSourceNameField.getText();
-        data.host = hostField.getText();
-        data.port = portField.getText();
-        data.user = userField.getText();
-        data.password = String.valueOf(passwordField.getPassword()); // TODO: use password API
+    private Data extractData() {
+        return new Data(
+                dataSourceNameField.getText(),
+                protocolComboBox.getItemAt(protocolComboBox.getSelectedIndex()),
+                hostField.getText(),
+                portField.getText(),
+                authTypeComboBox.getItemAt(authTypeComboBox.getSelectedIndex()),
+                userField.getText(),
+                String.valueOf(passwordField.getPassword())  // TODO: use password API?
+        );
     }
 
     private void createUIComponents() {
         loadingIcon = new AsyncProcessIcon("validateConnectionIcon");
     }
 
-    private static final class Data {
-        private String dataSourceName;
-        private String host;
-        private String port;
-        private String user;
-        private String password;
-    }
+    private record Data(
+            String dataSourceName,
+            String protocol,
+            String host,
+            String port,
+            String authType,
+            String user,
+            String password) { }
 }

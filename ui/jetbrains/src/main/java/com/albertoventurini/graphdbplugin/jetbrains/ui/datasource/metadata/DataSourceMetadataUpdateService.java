@@ -7,6 +7,7 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
@@ -40,11 +41,11 @@ public final class DataSourceMetadataUpdateService {
 
     private final DataSourcesComponentMetadata dataSourcesComponent;
 
-    private final DataSourceTreeUpdaters handlers;
+    private final DataSourceTreeUpdaters treeUpdaters;
 
     DataSourceMetadataUpdateService(@NotNull final Project project) {
         dataSourcesComponent = project.getService(DataSourcesComponentMetadata.class);
-        handlers = project.getService(DataSourceTreeUpdaters.class);
+        treeUpdaters = project.getService(DataSourceTreeUpdaters.class);
     }
 
     /**
@@ -59,18 +60,18 @@ public final class DataSourceMetadataUpdateService {
             final DataSourceApi nodeDataSource) {
         final DataSourceType sourceType = nodeDataSource.getDataSourceType();
 
-        return handlers.get(sourceType)
-                .map(handler -> getMetadataAndApplyHandler(handler, node, nodeDataSource))
+        return treeUpdaters.get(sourceType)
+                .map(updater -> getMetadataAndApplyHandler(updater, node, nodeDataSource))
                 .orElse(completedFuture(false));
     }
 
     private CompletableFuture<Boolean> getMetadataAndApplyHandler(
-            final DataSourceTreeUpdater handler,
+            final DataSourceTreeUpdater updater,
             final PatchedDefaultMutableTreeNode node,
             final DataSourceApi nodeDataSource) {
         return dataSourcesComponent.getMetadata(nodeDataSource)
                 .thenApply(data -> data.map(d -> {
-                        handler.updateTree(node, d);
+                        updater.updateTree(node, d);
                         return true;
                     }).orElse(false)
                 );

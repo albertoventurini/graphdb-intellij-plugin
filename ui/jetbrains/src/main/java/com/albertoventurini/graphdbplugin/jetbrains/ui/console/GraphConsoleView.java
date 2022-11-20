@@ -18,6 +18,7 @@ import com.albertoventurini.graphdbplugin.visualization.services.LookAndFeelServ
 import com.intellij.ide.IdeEventQueue;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.ActionCallback;
@@ -99,14 +100,14 @@ public class GraphConsoleView implements Disposable {
             .appendValue(SECOND_OF_MINUTE, 2)
             .toFormatter();
 
-    public GraphConsoleView(@NotNull final Project project) {
+    public GraphConsoleView() {
         initialized = false;
 
         tablePanel = new TablePanel();
         graphPanel = new GraphPanel();
         logPanel = new LogPanel();
         parametersPanel = new ParametersPanel();
-        lookAndFeelService = project.getService(LookAndFeelService.class);
+        lookAndFeelService = ApplicationManager.getApplication().getService(LookAndFeelService.class);
     }
 
     public void initToolWindow(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
