@@ -12,9 +12,14 @@ plugins {
 
     // https://github.com/researchgate/gradle-release
     id 'net.researchgate.release' version '2.8.0'
+
+    // JetBrain's Gradle Changelog Plugin
+    // https://github.com/JetBrains/gradle-changelog-plugin
+    id 'org.jetbrains.changelog' version "$versionGradleChangelog"
 }
 
 apply plugin: 'idea'
+apply plugin: 'org.jetbrains.changelog'
 
 def configDir = new File(buildscript.sourceFile.parentFile, 'config')
 ext.checkstyleConfigDir = "$configDir/checkstyle"

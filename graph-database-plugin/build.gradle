@@ -1,6 +1,9 @@
 // Copied and adapted from plugin "Graph Database Support"
 // by Neueda Technologies, Ltd.
 // Modified by Alberto Venturini, 2022
+import java.text.SimpleDateFormat
+import org.jetbrains.changelog.Changelog
+
 apply plugin: "org.jetbrains.intellij"
 
 dependencies {
@@ -33,6 +36,26 @@ intellij {
 patchPluginXml {
     sinceBuild = "222.0"
     untilBuild = "223.*"
+
+    def allChanges = {
+        changelog.getAll().values()
+                .collect { it.withHeader(true) }
+                .collect { it.withLinkedHeader(false) }
+                .collect { it.withSummary(true) }
+                .collect { changelog.renderItem(it as Changelog.Item, Changelog.OutputType.HTML) }
+                .join('<br>\n')
+    }
+
+    changeNotes.set(
+        allChanges()
+    )
+}
+
+changelog {
+    header = "[${-> version.get()}] - ${new SimpleDateFormat("yyyy-MM-dd").format(new Date())}"
+    headerParserRegex = ~/(\d+\.\d+\.\d+[\-\w]*)/
+    keepUnreleasedSection = true
+    repositoryUrl = "https://github.com/albertoventurini/graphdb-intellij-plugin"
 }
 
 runIde {
