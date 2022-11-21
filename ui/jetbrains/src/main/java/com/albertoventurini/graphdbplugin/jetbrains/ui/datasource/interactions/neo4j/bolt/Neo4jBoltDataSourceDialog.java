@@ -185,12 +185,24 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
         loadingIcon = new AsyncProcessIcon("validateConnectionIcon");
     }
 
-    private record Data(
-            String dataSourceName,
-            String protocol,
-            String host,
-            String port,
-            String authType,
-            String user,
-            String password) { }
+    private static final class Data {
+
+        private final String dataSourceName;
+        private final String protocol;
+        private final String host;
+        private final String port;
+        private final String authType;
+        private final String user;
+        private final String password;
+
+        public Data(String dataSourceName, String protocol, String host, String port, String authType, String user, String password) {
+            this.dataSourceName = dataSourceName;
+            this.protocol = protocol;
+            this.host = host;
+            this.port = port;
+            this.authType = authType;
+            this.user = user;
+            this.password = password;
+        }
+    }
 }
