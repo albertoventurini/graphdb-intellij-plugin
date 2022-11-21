@@ -18,9 +18,7 @@ section for more information on how to contribute to this project.
 This plugin is based on the
 [Graph Database Support](https://github.com/neueda/jetbrains-plugin-graph-database-support)
 plugin, originally developed by [Neueda Technologies](http://technologies.neueda.com/).
-
-The original plugin has not been updated for a long time and does not work with recent versions of
-IntelliJ and Neo4j.
+The original plugin has not been updated for a long time and does not work with recent versions of IntelliJ and Neo4j.
 
 ## Installation
 
