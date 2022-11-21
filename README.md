@@ -8,7 +8,7 @@ The plugin provides useful developer features for working with graph databases, 
 the [Cypher](https://opencypher.org/) query language
 * connecting to and querying local and remote graph databases.
 
-![Screenshot 2022-11-21 at 09 04 17](https://user-images.githubusercontent.com/5089391/202986292-ca53a0ae-6eae-4eed-9f5a-5aa7826ed743.png)
+![Screenshot 2022-11-21 at 09 08 11](https://user-images.githubusercontent.com/5089391/202986692-78fbc25b-2d60-42bc-a746-d67db1da72b6.png)
 
 This plugin is maintained and developed in my free time as a personal project,
 for no commercial reasons.
