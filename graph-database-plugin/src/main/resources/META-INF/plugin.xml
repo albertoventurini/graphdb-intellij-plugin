@@ -1,30 +1,34 @@
 <idea-plugin>
     <id>com.albertoventurini.jetbrains.graphdbplugin</id>
     <name>Graph Database</name>
-    <!-- Should be automatically replaced by gradle build -->
+    <!-- Version is automatically replaced by the patchPluginXml task -->
     <version>9.9.9</version>
     <vendor email="aventurini@gmail.com" url="https://github.com/albertoventurini/graphdb-intellij-plugin">Alberto Venturini</vendor>
 
     <description><![CDATA[
         <p>
-            <a href="https://github.com/albertoventurini/graphdb-intellij-plugin">
-                Graph database plugin for the IntelliJ Platform
-            </a>
+            See this plugin <a href="https://github.com/albertoventurini/graphdb-intellij-plugin">on Github</a>
+        </p>
+        <p>
+            This plugin provides useful features for working with graph databases.
+            It adds syntax highlighting and autocompletion for the
+            <a href="https://opencypher.org/">Cypher</a> query language, and
+            it supports connecting to and querying remote graph databases.
         </p>
         <p>
             <b>Features:</b>
         <ul>
-            <li>Manage data sources.</li>
-            <li>Write and execute queries.</li>
+            <li>Write and execute Cypher queries.</li>
             <li>Explore query results in graph or table view.</li>
+            <li>Manage data sources.</li>
         </ul>
         </p>
 
         <p>
             <b>Supported databases:</b>
-        <ul>
-            <li>Neo4j 3.4+ (Bolt)</li>
-        </ul>
+            <ul>
+                <li>Neo4j 3.4+ (Bolt), including AuraDB</li>
+            </ul>
         </p>
 
         <p>
@@ -63,6 +67,7 @@
         </p>
         ]]></description>
 
+    <!-- Change notes are automatically replaced by the patchPluginXml task -->
     <change-notes><![CDATA[
         See
         <a href="https://github.com/albertoventurini/graphdb-intellij-plugin/releases">https://github.com/albertoventurini/graphdb-intellij-plugin/releases</a>
