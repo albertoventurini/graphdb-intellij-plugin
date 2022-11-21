@@ -138,7 +138,7 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
         constraintsMetadata
                 .forEach(row ->
                         indexTreeNode.add(of(new MetadataTreeNodeModel(CONSTRAINT, dataSourceApi,
-                                row.get("description").substring(11)))));
+                                row.get("name")))));
 
         return indexTreeNode;
     }

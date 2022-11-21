@@ -15,15 +15,15 @@ import static com.intellij.openapi.util.IconLoader.getIcon;
 public final class GraphIcons {
     public static final class Database {
         public static final Icon UNKNOWN = AllIcons.FileTypes.Unknown;
-        public static final Icon NEO4J = getIcon("/graphdb/icons/database/neo4j.svg");
+        public static final Icon NEO4J = getIcon("/graphdb/icons/database/neo4j.svg", GraphIcons.class);
     }
 
     public static final class Language {
-        public static final Icon CYPHER = getIcon("/graphdb/icons/language/cypher.svg");
+        public static final Icon CYPHER = getIcon("/graphdb/icons/language/cypher.svg", GraphIcons.class);
     }
 
     public static final class Window {
-        public static final Icon GRAPH = getIcon("/META-INF/pluginIcon.svg");
+        public static final Icon GRAPH = getIcon("/META-INF/pluginIcon.svg", GraphIcons.class);
     }
 
     public static final class Nodes {
