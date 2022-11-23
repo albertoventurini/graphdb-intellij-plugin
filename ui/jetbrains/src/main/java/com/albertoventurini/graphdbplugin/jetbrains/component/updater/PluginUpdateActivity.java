@@ -43,12 +43,14 @@ public class PluginUpdateActivity implements StartupActivity, DumbAware {
         final NotificationGroup group = NotificationGroupManager.getInstance()
                 .getNotificationGroup("graphdbplugin.notifications.update");
 
-        final Notification notification = group.createNotification(
-                GraphBundle.message("updater.title", currentVersion),
-                GraphBundle.message("updater.notification"),
-                NotificationType.INFORMATION
-        );
+        if (group != null) {
+            final Notification notification = group.createNotification(
+                    GraphBundle.message("updater.title", currentVersion),
+                    GraphBundle.message("updater.notification"),
+                    NotificationType.INFORMATION
+            );
 
-        Notifications.Bus.notify(notification, project);
+            Notifications.Bus.notify(notification, project);
+        }
     }
 }
