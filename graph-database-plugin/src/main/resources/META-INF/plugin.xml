@@ -183,7 +183,7 @@
         <preFormatProcessor implementation="com.albertoventurini.graphdbplugin.language.cypher.formatter.CypherPreFormatter" />
         <codeInsight.lineMarkerProvider language="Cypher" implementationClass="com.albertoventurini.graphdbplugin.jetbrains.component.linemarker.CypherLineMarkerProvider"/>
 
-        <notificationGroup id="GraphDatabaseSupportUpdateNotification"
+        <notificationGroup id="graphdbplugin.notifications.update"
                            displayType="STICKY_BALLOON" />
     </extensions>
 

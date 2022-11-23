@@ -8,13 +8,14 @@ package com.albertoventurini.graphdbplugin.jetbrains.component.settings;
 
 import com.intellij.openapi.application.ApplicationManager;
 
+/**
+ * This service allows persisting and reading configuration settings.
+ */
 public interface SettingsComponent {
 
     static SettingsComponent getInstance() {
         return ApplicationManager.getApplication().getService(SettingsComponent.class);
     }
-
-    String getUserId();
 
     boolean isGraphViewZoomInverted();
 

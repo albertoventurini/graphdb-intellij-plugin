@@ -16,33 +16,34 @@ import com.albertoventurini.graphdbplugin.platform.GraphBundle;
 import com.albertoventurini.graphdbplugin.platform.GraphConstants;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.event.HyperlinkEvent;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Displays a notification when the plugin was updated to a new version.
+ */
 public class PluginUpdateActivity implements StartupActivity, DumbAware {
 
-    private static final String NOTIFICATION_ID = "GraphDatabaseSupportUpdateNotification";
-    private boolean isUpdateNotificationShown = false;
+    private final AtomicBoolean isUpdateNotificationShown = new AtomicBoolean(false);
 
     @Override
-    public void runActivity(@NotNull Project project) {
-        String currentVersion = PluginUtil.getVersion();
-        String knownVersion = SettingsComponent.getInstance().getKnownPluginVersion();
+    public void runActivity(@NotNull final Project project) {
+        final String currentVersion = PluginUtil.getVersion();
+        final String knownVersion = SettingsComponent.getInstance().getKnownPluginVersion();
 
-        boolean isUpdated = !currentVersion.equals(knownVersion);
+        final boolean isUpdated = !currentVersion.equals(knownVersion);
         if (isUpdated || GraphConstants.IS_DEVELOPMENT) {
-            if (!isUpdateNotificationShown) {
+            if (isUpdateNotificationShown.compareAndSet(false, true)) {
                 SettingsComponent.getInstance().setKnownPluginVersion(currentVersion);
                 showNotification(project, currentVersion);
-                isUpdateNotificationShown = true;
             }
         }
     }
 
-    private void showNotification(Project project, String currentVersion) {
-        NotificationGroup group = NotificationGroupManager.getInstance()
-                .getNotificationGroup("GraphDatabaseSupportUpdateNotification");
+    private void showNotification(@NotNull final Project project, String currentVersion) {
+        final NotificationGroup group = NotificationGroupManager.getInstance()
+                .getNotificationGroup("graphdbplugin.notifications.update");
 
-        Notification notification = group.createNotification(
+        final Notification notification = group.createNotification(
                 GraphBundle.message("updater.title", currentVersion),
                 GraphBundle.message("updater.notification"),
                 NotificationType.INFORMATION

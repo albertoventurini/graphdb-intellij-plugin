@@ -8,22 +8,10 @@ package com.albertoventurini.graphdbplugin.jetbrains.component.settings;
 
 import com.intellij.ide.util.PropertiesComponent;
 
-import java.util.UUID;
-
 public class SettingsComponentImpl implements SettingsComponent {
 
-    private static final String USE_FILE_SPECIFIC_PARAMS_KEY = "GraphDbSupport.UseFileSpecificParams";
-    private static final String USER_ID = "GraphDbSupport.UserId";
-    private static final String KNOWN_PLUGIN_VERSION = "GraphDbSupport.KnownPluginVersion";
-    private static final String GRAPH_VIEW_INVERT_ZOOM = "GraphDbSupport.GraphViewInvertZoom";
-
-    @Override
-    public String getUserId() {
-        if (!properties().isValueSet(USER_ID)) {
-            properties().setValue(USER_ID, UUID.randomUUID().toString());
-        }
-        return properties().getValue(USER_ID);
-    }
+    private static final String KNOWN_PLUGIN_VERSION = "GraphDbPlugin.KnownPluginVersion";
+    private static final String GRAPH_VIEW_INVERT_ZOOM = "GraphDbPlugin.GraphViewInvertZoom";
 
     @Override
     public boolean isGraphViewZoomInverted() {
