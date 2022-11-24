@@ -1,4 +1,4 @@
-package com.neueda.jetbrains.plugin.graphdb.language.cypher.lexer;
+package com.albertoventurini.graphdbplugin.language.cypher.lexer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -7,7 +7,7 @@ import static com.intellij.psi.TokenType.BAD_CHARACTER;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 import static com.albertoventurini.graphdbplugin.language.cypher.CypherParserDefinition.LINE_COMMENT;
 import static com.albertoventurini.graphdbplugin.language.cypher.CypherParserDefinition.BLOCK_COMMENT;
-import static psi.com.albertoventurini.graphdbplugin.language.cypher.CypherTypes.*;
+import static com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes.*;
 
 %%
 
