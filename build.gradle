@@ -47,13 +47,6 @@ allprojects {
     sourceCompatibility = 17
     targetCompatibility = 17
 
-    intellij {
-        version = intellijSdkVersion
-        //instrumentCode = true
-        type = "IC"
-        plugins = ['java']
-    }
-
     checkstyle {
         toolVersion = "7.0"
         configFile = new File(checkstyleConfigDir, "checkstyle.xml")
