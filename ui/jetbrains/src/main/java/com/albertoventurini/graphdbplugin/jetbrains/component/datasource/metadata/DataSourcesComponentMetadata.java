@@ -11,7 +11,9 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.D
 import com.albertoventurini.graphdbplugin.jetbrains.database.DatabaseManagerService;
 import com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorService;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.MetadataRetrieveEvent;
+import com.albertoventurini.graphdbplugin.language.cypher.documentation.database.DocumentationStorage;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBus;
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
@@ -31,6 +33,8 @@ import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
 public class DataSourcesComponentMetadata {
+
+    private static final Logger LOG = Logger.getInstance(DataSourcesComponentMetadata.class);
 
     private final Map<DataSourceType, Function<DataSourceApi, DataSourceMetadata>> handlers = new HashMap<>();
     private CypherMetadataProviderService cypherMetadataProviderService;
@@ -78,15 +82,21 @@ public class DataSourcesComponentMetadata {
         GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
         Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
 
-        GraphQueryResult indexesResult = db.execute("SHOW INDEXES");
-        GraphQueryResult constraintsResult = db.execute("SHOW CONSTRAINTS");
+        try {
+            GraphQueryResult indexesResult = db.execute("SHOW INDEXES");
+            GraphQueryResult constraintsResult = db.execute("SHOW CONSTRAINTS");
+            GraphQueryResult storedProceduresResult = db.execute("SHOW PROCEDURES YIELD name, signature, description");
+
+            metadata.addIndexes(indexesResult);
+            metadata.addConstraints(constraintsResult);
+            metadata.addStoredProcedures(storedProceduresResult);
+        } catch (Exception e) {
+            LOG.warn("Unable to load indexes, constraints and procedures from the current database. Please upgrade to Neo4j 4 or 5 to fix this.");
+        }
+
         GraphQueryResult labelsQueryResult = db.execute("CALL db.labels()");
         GraphQueryResult relationshipQueryResult = db.execute("CALL db.relationshipTypes()");
         GraphQueryResult propertyKeysResult = db.execute("CALL db.propertyKeys()");
-        GraphQueryResult storedProceduresResult = db.execute("SHOW PROCEDURES YIELD name, signature, description");
-
-        metadata.addIndexes(indexesResult);
-        metadata.addConstraints(constraintsResult);
 
         List<String> listOfLabels = extractLabels(labelsQueryResult);
         if (!listOfLabels.isEmpty()) {
@@ -101,7 +111,6 @@ public class DataSourcesComponentMetadata {
         }
 
         metadata.addPropertyKeys(propertyKeysResult);
-        metadata.addStoredProcedures(storedProceduresResult);
 
         boolean supportsUserFunctions = metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.STORED_PROCEDURES)
                 .stream()
