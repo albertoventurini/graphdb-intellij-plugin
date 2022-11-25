@@ -50,6 +50,41 @@ Simply add the following comment right before a Cypher String:
 // language=Cypher
 ```
 
+## Building the plugin
+
+### Dependencies
+
+The plugin depends on JDK17 and the latest release of IntelliJ. Please make sure
+you have those installed on your machine.
+
+Moreover, if you plan on making changes to a grammar or lexer files, you also need
+to install the [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit) IntelliJ plugin.
+
+### Build instructions
+
+If you changed a grammar or lexer files, you need to regenerate the lexer and parser classes.
+Please follow the instructions at [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit)
+in order to do that.
+
+After that, the plugin can be built with a simple Gradle command:
+
+```shell
+./gradlew :graph-database-plugin:buildPlugin
+```
+
+Before a release, the plugin should also be tested and verified with the following commands:
+
+```shell
+./gradlew test
+./gradlew :graph-database-plugin:runPluginVerifier
+```
+
+The plugin can also be manually tested on a sandboxed instance of IntelliJ with the command:
+
+```shell
+./gradlew :graph-database-plugin:runIde
+```
+
 ## Getting help
 
 Please feel free to report any bugs by creating a
@@ -66,6 +101,3 @@ Alternatively, if you find this plugin useful, please feel free to
 
 Any other comments or words of encouragement? Please get in touch
 via email at aventurini AT gmail DOT com.
-
-
-
