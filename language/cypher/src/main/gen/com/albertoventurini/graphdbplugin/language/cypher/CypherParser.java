@@ -1,9 +1,3 @@
-/**
- * Copied and adapted from plugin
- * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
- * by Neueda Technologies, Ltd.
- * Modified by Alberto Venturini, 2022
- */
 // This is a generated file. Not intended for manual editing.
 package com.albertoventurini.graphdbplugin.language.cypher;
 
@@ -12,8 +6,8 @@ import com.intellij.lang.PsiBuilder.Marker;
 import static com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes.*;
 import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.IFileElementType;
 import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.TokenSet;
 import com.intellij.lang.PsiParser;
 import com.intellij.lang.LightPsiParser;
 
@@ -29,16 +23,15 @@ public class CypherParser implements PsiParser, LightPsiParser {
     boolean r;
     b = adapt_builder_(t, b, this, null);
     Marker m = enter_section_(b, 0, _COLLAPSE_, null);
-    if (t instanceof IFileElementType) {
-      r = parse_root_(t, b, 0);
-    }
-    else {
-      r = false;
-    }
+    r = parse_root_(t, b);
     exit_section_(b, 0, m, t, r, true, TRUE_CONDITION);
   }
 
-  protected boolean parse_root_(IElementType t, PsiBuilder b, int l) {
+  protected boolean parse_root_(IElementType t, PsiBuilder b) {
+    return parse_root_(t, b, 0);
+  }
+
+  static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
     return cypher(b, l + 1);
   }
 
@@ -1598,11 +1591,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
   private static boolean IdLookup_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "IdLookup_1")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = LiteralIds(b, l + 1);
     if (!r) r = Parameter(b, l + 1);
     if (!r) r = consumeToken(b, OP_MUL);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -3119,7 +3110,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
     r = ReadingWithReturn_0(b, l + 1);
     p = r; // pin = 1
     r = r && Return(b, l + 1);
-    exit_section_(b, l, m, r, p, statement_recover_parser_);
+    exit_section_(b, l, m, r, p, CypherParser::statement_recover);
     return r || p;
   }
 
@@ -3813,10 +3804,8 @@ public class CypherParser implements PsiParser, LightPsiParser {
   private static boolean ReturnItems_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ReturnItems_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = consumeToken(b, OP_MUL);
     if (!r) r = ReturnItem(b, l + 1);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -4280,7 +4269,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
     p = r; // pin = 1
     r = r && report_error_(b, Statement(b, l + 1));
     r = p && StatementItem_2(b, l + 1) && r;
-    exit_section_(b, l, m, r, p, statement_recover_parser_);
+    exit_section_(b, l, m, r, p, CypherParser::statement_recover);
     return r || p;
   }
 
@@ -4345,10 +4334,8 @@ public class CypherParser implements PsiParser, LightPsiParser {
   private static boolean UnaryOperator_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "UnaryOperator_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = consumeToken(b, OP_MINUS);
     if (!r) r = consumeToken(b, OP_PLUS);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -4611,7 +4598,6 @@ public class CypherParser implements PsiParser, LightPsiParser {
   private static boolean statement_recover_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "statement_recover_0")) return false;
     boolean r;
-    Marker m = enter_section_(b);
     r = consumeToken(b, SEMICOLON);
     if (!r) r = consumeToken(b, K_USING);
     if (!r) r = consumeToken(b, K_UNION);
@@ -4636,13 +4622,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, K_CALL);
     if (!r) r = consumeToken(b, K_OPTIONAL);
     if (!r) r = consumeToken(b, K_DETACH);
-    exit_section_(b, m, null, r);
     return r;
   }
 
-  static final Parser statement_recover_parser_ = new Parser() {
-    public boolean parse(PsiBuilder b, int l) {
-      return statement_recover(b, l + 1);
-    }
-  };
 }

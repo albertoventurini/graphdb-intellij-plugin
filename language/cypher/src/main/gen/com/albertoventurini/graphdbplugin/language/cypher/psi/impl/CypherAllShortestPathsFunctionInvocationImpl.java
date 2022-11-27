@@ -1,21 +1,15 @@
-/**
- * Copied and adapted from plugin
- * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
- * by Neueda Technologies, Ltd.
- * Modified by Alberto Venturini, 2022
- */
 // This is a generated file. Not intended for manual editing.
 package com.albertoventurini.graphdbplugin.language.cypher.psi.impl;
 
-import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherAllShortestPathsFunctionInvocation;
-import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherPatternElement;
-import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes;
-import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherVisitor;
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
+import static com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.albertoventurini.graphdbplugin.language.cypher.psi.*;
 
 public class CypherAllShortestPathsFunctionInvocationImpl extends ASTWrapperPsiElement implements CypherAllShortestPathsFunctionInvocation {
 
@@ -27,6 +21,7 @@ public class CypherAllShortestPathsFunctionInvocationImpl extends ASTWrapperPsiE
     visitor.visitAllShortestPathsFunctionInvocation(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof CypherVisitor) accept((CypherVisitor)visitor);
     else super.accept(visitor);
@@ -36,12 +31,6 @@ public class CypherAllShortestPathsFunctionInvocationImpl extends ASTWrapperPsiE
   @NotNull
   public CypherPatternElement getPatternElement() {
     return findNotNullChildByClass(CypherPatternElement.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKAllshortestpaths() {
-    return findNotNullChildByType(CypherTypes.K_ALLSHORTESTPATHS);
   }
 
 }
