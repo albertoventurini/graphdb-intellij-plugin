@@ -280,8 +280,8 @@ public interface CypherTypes {
   IElementType OP_QUESTIONSIGN = new CypherTokenType("?");
   IElementType OP_RANGE = new CypherTokenType("..");
   IElementType OP_REGEXMATCH = new CypherTokenType("=~");
-  IElementType PARENTHESE_CLOSE = new CypherTokenType(")");
-  IElementType PARENTHESE_OPEN = new CypherTokenType("(");
+  IElementType PARENTHESIS_CLOSE = new CypherTokenType(")");
+  IElementType PARENTHESIS_OPEN = new CypherTokenType("(");
   IElementType SEMICOLON = new CypherTokenType(";");
 
   class Factory {

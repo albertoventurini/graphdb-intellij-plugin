@@ -12,13 +12,13 @@ import static com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes
 %%
 
 %{
-  public _CypherLexer() {
+  public CypherLexer() {
     this((java.io.Reader)null);
   }
 %}
 
 %public
-%class _CypherLexer
+%class CypherLexer
 %implements FlexLexer
 %function advance
 %type IElementType
@@ -129,8 +129,8 @@ BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
   {BLOCK_COMMENT}           { return BLOCK_COMMENT; }
 
   ";"                       { return SEMICOLON; }
-  "("                       { return PARENTHESE_OPEN; }
-  ")"                       { return PARENTHESE_CLOSE; }
+  "("                       { return PARENTHESIS_OPEN; }
+  ")"                       { return PARENTHESIS_CLOSE; }
   "{"                       { return BRACKET_CURLYOPEN; }
   "}"                       { return BRACKET_CURLYCLOSE; }
   "["                       { return BRACKET_SQUAREOPEN; }
@@ -244,6 +244,7 @@ BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
   {K_SCALAR}                { return K_SCALAR; }
   {K_OF}                    { return K_OF; }
   {K_ADD}                   { return K_ADD; }
+
   {L_IDENTIFIER}            { return L_IDENTIFIER; }
   {L_IDENTIFIER_TEXT}       { return L_IDENTIFIER_TEXT; }
   {L_DECIMAL}               { return L_DECIMAL; }

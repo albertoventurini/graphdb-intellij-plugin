@@ -22,8 +22,8 @@
   tokens=[
     // base
     semicolon=";"
-    parenthese_open="("
-    parenthese_close=")"
+    parenthesis_open="("
+    parenthesis_close=")"
     bracket_CurlyOpen="{"
     bracket_CurlyClose="}"
     bracket_SquareOpen="["

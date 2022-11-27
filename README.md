@@ -66,7 +66,7 @@ If you changed a grammar or lexer files, you need to regenerate the lexer and pa
 Please follow the instructions at [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit)
 in order to do that.
 
-After that, the plugin can be built with a simple Gradle command:
+After that, the plugin can be built with the following Gradle command:
 
 ```shell
 ./gradlew :graph-database-plugin:buildPlugin

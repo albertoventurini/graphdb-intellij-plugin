@@ -55,9 +55,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_ALL)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_ALL, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_ALL, PARENTHESIS_OPEN);
     r = r && FilterExpression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, ALL_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -81,9 +81,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_ALLSHORTESTPATHS)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_ALLSHORTESTPATHS, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_ALLSHORTESTPATHS, PARENTHESIS_OPEN);
     r = r && PatternElement(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, ALL_SHORTEST_PATHS_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -120,9 +120,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_ANY)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_ANY, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_ANY, PARENTHESIS_OPEN);
     r = r && FilterExpression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, ANY_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -366,7 +366,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_COUNT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_COUNT, PARENTHESE_OPEN, OP_MUL, PARENTHESE_CLOSE);
+    r = consumeTokens(b, 0, K_COUNT, PARENTHESIS_OPEN, OP_MUL, PARENTHESIS_CLOSE);
     exit_section_(b, m, COUNT_STAR, r);
     return r;
   }
@@ -615,9 +615,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_EXISTS)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_EXISTS, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_EXISTS, PARENTHESIS_OPEN);
     r = r && Expression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, EXISTS_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -1268,10 +1268,10 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_EXTRACT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_EXTRACT, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_EXTRACT, PARENTHESIS_OPEN);
     r = r && FilterExpression(b, l + 1);
     r = r && ExtractFunctionInvocation_3(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, EXTRACT_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -1320,9 +1320,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_FILTER)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_FILTER, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_FILTER, PARENTHESIS_OPEN);
     r = r && FilterExpression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, FILTER_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -1334,13 +1334,13 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_FOREACH)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_FOREACH, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_FOREACH, PARENTHESIS_OPEN);
     r = r && Variable(b, l + 1);
     r = r && consumeToken(b, K_IN);
     r = r && Expression(b, l + 1);
     r = r && consumeToken(b, OP_PIPE);
     r = r && Foreach_6(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, FOREACH, r);
     return r;
   }
@@ -1364,14 +1364,14 @@ public class CypherParser implements PsiParser, LightPsiParser {
   // "(" K_DISTINCT? Expression? ("," Expression)* ")"
   public static boolean FunctionArguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FunctionArguments")) return false;
-    if (!nextTokenIs(b, PARENTHESE_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESIS_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, PARENTHESE_OPEN);
+    r = consumeToken(b, PARENTHESIS_OPEN);
     r = r && FunctionArguments_1(b, l + 1);
     r = r && FunctionArguments_2(b, l + 1);
     r = r && FunctionArguments_3(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, FUNCTION_ARGUMENTS, r);
     return r;
   }
@@ -1440,7 +1440,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "FunctionInvocation_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, PARENTHESE_OPEN, OP_MUL, PARENTHESE_CLOSE);
+    r = consumeTokens(b, 0, PARENTHESIS_OPEN, OP_MUL, PARENTHESIS_CLOSE);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1507,9 +1507,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, K_INDEX);
     r = r && Variable(b, l + 1);
     r = r && NodeLabel(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_OPEN);
+    r = r && consumeToken(b, PARENTHESIS_OPEN);
     r = r && PropertyKeyName(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1577,12 +1577,12 @@ public class CypherParser implements PsiParser, LightPsiParser {
   // "(" (LiteralIds | Parameter | "*") ")"
   public static boolean IdLookup(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "IdLookup")) return false;
-    if (!nextTokenIs(b, PARENTHESE_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESIS_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, PARENTHESE_OPEN);
+    r = consumeToken(b, PARENTHESIS_OPEN);
     r = r && IdLookup_1(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, ID_LOOKUP, r);
     return r;
   }
@@ -1606,11 +1606,11 @@ public class CypherParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COLON);
     r = r && SymbolicNameString(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_OPEN);
+    r = r && consumeToken(b, PARENTHESIS_OPEN);
     r = r && SymbolicNameString(b, l + 1);
     r = r && consumeToken(b, OP_EQUAL);
     r = r && IdentifiedIndexLookup_5(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, IDENTIFIED_INDEX_LOOKUP, r);
     return r;
   }
@@ -1653,9 +1653,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeToken(b, OP_COLON);
     r = r && SymbolicNameString(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_OPEN);
+    r = r && consumeToken(b, PARENTHESIS_OPEN);
     r = r && IndexQuery_3(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, INDEX_QUERY, r);
     return r;
   }
@@ -1678,9 +1678,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, K_INDEX, K_ON);
     r = r && NodeLabel(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_OPEN);
+    r = r && consumeToken(b, PARENTHESIS_OPEN);
     r = r && PropertyKeyNames(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, INDEX_SYNTAX, r);
     return r;
   }
@@ -2289,15 +2289,15 @@ public class CypherParser implements PsiParser, LightPsiParser {
   // "(" Variable? NodeLabels? Properties? ")"
   public static boolean NodePattern(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NodePattern")) return false;
-    if (!nextTokenIs(b, PARENTHESE_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESIS_OPEN)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, NODE_PATTERN, null);
-    r = consumeToken(b, PARENTHESE_OPEN);
+    r = consumeToken(b, PARENTHESIS_OPEN);
     p = r; // pin = 1
     r = r && report_error_(b, NodePattern_1(b, l + 1));
     r = p && report_error_(b, NodePattern_2(b, l + 1)) && r;
     r = p && report_error_(b, NodePattern_3(b, l + 1)) && r;
-    r = p && consumeToken(b, PARENTHESE_CLOSE) && r;
+    r = p && consumeToken(b, PARENTHESIS_CLOSE) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -2330,12 +2330,12 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_CONSTRAINT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_CONSTRAINT, K_ON, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_CONSTRAINT, K_ON, PARENTHESIS_OPEN);
     r = r && Variable(b, l + 1);
     r = r && NodeLabel(b, l + 1);
-    r = r && consumeTokens(b, 0, PARENTHESE_CLOSE, K_ASSERT, K_EXISTS, PARENTHESE_OPEN);
+    r = r && consumeTokens(b, 0, PARENTHESIS_CLOSE, K_ASSERT, K_EXISTS, PARENTHESIS_OPEN);
     r = r && PropertyExpression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, NODE_PROPERTY_EXISTENCE_CONSTRAINT_SYNTAX, r);
     return r;
   }
@@ -2347,9 +2347,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_NONE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_NONE, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_NONE, PARENTHESIS_OPEN);
     r = r && FilterExpression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, NONE_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -2455,13 +2455,13 @@ public class CypherParser implements PsiParser, LightPsiParser {
   // "(" Expression ")"
   public static boolean ParenthesizedExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ParenthesizedExpression")) return false;
-    if (!nextTokenIs(b, PARENTHESE_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESIS_OPEN)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, PARENTHESIZED_EXPRESSION, null);
-    r = consumeToken(b, PARENTHESE_OPEN);
+    r = consumeToken(b, PARENTHESIS_OPEN);
     p = r; // pin = 1
     r = r && report_error_(b, Expression(b, l + 1));
-    r = p && consumeToken(b, PARENTHESE_CLOSE) && r;
+    r = p && consumeToken(b, PARENTHESIS_CLOSE) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -2628,7 +2628,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
   // ("(" PatternElement ")") | (NodePattern PatternElementChain*)
   public static boolean PatternElement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "PatternElement")) return false;
-    if (!nextTokenIs(b, PARENTHESE_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESIS_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = PatternElement_0(b, l + 1);
@@ -2642,9 +2642,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "PatternElement_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, PARENTHESE_OPEN);
+    r = consumeToken(b, PARENTHESIS_OPEN);
     r = r && PatternElement(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -2739,13 +2739,13 @@ public class CypherParser implements PsiParser, LightPsiParser {
   // "(" Expression? ("," Expression)* ")"
   public static boolean ProcedureArguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ProcedureArguments")) return false;
-    if (!nextTokenIs(b, PARENTHESE_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESIS_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeToken(b, PARENTHESE_OPEN);
+    r = consumeToken(b, PARENTHESIS_OPEN);
     r = r && ProcedureArguments_1(b, l + 1);
     r = r && ProcedureArguments_2(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, PROCEDURE_ARGUMENTS, r);
     return r;
   }
@@ -3132,7 +3132,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_REDUCE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_REDUCE, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_REDUCE, PARENTHESIS_OPEN);
     r = r && Variable(b, l + 1);
     r = r && consumeToken(b, OP_EQUAL);
     r = r && Expression(b, l + 1);
@@ -3140,7 +3140,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
     r = r && IdInColl(b, l + 1);
     r = r && consumeToken(b, OP_PIPE);
     r = r && Expression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, REDUCE_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -3322,7 +3322,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
   //       | ("(" ")" "<" "-" "[" Variable RelType "]" "-" "(" ")")
   public static boolean RelationshipPatternSyntax(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "RelationshipPatternSyntax")) return false;
-    if (!nextTokenIs(b, PARENTHESE_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESIS_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = RelationshipPatternSyntax_0(b, l + 1);
@@ -3337,10 +3337,10 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "RelationshipPatternSyntax_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, PARENTHESE_OPEN, PARENTHESE_CLOSE, OP_MINUS, BRACKET_SQUAREOPEN);
+    r = consumeTokens(b, 0, PARENTHESIS_OPEN, PARENTHESIS_CLOSE, OP_MINUS, BRACKET_SQUAREOPEN);
     r = r && Variable(b, l + 1);
     r = r && RelType(b, l + 1);
-    r = r && consumeTokens(b, 0, BRACKET_SQUARECLOSE, OP_MINUS, PARENTHESE_OPEN, PARENTHESE_CLOSE);
+    r = r && consumeTokens(b, 0, BRACKET_SQUARECLOSE, OP_MINUS, PARENTHESIS_OPEN, PARENTHESIS_CLOSE);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -3350,10 +3350,10 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "RelationshipPatternSyntax_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, PARENTHESE_OPEN, PARENTHESE_CLOSE, OP_MINUS, BRACKET_SQUAREOPEN);
+    r = consumeTokens(b, 0, PARENTHESIS_OPEN, PARENTHESIS_CLOSE, OP_MINUS, BRACKET_SQUAREOPEN);
     r = r && Variable(b, l + 1);
     r = r && RelType(b, l + 1);
-    r = r && consumeTokens(b, 0, BRACKET_SQUARECLOSE, OP_MINUS, OP_GREATHERTHEN, PARENTHESE_OPEN, PARENTHESE_CLOSE);
+    r = r && consumeTokens(b, 0, BRACKET_SQUARECLOSE, OP_MINUS, OP_GREATHERTHEN, PARENTHESIS_OPEN, PARENTHESIS_CLOSE);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -3363,10 +3363,10 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "RelationshipPatternSyntax_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, PARENTHESE_OPEN, PARENTHESE_CLOSE, OP_LESSTHEN, OP_MINUS, BRACKET_SQUAREOPEN);
+    r = consumeTokens(b, 0, PARENTHESIS_OPEN, PARENTHESIS_CLOSE, OP_LESSTHEN, OP_MINUS, BRACKET_SQUAREOPEN);
     r = r && Variable(b, l + 1);
     r = r && RelType(b, l + 1);
-    r = r && consumeTokens(b, 0, BRACKET_SQUARECLOSE, OP_MINUS, PARENTHESE_OPEN, PARENTHESE_CLOSE);
+    r = r && consumeTokens(b, 0, BRACKET_SQUARECLOSE, OP_MINUS, PARENTHESIS_OPEN, PARENTHESIS_CLOSE);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -3380,9 +3380,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, K_CONSTRAINT, K_ON);
     r = r && RelationshipPatternSyntax(b, l + 1);
-    r = r && consumeTokens(b, 0, K_ASSERT, K_EXISTS, PARENTHESE_OPEN);
+    r = r && consumeTokens(b, 0, K_ASSERT, K_EXISTS, PARENTHESIS_OPEN);
     r = r && PropertyExpression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, RELATIONSHIP_PROPERTY_EXISTENCE_CONSTRAINT_SYNTAX, r);
     return r;
   }
@@ -3436,7 +3436,7 @@ public class CypherParser implements PsiParser, LightPsiParser {
   // NodePattern PatternElementChain+
   public static boolean RelationshipsPattern(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "RelationshipsPattern")) return false;
-    if (!nextTokenIs(b, PARENTHESE_OPEN)) return false;
+    if (!nextTokenIs(b, PARENTHESIS_OPEN)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = NodePattern(b, l + 1);
@@ -3950,9 +3950,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_SHORTESTPATH)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_SHORTESTPATH, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_SHORTESTPATH, PARENTHESIS_OPEN);
     r = r && PatternElement(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, SHORTEST_PATH_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -3988,9 +3988,9 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_SINGLE)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_SINGLE, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_SINGLE, PARENTHESIS_OPEN);
     r = r && FilterExpression(b, l + 1);
-    r = r && consumeToken(b, PARENTHESE_CLOSE);
+    r = r && consumeToken(b, PARENTHESIS_CLOSE);
     exit_section_(b, m, SINGLE_FUNCTION_INVOCATION, r);
     return r;
   }
@@ -4379,10 +4379,10 @@ public class CypherParser implements PsiParser, LightPsiParser {
     if (!nextTokenIs(b, K_CONSTRAINT)) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = consumeTokens(b, 0, K_CONSTRAINT, K_ON, PARENTHESE_OPEN);
+    r = consumeTokens(b, 0, K_CONSTRAINT, K_ON, PARENTHESIS_OPEN);
     r = r && Variable(b, l + 1);
     r = r && NodeLabel(b, l + 1);
-    r = r && consumeTokens(b, 0, PARENTHESE_CLOSE, K_ASSERT);
+    r = r && consumeTokens(b, 0, PARENTHESIS_CLOSE, K_ASSERT);
     r = r && PropertyExpression(b, l + 1);
     r = r && consumeTokens(b, 0, K_IS, K_UNIQUE);
     exit_section_(b, m, UNIQUE_CONSTRAINT_SYNTAX, r);
