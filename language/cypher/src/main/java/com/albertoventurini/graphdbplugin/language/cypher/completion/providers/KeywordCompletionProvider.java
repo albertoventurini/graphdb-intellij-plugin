@@ -27,7 +27,7 @@ public final class KeywordCompletionProvider extends BaseCompletionProvider {
 
     @Override
     protected void addCompletions(@NotNull CompletionParameters parameters,
-                                  ProcessingContext context,
+                                  @NotNull ProcessingContext context,
                                   @NotNull CompletionResultSet result) {
         result.addAllElements(CypherKeywords.KEYWORD_LOOKUP_ELEMENTS);
     }
