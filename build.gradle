@@ -26,19 +26,8 @@ ext.checkstyleConfigDir = "$configDir/checkstyle"
 
 allprojects {
 
-    buildscript {
-        repositories {
-            mavenCentral()
-            mavenLocal()
-            jcenter()
-        }
-    }
-
     repositories {
         mavenCentral()
-//        mavenLocal()
-//        jcenter()
-//        maven { url 'https://dl.bintray.com/jetbrains/intellij-plugin-service' }
     }
 
     apply plugin: 'java'
@@ -51,6 +40,11 @@ allprojects {
         toolVersion = "7.0"
         configFile = new File(checkstyleConfigDir, "checkstyle.xml")
         configProperties.checkstyleConfigDir = checkstyleConfigDir
+    }
+
+    intellij {
+        version = intellijSdkVersion
+        plugins = ['java']
     }
 }
 
