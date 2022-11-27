@@ -17,7 +17,7 @@ import com.albertoventurini.graphdbplugin.language.cypher.CypherLanguage;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherElement;
 import org.jetbrains.annotations.NotNull;
 
-public class UserFunctionsCompletionProvider extends BaseCompletionProvider {
+public final class UserFunctionsCompletionProvider extends BaseCompletionProvider {
 
     public static final ElementPattern<PsiElement> PATTERN = PlatformPatterns
             .psiElement()
@@ -25,7 +25,10 @@ public class UserFunctionsCompletionProvider extends BaseCompletionProvider {
             .withLanguage(CypherLanguage.INSTANCE);
 
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters, ProcessingContext context, @NotNull CompletionResultSet result) {
+    protected void addCompletions(
+            @NotNull final CompletionParameters parameters,
+            @NotNull final ProcessingContext context,
+            @NotNull final CompletionResultSet result) {
         withCypherMetadataProvider(parameters, (metadataProvider -> metadataProvider.getUserFunctions().stream()
                 .map(CypherElement::getLookupElement)
                 .forEach(result::addElement)));

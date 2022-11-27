@@ -24,11 +24,11 @@ public final class BuiltInFunctionCompletionProvider extends BaseCompletionProvi
             .inside(PlatformPatterns.psiElement(CypherTypes.EXPRESSION))
             .withLanguage(CypherLanguage.INSTANCE);
 
-
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters,
-                                  ProcessingContext context,
-                                  @NotNull CompletionResultSet result) {
+    protected void addCompletions(
+            @NotNull final CompletionParameters parameters,
+            @NotNull final ProcessingContext context,
+            @NotNull final CompletionResultSet result) {
         result.addAllElements(CypherBuiltInFunctions.FUNCTION_LOOKUP_ELEMENTS);
     }
 }

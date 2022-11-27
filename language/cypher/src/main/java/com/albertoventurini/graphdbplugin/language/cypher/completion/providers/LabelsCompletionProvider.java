@@ -27,9 +27,10 @@ public final class LabelsCompletionProvider extends BaseCompletionProvider {
             .withLanguage(CypherLanguage.INSTANCE);
 
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters,
-                                  @NotNull ProcessingContext context,
-                                  @NotNull CompletionResultSet result) {
+    protected void addCompletions(
+            @NotNull final CompletionParameters parameters,
+            @NotNull final ProcessingContext context,
+            @NotNull final CompletionResultSet result) {
         withCypherMetadataProvider(parameters, (metadataProvider ->
             Stream.concat(metadataProvider.getLabels().stream(), Stream.empty())
                 .map(CypherElement::getLookupElement)

@@ -19,7 +19,9 @@ import org.jetbrains.annotations.NotNull;
 public class CypherSyntaxHighlighterAnnotator implements Annotator {
 
     @Override
-    public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
+    public void annotate(
+            @NotNull final PsiElement element,
+            @NotNull final AnnotationHolder holder) {
         if (element instanceof CypherVariable) {
             setHighlighting(holder, CypherSyntaxColors.VARIABLE);
         } else if (element instanceof CypherFunctionInvocationBody || element instanceof CypherProcedureInvocationBody) {
@@ -33,37 +35,26 @@ public class CypherSyntaxHighlighterAnnotator implements Annotator {
         } else if (element instanceof CypherParameter) {
             setHighlighting(holder, CypherSyntaxColors.PARAMETER);
         } else if (element instanceof CypherShortestPathFunctionInvocation) {
-            CypherShortestPathFunctionInvocation invocation = (CypherShortestPathFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherAllShortestPathsFunctionInvocation) {
-            CypherAllShortestPathsFunctionInvocation invocation = (CypherAllShortestPathsFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherFilterFunctionInvocation) {
-            CypherFilterFunctionInvocation invocation = (CypherFilterFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherExtractFunctionInvocation) {
-            CypherExtractFunctionInvocation invocation = (CypherExtractFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherReduceFunctionInvocation) {
-            CypherReduceFunctionInvocation invocation = (CypherReduceFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherAllFunctionInvocation) {
-            CypherAllFunctionInvocation invocation = (CypherAllFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherAnyFunctionInvocation) {
-            CypherAnyFunctionInvocation invocation = (CypherAnyFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherNoneFunctionInvocation) {
-            CypherNoneFunctionInvocation invocation = (CypherNoneFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherSingleFunctionInvocation) {
-            CypherSingleFunctionInvocation invocation = (CypherSingleFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherExistsFunctionInvocation) {
-            CypherExistsFunctionInvocation invocation = (CypherExistsFunctionInvocation) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherNodeLookup) {
-            CypherNodeLookup nodeLookup = (CypherNodeLookup) element;
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherRelationshipLookup) {
             setHighlighting(holder, CypherSyntaxColors.FUNCTION);

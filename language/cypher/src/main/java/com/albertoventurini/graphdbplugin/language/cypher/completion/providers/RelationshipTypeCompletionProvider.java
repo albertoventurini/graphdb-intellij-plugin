@@ -25,9 +25,10 @@ public final class RelationshipTypeCompletionProvider extends BaseCompletionProv
             .withLanguage(CypherLanguage.INSTANCE);
 
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters,
-                                  @NotNull ProcessingContext context,
-                                  @NotNull CompletionResultSet result) {
+    protected void addCompletions(
+            @NotNull final CompletionParameters parameters,
+            @NotNull final ProcessingContext context,
+            @NotNull final CompletionResultSet result) {
         withCypherMetadataProvider(parameters, (metadataProvider -> metadataProvider.getRelationshipTypes().stream()
                 .map(CypherElement::getLookupElement)
                 .forEach(result::addElement)));
