@@ -1,20 +1,15 @@
-/**
- * Copied and adapted from plugin
- * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
- * by Neueda Technologies, Ltd.
- * Modified by Alberto Venturini, 2022
- */
 // This is a generated file. Not intended for manual editing.
 package com.albertoventurini.graphdbplugin.language.cypher.psi.impl;
 
-import com.albertoventurini.graphdbplugin.language.cypher.psi.*;
+import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
-
+import com.intellij.psi.util.PsiTreeUtil;
 import static com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.albertoventurini.graphdbplugin.language.cypher.psi.*;
 
 public class CypherNodePropertyExistenceConstraintSyntaxImpl extends ASTWrapperPsiElement implements CypherNodePropertyExistenceConstraintSyntax {
 
@@ -26,6 +21,7 @@ public class CypherNodePropertyExistenceConstraintSyntaxImpl extends ASTWrapperP
     visitor.visitNodePropertyExistenceConstraintSyntax(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof CypherVisitor) accept((CypherVisitor)visitor);
     else super.accept(visitor);
@@ -47,30 +43,6 @@ public class CypherNodePropertyExistenceConstraintSyntaxImpl extends ASTWrapperP
   @NotNull
   public CypherVariable getVariable() {
     return findNotNullChildByClass(CypherVariable.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKAssert() {
-    return findNotNullChildByType(K_ASSERT);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKConstraint() {
-    return findNotNullChildByType(K_CONSTRAINT);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKExists() {
-    return findNotNullChildByType(K_EXISTS);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKOn() {
-    return findNotNullChildByType(K_ON);
   }
 
 }

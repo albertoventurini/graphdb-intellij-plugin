@@ -69,7 +69,7 @@ public class CypherSyntaxHighlighter extends SyntaxHighlighterBase {
         if (tokenType.equals(CypherTypes.SEMICOLON)) {
             return SEMICOLON_KEYS;
         }
-        if (tokenType.equals(CypherTypes.PARENTHESE_OPEN) || tokenType.equals(CypherTypes.PARENTHESE_CLOSE)) {
+        if (tokenType.equals(CypherTypes.PARENTHESIS_OPEN) || tokenType.equals(CypherTypes.PARENTHESIS_CLOSE)) {
             return PARENTHESES_KEYS;
         }
         if (tokenType.equals(CypherTypes.BRACKET_CURLYOPEN)

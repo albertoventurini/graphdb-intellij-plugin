@@ -13,9 +13,9 @@ import com.intellij.codeInsight.completion.CompletionType;
 /**
  * Entry point for Cypher auto completion.
  */
-public class CypherCompletionContributor extends CompletionContributor {
+class CypherCompletionContributor extends CompletionContributor {
 
-    public CypherCompletionContributor() {
+    CypherCompletionContributor() {
         extend(CompletionType.BASIC,
                 KeywordCompletionProvider.PATTERN,
                 new KeywordCompletionProvider());

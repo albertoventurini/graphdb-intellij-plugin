@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.language.cypher.completion.providers;
 
+import com.albertoventurini.graphdbplugin.language.cypher.CypherParserDefinition;
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionResultSet;
 import com.intellij.patterns.ElementPattern;
@@ -20,13 +21,16 @@ import java.util.stream.Stream;
 
 public final class LabelsCompletionProvider extends BaseCompletionProvider {
     public static final ElementPattern<PsiElement> PATTERN = PlatformPatterns
-                   .psiElement()
-                   .withLanguage(CypherLanguage.INSTANCE);
+            .psiElement()
+            .andNot(PlatformPatterns.psiElement(CypherParserDefinition.LINE_COMMENT))
+            .andNot(PlatformPatterns.psiElement(CypherParserDefinition.BLOCK_COMMENT))
+            .withLanguage(CypherLanguage.INSTANCE);
 
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters,
-                                  ProcessingContext context,
-                                  @NotNull CompletionResultSet result) {
+    protected void addCompletions(
+            @NotNull final CompletionParameters parameters,
+            @NotNull final ProcessingContext context,
+            @NotNull final CompletionResultSet result) {
         withCypherMetadataProvider(parameters, (metadataProvider ->
             Stream.concat(metadataProvider.getLabels().stream(), Stream.empty())
                 .map(CypherElement::getLookupElement)

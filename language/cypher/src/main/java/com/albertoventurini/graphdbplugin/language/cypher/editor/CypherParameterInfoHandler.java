@@ -43,7 +43,7 @@ public class CypherParameterInfoHandler
     @NotNull
     @Override
     public IElementType getActualParametersRBraceType() {
-        return CypherTypes.PARENTHESE_CLOSE;
+        return CypherTypes.PARENTHESIS_CLOSE;
     }
 
     @NotNull

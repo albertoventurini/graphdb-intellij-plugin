@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.language.cypher.completion.providers;
 
+import com.albertoventurini.graphdbplugin.language.cypher.CypherParserDefinition;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.codeInsight.completion.CompletionParameters;
@@ -19,15 +20,18 @@ import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.el
 
 public final class ProceduresCompletionProvider extends BaseCompletionProvider {
     public static final ElementPattern<PsiElement> PATTERN = PlatformPatterns
-               .psiElement()
-               .withLanguage(CypherLanguage.INSTANCE);
+            .psiElement()
+            .andNot(PlatformPatterns.psiElement(CypherParserDefinition.LINE_COMMENT))
+            .andNot(PlatformPatterns.psiElement(CypherParserDefinition.BLOCK_COMMENT))
+            .withLanguage(CypherLanguage.INSTANCE);
 
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters,
-                                  ProcessingContext context,
-                                  @NotNull CompletionResultSet result) {
+    protected void addCompletions(
+            @NotNull final CompletionParameters parameters,
+            @NotNull final ProcessingContext context,
+            @NotNull final CompletionResultSet result) {
         withCypherMetadataProvider(parameters, (metadataProvider -> metadataProvider.getProcedures().stream()
-                   .map(CypherElement::getLookupElement)
-                   .forEach(result::addElement)));
+                .map(CypherElement::getLookupElement)
+                .forEach(result::addElement)));
     }
 }

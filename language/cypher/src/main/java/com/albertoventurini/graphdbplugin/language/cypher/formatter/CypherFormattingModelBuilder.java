@@ -45,9 +45,9 @@ public class CypherFormattingModelBuilder implements FormattingModelBuilder {
                 .afterInside(CypherTypes.OP_COLON, CypherTypes.MAP_LITERAL).spaces(1)
                 .after(CypherTypes.OP_COLON).none()
 
-                .beforeInside(CypherTypes.PARENTHESE_CLOSE, CypherTypes.FOREACH).lineBreakInCode()
+                .beforeInside(CypherTypes.PARENTHESIS_CLOSE, CypherTypes.FOREACH).lineBreakInCode()
 
-                .withinPair(CypherTypes.PARENTHESE_OPEN, CypherTypes.PARENTHESE_CLOSE).none()
+                .withinPair(CypherTypes.PARENTHESIS_OPEN, CypherTypes.PARENTHESIS_CLOSE).none()
                 .withinPair(CypherTypes.BRACKET_CURLYOPEN, CypherTypes.BRACKET_CURLYCLOSE).none()
 
                 .before(CypherTypes.OP_COMMA).none()
@@ -66,7 +66,7 @@ public class CypherFormattingModelBuilder implements FormattingModelBuilder {
                 .between(CypherTypes.PATTERN_ELEMENT_CHAIN, CypherTypes.NODE_PATTERN).none()
                 .between(CypherTypes.VARIABLE, CypherTypes.NODE_LABELS).none()
 
-                .between(CypherTypes.K_FOREACH, CypherTypes.PARENTHESE_OPEN).spaces(1)
+                .between(CypherTypes.K_FOREACH, CypherTypes.PARENTHESIS_OPEN).spaces(1)
                 .between(CypherTypes.EXPRESSION, CypherTypes.OP_PIPE).spaces(1)
                 .between(CypherTypes.ID_IN_COLL, CypherTypes.OP_PIPE).spaces(1)
                 .between(CypherTypes.FILTER_EXPRESSION, CypherTypes.OP_PIPE).spaces(1)

@@ -1,9 +1,3 @@
-/**
- * Copied and adapted from plugin
- * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
- * by Neueda Technologies, Ltd.
- * Modified by Alberto Venturini, 2022
- */
 // This is a generated file. Not intended for manual editing.
 package com.albertoventurini.graphdbplugin.language.cypher.psi;
 
@@ -11,20 +5,20 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 import com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherMapYielding;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherTypePropagator;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherListYielding;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherPathYielding;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherBooleanYielding;
 import com.albertoventurini.graphdbplugin.language.cypher.references.CypherNamedElement;
-import com.albertoventurini.graphdbplugin.language.cypher.references.CypherParenthesized;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherNullYielding;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherAnyYielding;
-import com.albertoventurini.graphdbplugin.language.cypher.references.CypherVariableElement;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherIntegerYielding;
-import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherStringYielding;
 import com.albertoventurini.graphdbplugin.language.cypher.references.CypherArgumentList;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherListYielding;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherStringYielding;
 import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherFloatYielding;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherNullYielding;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherTypePropagator;
+import com.albertoventurini.graphdbplugin.language.cypher.references.CypherParenthesized;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherPathYielding;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherMapYielding;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherAnyYielding;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherIntegerYielding;
+import com.albertoventurini.graphdbplugin.language.cypher.references.CypherVariableElement;
+import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherBooleanYielding;
 
 public class CypherVisitor extends PsiElementVisitor {
 
@@ -644,11 +638,27 @@ public class CypherVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitAnyYielding(@NotNull CypherAnyYielding o) {
+  public void visitArgumentList(@NotNull CypherArgumentList o) {
     visitPsiElement(o);
   }
 
-  public void visitArgumentList(@NotNull CypherArgumentList o) {
+  public void visitInvocation(@NotNull CypherInvocation o) {
+    visitPsiElement(o);
+  }
+
+  public void visitNamedElement(@NotNull CypherNamedElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitParenthesized(@NotNull CypherParenthesized o) {
+    visitPsiElement(o);
+  }
+
+  public void visitVariableElement(@NotNull CypherVariableElement o) {
+    visitPsiElement(o);
+  }
+
+  public void visitAnyYielding(@NotNull CypherAnyYielding o) {
     visitPsiElement(o);
   }
 
@@ -664,10 +674,6 @@ public class CypherVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitInvocation(@NotNull CypherInvocation o) {
-    visitPsiElement(o);
-  }
-
   public void visitListYielding(@NotNull CypherListYielding o) {
     visitPsiElement(o);
   }
@@ -676,15 +682,7 @@ public class CypherVisitor extends PsiElementVisitor {
     visitPsiElement(o);
   }
 
-  public void visitNamedElement(@NotNull CypherNamedElement o) {
-    visitPsiElement(o);
-  }
-
   public void visitNullYielding(@NotNull CypherNullYielding o) {
-    visitPsiElement(o);
-  }
-
-  public void visitParenthesized(@NotNull CypherParenthesized o) {
     visitPsiElement(o);
   }
 
@@ -697,10 +695,6 @@ public class CypherVisitor extends PsiElementVisitor {
   }
 
   public void visitTypePropagator(@NotNull CypherTypePropagator o) {
-    visitPsiElement(o);
-  }
-
-  public void visitVariableElement(@NotNull CypherVariableElement o) {
     visitPsiElement(o);
   }
 

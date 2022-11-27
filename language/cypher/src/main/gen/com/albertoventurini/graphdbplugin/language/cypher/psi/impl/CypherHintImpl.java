@@ -1,21 +1,15 @@
-/**
- * Copied and adapted from plugin
- * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
- * by Neueda Technologies, Ltd.
- * Modified by Alberto Venturini, 2022
- */
 // This is a generated file. Not intended for manual editing.
 package com.albertoventurini.graphdbplugin.language.cypher.psi.impl;
 
 import java.util.List;
-
-import com.albertoventurini.graphdbplugin.language.cypher.psi.*;
 import org.jetbrains.annotations.*;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
+import static com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes.*;
 import com.intellij.extapi.psi.ASTWrapperPsiElement;
+import com.albertoventurini.graphdbplugin.language.cypher.psi.*;
 
 public class CypherHintImpl extends ASTWrapperPsiElement implements CypherHint {
 
@@ -27,6 +21,7 @@ public class CypherHintImpl extends ASTWrapperPsiElement implements CypherHint {
     visitor.visitHint(this);
   }
 
+  @Override
   public void accept(@NotNull PsiElementVisitor visitor) {
     if (visitor instanceof CypherVisitor) accept((CypherVisitor)visitor);
     else super.accept(visitor);
@@ -48,36 +43,6 @@ public class CypherHintImpl extends ASTWrapperPsiElement implements CypherHint {
   @NotNull
   public List<CypherVariable> getVariableList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, CypherVariable.class);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKIndex() {
-    return findChildByType(CypherTypes.K_INDEX);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKJoin() {
-    return findChildByType(CypherTypes.K_JOIN);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKOn() {
-    return findChildByType(CypherTypes.K_ON);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement getKScan() {
-    return findChildByType(CypherTypes.K_SCAN);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getKUsing() {
-    return findNotNullChildByType(CypherTypes.K_USING);
   }
 
 }

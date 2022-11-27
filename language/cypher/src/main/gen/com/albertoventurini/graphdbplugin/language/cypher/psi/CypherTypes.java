@@ -1,16 +1,10 @@
-/**
- * Copied and adapted from plugin
- * <a href="https://github.com/neueda/jetbrains-plugin-graph-database-support">Graph Database Support</a>
- * by Neueda Technologies, Ltd.
- * Modified by Alberto Venturini, 2022
- */
 // This is a generated file. Not intended for manual editing.
 package com.albertoventurini.graphdbplugin.language.cypher.psi;
 
-import com.albertoventurini.graphdbplugin.language.cypher.psi.impl.*;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.PsiElement;
 import com.intellij.lang.ASTNode;
+import com.albertoventurini.graphdbplugin.language.cypher.psi.impl.*;
 
 public interface CypherTypes {
 
@@ -286,8 +280,8 @@ public interface CypherTypes {
   IElementType OP_QUESTIONSIGN = new CypherTokenType("?");
   IElementType OP_RANGE = new CypherTokenType("..");
   IElementType OP_REGEXMATCH = new CypherTokenType("=~");
-  IElementType PARENTHESE_CLOSE = new CypherTokenType(")");
-  IElementType PARENTHESE_OPEN = new CypherTokenType("(");
+  IElementType PARENTHESIS_CLOSE = new CypherTokenType(")");
+  IElementType PARENTHESIS_OPEN = new CypherTokenType("(");
   IElementType SEMICOLON = new CypherTokenType(";");
 
   class Factory {

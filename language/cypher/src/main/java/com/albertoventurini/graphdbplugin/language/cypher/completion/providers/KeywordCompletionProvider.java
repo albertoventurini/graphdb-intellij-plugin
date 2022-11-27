@@ -26,9 +26,10 @@ public final class KeywordCompletionProvider extends BaseCompletionProvider {
             .andNot(PlatformPatterns.psiElement(CypherParserDefinition.BLOCK_COMMENT));
 
     @Override
-    protected void addCompletions(@NotNull CompletionParameters parameters,
-                                  ProcessingContext context,
-                                  @NotNull CompletionResultSet result) {
+    protected void addCompletions(
+            @NotNull final CompletionParameters parameters,
+            @NotNull final ProcessingContext context,
+            @NotNull final CompletionResultSet result) {
         result.addAllElements(CypherKeywords.KEYWORD_LOOKUP_ELEMENTS);
     }
 }

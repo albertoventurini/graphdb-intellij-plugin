@@ -5,7 +5,6 @@ apply plugin: "org.jetbrains.intellij"
 
 intellij {
     version = intellijSdkVersion
-    instrumentCode = true
     plugins = ['java']
 }
 
@@ -24,4 +23,3 @@ dependencies {
     testImplementation "org.mockito:mockito-core:$versionMockito"
     testImplementation "org.assertj:assertj-core:$versionAssertj"
 }
-

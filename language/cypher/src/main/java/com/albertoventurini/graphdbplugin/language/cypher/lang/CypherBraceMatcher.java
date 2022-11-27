@@ -20,15 +20,15 @@ import org.jetbrains.annotations.Nullable;
  * @author dmitry@vrublevsky.me
  */
 public class CypherBraceMatcher implements PairedBraceMatcher {
-    private static BracePair[] pairs = {
-            new BracePair(CypherTypes.PARENTHESE_OPEN, CypherTypes.PARENTHESE_CLOSE, true),
+    private static final BracePair[] pairs = {
+            new BracePair(CypherTypes.PARENTHESIS_OPEN, CypherTypes.PARENTHESIS_CLOSE, true),
             new BracePair(CypherTypes.BRACKET_SQUAREOPEN, CypherTypes.BRACKET_SQUARECLOSE, true),
             // todo: curly braces are a bit buggy?
             new BracePair(CypherTypes.BRACKET_CURLYOPEN, CypherTypes.BRACKET_CURLYCLOSE, true),
     };
 
     @Override
-    public BracePair[] getPairs() {
+    public BracePair @NotNull [] getPairs() {
         return pairs;
     }
 

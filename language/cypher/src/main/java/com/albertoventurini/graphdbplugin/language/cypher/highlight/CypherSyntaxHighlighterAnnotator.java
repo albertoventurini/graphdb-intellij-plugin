@@ -19,64 +19,49 @@ import org.jetbrains.annotations.NotNull;
 public class CypherSyntaxHighlighterAnnotator implements Annotator {
 
     @Override
-    public void annotate(@NotNull PsiElement element, @NotNull AnnotationHolder holder) {
+    public void annotate(
+            @NotNull final PsiElement element,
+            @NotNull final AnnotationHolder holder) {
         if (element instanceof CypherVariable) {
-            setHighlighting(element, holder, CypherSyntaxColors.VARIABLE);
+            setHighlighting(holder, CypherSyntaxColors.VARIABLE);
         } else if (element instanceof CypherFunctionInvocationBody || element instanceof CypherProcedureInvocationBody) {
-            setHighlighting(element, holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherLabelName) {
-            setHighlighting(element, holder, CypherSyntaxColors.LABEL);
+            setHighlighting(holder, CypherSyntaxColors.LABEL);
         } else if (element instanceof CypherUnaryOperator) {
-            setHighlighting(element, holder, CypherSyntaxColors.NUMBER);
+            setHighlighting(holder, CypherSyntaxColors.NUMBER);
         } else if (element instanceof CypherRelTypeName) {
-            setHighlighting(element, holder, CypherSyntaxColors.RELATIONSHIP_TYPE);
+            setHighlighting(holder, CypherSyntaxColors.RELATIONSHIP_TYPE);
         } else if (element instanceof CypherParameter) {
-            setHighlighting(element, holder, CypherSyntaxColors.PARAMETER);
+            setHighlighting(holder, CypherSyntaxColors.PARAMETER);
         } else if (element instanceof CypherShortestPathFunctionInvocation) {
-            CypherShortestPathFunctionInvocation invocation = (CypherShortestPathFunctionInvocation) element;
-            setHighlighting(invocation.getKShortestpath(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherAllShortestPathsFunctionInvocation) {
-            CypherAllShortestPathsFunctionInvocation invocation = (CypherAllShortestPathsFunctionInvocation) element;
-            setHighlighting(invocation.getKAllshortestpaths(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherFilterFunctionInvocation) {
-            CypherFilterFunctionInvocation invocation = (CypherFilterFunctionInvocation) element;
-            setHighlighting(invocation.getKFilter(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherExtractFunctionInvocation) {
-            CypherExtractFunctionInvocation invocation = (CypherExtractFunctionInvocation) element;
-            setHighlighting(invocation.getKExtract(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherReduceFunctionInvocation) {
-            CypherReduceFunctionInvocation invocation = (CypherReduceFunctionInvocation) element;
-            setHighlighting(invocation.getKReduce(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherAllFunctionInvocation) {
-            CypherAllFunctionInvocation invocation = (CypherAllFunctionInvocation) element;
-            setHighlighting(invocation.getKAll(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherAnyFunctionInvocation) {
-            CypherAnyFunctionInvocation invocation = (CypherAnyFunctionInvocation) element;
-            setHighlighting(invocation.getKAny(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherNoneFunctionInvocation) {
-            CypherNoneFunctionInvocation invocation = (CypherNoneFunctionInvocation) element;
-            setHighlighting(invocation.getKNone(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherSingleFunctionInvocation) {
-            CypherSingleFunctionInvocation invocation = (CypherSingleFunctionInvocation) element;
-            setHighlighting(invocation.getKSingle(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherExistsFunctionInvocation) {
-            CypherExistsFunctionInvocation invocation = (CypherExistsFunctionInvocation) element;
-            setHighlighting(invocation.getKExists(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherNodeLookup) {
-            CypherNodeLookup nodeLookup = (CypherNodeLookup) element;
-            setHighlighting(nodeLookup.getKNode(), holder, CypherSyntaxColors.FUNCTION);
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         } else if (element instanceof CypherRelationshipLookup) {
-            CypherRelationshipLookup relLookup = (CypherRelationshipLookup) element;
-            if (relLookup.getKRel() != null) {
-                setHighlighting(relLookup.getKRel(), holder, CypherSyntaxColors.FUNCTION);
-            } else if (relLookup.getKRelationship() != null) {
-                setHighlighting(relLookup.getKRelationship(), holder, CypherSyntaxColors.FUNCTION);
-            }
+            setHighlighting(holder, CypherSyntaxColors.FUNCTION);
         }
     }
 
     private static void setHighlighting(
-            @NotNull final PsiElement element,
             @NotNull final AnnotationHolder holder,
             @NotNull final TextAttributesKey key) {
 
