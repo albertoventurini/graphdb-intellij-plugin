@@ -183,7 +183,8 @@ IdLookup ::= "(" (LiteralIds | Parameter | "*") ")"
 LiteralIds ::= IntegerLiteral ("," IntegerLiteral)*
 
 //-- Match
-Match ::= K_OPTIONAL? K_MATCH Pattern Hint* Where?
+Match ::= K_OPTIONAL? K_MATCH PatternWithWhereClause
+PatternWithWhereClause ::= Pattern Hint* Where?
 Hint ::= K_USING ((K_INDEX Variable NodeLabel "(" PropertyKeyName ")")
        | (K_JOIN K_ON Variable ("," Variable)*)
        | (K_SCAN Variable NodeLabel))
@@ -331,6 +332,8 @@ private Expression1 ::= UnaryOperator
               | RelationshipsPattern
               | ParenthesizedExpression
               | FunctionInvocation
+              | ExistentialSubQuery
+              | CountSubQuery
               | Variable
 
 
@@ -359,6 +362,17 @@ FunctionArguments ::= "(" K_DISTINCT? Expression? ("," Expression)* ")" {
    implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherArgumentList"
 }
 FunctionInvocationBody ::= Namespace FunctionName
+
+// Note: this deviates from the grammar defined at https://github.com/opencypher/openCypher
+// However, this conforms to the description of existential subqueries in the Neo4j docs:
+// https://neo4j.com/docs/cypher-manual/current/syntax/expressions/#existential-subqueries
+ExistentialSubQuery ::= K_EXISTS "{" K_MATCH? PatternWithWhereClause "}"
+
+// Note: this deviates from the grammar defined at https://github.com/opencypher/openCypher
+// However, this conforms to the description of count subqueries in the Neo4j docs:
+// https://neo4j.com/docs/cypher-manual/current/syntax/expressions/#count-subqueries
+CountSubQuery ::= K_COUNT "{" K_MATCH? PatternWithWhereClause "}"
+
 CaseExpression ::= K_CASE ((CaseAlternatives+) | (Expression CaseAlternatives+))
                    (K_ELSE Expression)?
                    K_END {

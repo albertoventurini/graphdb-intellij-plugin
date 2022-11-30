@@ -62,7 +62,7 @@ to install the [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit) IntelliJ 
 
 ### Build instructions
 
-If you changed a grammar or lexer files, you need to regenerate the lexer and parser classes.
+First, you need to generate the lexer and parser classes.
 Please follow the instructions at [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit)
 in order to do that.
 
