@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Don't show Cypher autocompletion in comments (#4)
+- Support existential and count subqueries (#24)
 
 ## [0.2.2]
 
