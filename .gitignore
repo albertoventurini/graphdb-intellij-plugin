@@ -99,3 +99,6 @@ idea-flex.skeleton
 /_book
 /.ideaDataSources
 /dataSources
+
+gen/
+
