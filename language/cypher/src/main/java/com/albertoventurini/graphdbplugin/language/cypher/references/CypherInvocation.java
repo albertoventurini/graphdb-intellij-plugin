@@ -11,7 +11,6 @@ import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherFunctionArgu
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherFunctionInvocation;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherProcedureInvocation;
 import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherTyped;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
@@ -24,7 +23,6 @@ import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.el
 
 import java.util.*;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherSimpleType.ANY;
 import static java.util.stream.Collectors.toList;
 

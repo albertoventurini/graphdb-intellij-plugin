@@ -9,14 +9,12 @@ package com.albertoventurini.graphdbplugin.language.cypher.editor;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.InvokableInformation;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes;
 import com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation;
-import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.lang.parameterInfo.*;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.tree.IElementType;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ArrayUtil;
-import com.intellij.util.containers.ContainerUtil;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +28,7 @@ public class CypherParameterInfoHandler
 
     @Override
     @SuppressWarnings("unchecked")
-    public PsiElement @NotNull [] getActualParameters(@NotNull CypherInvocation o) {
+    public @NotNull PsiElement[] getActualParameters(@NotNull CypherInvocation o) {
         return ArrayUtil.toObjectArray(o.arguments(), PsiElement.class);
     }
 

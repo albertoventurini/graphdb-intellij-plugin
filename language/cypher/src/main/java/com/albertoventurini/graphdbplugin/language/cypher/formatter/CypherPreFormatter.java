@@ -19,7 +19,6 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.impl.source.codeStyle.PreFormatProcessor;
 import com.intellij.util.DocumentUtil;
-import com.intellij.util.containers.ContainerUtil;
 import com.albertoventurini.graphdbplugin.language.cypher.CypherLanguage;
 import org.jetbrains.annotations.NotNull;
 
