@@ -9,7 +9,6 @@ package com.albertoventurini.graphdbplugin.language.cypher.formatter.converter;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes;
 import com.intellij.lang.ASTNode;
 import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.impl.source.tree.TreeUtil;
 import com.intellij.psi.tree.IElementType;
