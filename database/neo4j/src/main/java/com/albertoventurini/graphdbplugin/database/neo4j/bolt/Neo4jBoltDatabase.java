@@ -17,6 +17,7 @@ import org.neo4j.driver.GraphDatabase;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
+import org.neo4j.driver.SessionConfig;
 import org.neo4j.driver.exceptions.ClientException;
 
 import java.nio.channels.UnresolvedAddressException;
@@ -30,6 +31,7 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
 
     private final String url;
     private final AuthToken auth;
+    private final SessionConfig dbConfig;
 
     public Neo4jBoltDatabase(Map<String, String> configuration) {
         this(new Neo4jBoltConfiguration(configuration));
@@ -59,6 +61,12 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
         } else {
             auth = AuthTokens.none();
         }
+
+        if (configuration.getDatabase() != null) {
+          dbConfig = SessionConfig.forDatabase(configuration.getDatabase());
+        } else {
+          dbConfig = SessionConfig.defaultConfig();
+        }
     }
 
     @Override
@@ -72,7 +80,7 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
             // TODO: driver can be instantiated when this object is constructed. No need to create a new driver every time a query is executed.
             Driver driver = GraphDatabase.driver(url, auth);
             try {
-                try (Session session = driver.session()) {
+                try (Session session = driver.session(dbConfig)) {
 
                     Neo4jBoltBuffer buffer = new Neo4jBoltBuffer();
 

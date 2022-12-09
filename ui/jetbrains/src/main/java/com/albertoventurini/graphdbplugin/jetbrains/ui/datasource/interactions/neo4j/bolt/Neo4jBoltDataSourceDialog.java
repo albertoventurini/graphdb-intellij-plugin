@@ -38,6 +38,7 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
     private JBTextField hostField;
     private JBTextField portField;
     private JBTextField userField;
+    private JBTextField databaseField;
     private JBPasswordField passwordField;
     private JButton testConnectionButton;
     private JPanel loadingPanel;
@@ -95,6 +96,7 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
             String host = conf.get(Neo4jBoltConfiguration.HOST);
             String port = conf.get(Neo4jBoltConfiguration.PORT);
             String authType = conf.get(Neo4jBoltConfiguration.AUTH_TYPE);
+            String database = conf.get(Neo4jBoltConfiguration.DATABASE);
             String user = conf.get(Neo4jBoltConfiguration.USER);
             String password = conf.get(Neo4jBoltConfiguration.PASSWORD);
 
@@ -116,6 +118,7 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
 
             hostField.setText(host);
             portField.setText(port);
+            databaseField.setText(database);
             userField.setText(user);
             passwordField.setText(password);
         }
@@ -146,6 +149,7 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
         configuration.put(Neo4jBoltConfiguration.PORT, data.port);
         configuration.put(Neo4jBoltConfiguration.USER, data.user);
         configuration.put(Neo4jBoltConfiguration.PASSWORD, data.password);
+        configuration.put(Neo4jBoltConfiguration.DATABASE, data.database);
 
         return dataSourcesComponent.getDataSourceContainer().createDataSource(
                 dataSourceToEdit,
@@ -176,6 +180,7 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
                 hostField.getText(),
                 portField.getText(),
                 authTypeComboBox.getItemAt(authTypeComboBox.getSelectedIndex()),
+                databaseField.getText(),
                 userField.getText(),
                 String.valueOf(passwordField.getPassword())  // TODO: use password API?
         );
@@ -192,15 +197,17 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
         private final String host;
         private final String port;
         private final String authType;
+        private final String database;
         private final String user;
         private final String password;
 
-        public Data(String dataSourceName, String protocol, String host, String port, String authType, String user, String password) {
+        public Data(String dataSourceName, String protocol, String host, String port, String authType, String database, String user, String password) {
             this.dataSourceName = dataSourceName;
             this.protocol = protocol;
             this.host = host;
             this.port = port;
             this.authType = authType;
+            this.database = database;
             this.user = user;
             this.password = password;
         }

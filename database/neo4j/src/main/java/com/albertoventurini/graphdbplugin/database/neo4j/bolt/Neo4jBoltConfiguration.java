@@ -17,6 +17,7 @@ public class Neo4jBoltConfiguration {
     public static final String AUTH_TYPE = "authType";
     public static final String USER = "user";
     public static final String PASSWORD = "password";
+    public static final String DATABASE = "database";
 
     private final Map<String, String> configuration;
 
@@ -32,6 +33,7 @@ public class Neo4jBoltConfiguration {
         return Integer.valueOf(configuration.getOrDefault(PORT, "7687"));
     }
 
+    public String getDatabase() { return configuration.get(DATABASE); }
     public String getUser() {
         return configuration.get(USER);
     }
