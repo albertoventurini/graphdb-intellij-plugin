@@ -16,6 +16,8 @@ plugins {
     // JetBrain's Gradle Changelog Plugin
     // https://github.com/JetBrains/gradle-changelog-plugin
     id 'org.jetbrains.changelog' version "$versionGradleChangelog"
+
+    id 'org.jetbrains.grammarkit' version "$versionGradleGrammarKit"
 }
 
 apply plugin: 'idea'
@@ -32,6 +34,7 @@ allprojects {
 
     apply plugin: 'java'
     apply plugin: 'checkstyle'
+    apply plugin: 'org.jetbrains.grammarkit'
 
     sourceCompatibility = 17
     targetCompatibility = 17

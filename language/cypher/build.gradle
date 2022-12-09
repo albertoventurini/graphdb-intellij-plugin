@@ -1,11 +1,37 @@
 // Copied and adapted from plugin "Graph Database Support"
 // by Neueda Technologies, Ltd.
 // Modified by Alberto Venturini, 2022
+
+import org.jetbrains.grammarkit.tasks.GenerateLexerTask
+import org.jetbrains.grammarkit.tasks.GenerateParserTask
+
+plugins {
+    id "org.jetbrains.grammarkit" version "2021.2.2"
+}
+
 apply plugin: "org.jetbrains.intellij"
 
 intellij {
     version = intellijSdkVersion
     plugins = ['java']
+}
+
+task generateCypherParser(type: GenerateParserTask) {
+    source = "src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/Cypher.bnf"
+    pathToParser = '/com/perl5/lang/pod/parser/PodParserGenerated.java'
+    pathToPsiRoot = '/com/perl5/lang/pod/psi'
+}
+
+
+task generateCypherLexer(type: GenerateLexerTask) {
+    source = "src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/Cypher.flex"
+    targetDir = "src/main/gen/com/perl5/lang/perl/lexer/"
+    targetClass = "PerlLexer"
+}
+
+compileJava {
+    dependsOn generateCypherLexer
+    dependsOn generateCypherParser
 }
 
 sourceSets {
