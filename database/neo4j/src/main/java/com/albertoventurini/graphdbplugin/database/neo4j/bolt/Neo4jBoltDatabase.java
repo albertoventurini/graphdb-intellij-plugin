@@ -45,6 +45,7 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
 
         final String authType = configuration.getAuthType();
         final String protocol = configuration.getProtocol();
+        final String database = configuration.getDatabase();
 
         if (protocol == null) {
             if (host.startsWith("bolt://") || host.startsWith("bolt+routing://")) {
@@ -62,8 +63,8 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
             auth = AuthTokens.none();
         }
 
-        if (configuration.getDatabase() != null) {
-          dbConfig = SessionConfig.forDatabase(configuration.getDatabase());
+        if (database != null && !database.trim().isEmpty()) {
+          dbConfig = SessionConfig.forDatabase(database);
         } else {
           dbConfig = SessionConfig.defaultConfig();
         }
