@@ -57,16 +57,13 @@ Simply add the following comment right before a Cypher String:
 The plugin depends on JDK17 and the latest release of IntelliJ. Please make sure
 you have those installed on your machine.
 
-Moreover, if you plan on making changes to a grammar or lexer files, you also need
-to install the [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit) IntelliJ plugin.
+If you plan on making changes to a grammar or lexer files, you may find
+it useful to install the [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit)
+IntelliJ plugin. This is not required but nice to have.
 
 ### Build instructions
 
-First, you need to generate the lexer and parser classes.
-Please follow the instructions at [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit)
-in order to do that.
-
-After that, the plugin can be built with the following Gradle command:
+The plugin can be built with the following Gradle command:
 
 ```shell
 ./gradlew :graph-database-plugin:buildPlugin
