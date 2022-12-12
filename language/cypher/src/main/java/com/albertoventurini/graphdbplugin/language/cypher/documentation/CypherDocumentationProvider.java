@@ -10,7 +10,6 @@ import com.albertoventurini.graphdbplugin.language.cypher.documentation.database
 import com.albertoventurini.graphdbplugin.language.cypher.psi.*;
 import com.google.common.collect.Lists;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;

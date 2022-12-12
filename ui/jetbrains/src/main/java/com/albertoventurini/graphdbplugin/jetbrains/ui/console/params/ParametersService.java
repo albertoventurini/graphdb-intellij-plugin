@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.jetbrains.ui.console.params;
 
+import com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherParameterImpl;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -13,7 +14,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Throwables;
 import com.intellij.psi.PsiElement;
-import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherParameter;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes;
 import com.albertoventurini.graphdbplugin.language.cypher.util.TraverseUtil;
 import org.apache.commons.lang.StringUtils;
@@ -79,7 +79,7 @@ public class ParametersService {
     private Set<String> extractParameterNames(PsiElement element) {
         List<PsiElement> parameterElements = TraverseUtil.collectPsiElementsByType(element, CypherTypes.PARAMETER);
         return parameterElements.stream()
-                .map(elem -> ((CypherParameter) elem).getParameterName())
+                .map(elem -> ((CypherParameterImpl) elem).getParameterName())
                 .collect(Collectors.toSet());
     }
 

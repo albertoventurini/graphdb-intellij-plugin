@@ -221,7 +221,7 @@ InQueryCall ::= Call Where?
 StandaloneCall ::= Call (Where? Return)?
 ProcedureInvocation ::= ProcedureInvocationBody ProcedureArguments {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherProcedureInvocationImplMixin"
 }
 ProcedureInvocationBody ::= Namespace ProcedureName
 ProcedureArguments ::= "(" Expression? ("," Expression)* ")" {
@@ -356,7 +356,7 @@ ParenthesizedExpression ::= "(" Expression ")" {
 }
 FunctionInvocation ::= FunctionInvocationBody (("(" "*" ")") | FunctionArguments) {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherFunctionInvocationImplMixin"
 }
 FunctionArguments ::= "(" K_DISTINCT? Expression? ("," Expression)* ")" {
    implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherArgumentList"
@@ -383,35 +383,35 @@ PropertyExpression ::= Expression1 (PropertyLookup)+
 
 FilterFunctionInvocation ::= K_FILTER "(" FilterExpression ")" {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherFilterFunctionInvocationImplMixin"
 }
 ExtractFunctionInvocation ::= K_EXTRACT "(" FilterExpression ("|" Expression)? ")" {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherExtractFunctionInvocationImplMixin"
 }
 ReduceFunctionInvocation ::= K_REDUCE "(" Variable "=" Expression "," IdInColl "|" Expression ")" {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherReduceFunctionInvocationImplMixin"
 }
 AllFunctionInvocation ::= K_ALL "(" FilterExpression ")" {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherAllFunctionInvocationImplMixin"
 }
 AnyFunctionInvocation ::= K_ANY "(" FilterExpression ")" {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherAnyFunctionInvocationImplMixin"
 }
 NoneFunctionInvocation ::= K_NONE "(" FilterExpression ")" {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherNoneFunctionInvocationImplMixin"
 }
 SingleFunctionInvocation ::= K_SINGLE "(" FilterExpression ")" {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherSingleFunctionInvocationImplMixin"
 }
 ExistsFunctionInvocation ::= K_EXISTS "(" Expression ")" {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherInvocation"
-    methods=[getFullName]
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherExistsFunctionInvocationImplMixin"
 }
 
 PatternComprehension ::= "[" RelationshipsPattern Where? "|" Expression "]" {
@@ -434,9 +434,8 @@ AllPropertiesSelector ::= "." "*"
  * Literals
  */
 Variable ::= SymbolicNameString {
-    mixin="com.albertoventurini.graphdbplugin.language.cypher.references.CypherVariableElementImpl"
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherVariableElementImplMixin"
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherVariableElement"
-    methods=[getName setName getNameIdentifier getReferences]
 }
 FunctionName ::= UnescapedSymbolicNameString | EscapedSymbolicNameString | K_COUNT
 ProcedureName ::= SymbolicNameString
@@ -444,8 +443,8 @@ CountStar ::= (K_COUNT "(" "*" ")") {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherIntegerYielding"
 }
 Parameter ::= NewParameter | OldParameter {
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherParameterImplMixin"
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherAnyYielding"
-    methods=[getParameterName]
 }
 OldParameter ::= "{" (SymbolicNameString | UnsignedInteger) "}"
 NewParameter ::= "$" (SymbolicNameString | UnsignedInteger)
@@ -460,20 +459,17 @@ NullLiteral ::= K_NULL {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherNullYielding"
 }
 LabelName ::= SymbolicNameString {
-    mixin="com.albertoventurini.graphdbplugin.language.cypher.references.CypherNamedElementImpl"
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherLabelNameImplMixin"
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherNamedElement"
-    methods=[getName setName getNameIdentifier getReferences]
 }
 RelType ::= ":" RelTypeName
 RelTypeName ::= SymbolicNameString {
-    mixin="com.albertoventurini.graphdbplugin.language.cypher.references.CypherNamedElementImpl"
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherRelTypeNameImplMixin"
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherNamedElement"
-    methods=[getName setName getNameIdentifier getReferences]
 }
 PropertyKeyName ::= SymbolicNameString {
-    mixin="com.albertoventurini.graphdbplugin.language.cypher.references.CypherNamedElementImpl"
+    mixin="com.albertoventurini.graphdbplugin.language.cypher.psi.impl.CypherPropertyKeyNameImplMixin"
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.CypherNamedElement"
-    methods=[getName setName getNameIdentifier getReferences]
 }
 PropertyKeyNames ::= PropertyKeyName ("," PropertyKeyName)*
 

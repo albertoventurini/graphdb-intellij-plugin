@@ -15,7 +15,6 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.tree.IElementType;
-import com.intellij.util.indexing.FileBasedIndex;
 import com.albertoventurini.graphdbplugin.language.cypher.file.CypherFile;
 import com.albertoventurini.graphdbplugin.language.cypher.file.CypherFileType;
 

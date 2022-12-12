@@ -6,7 +6,8 @@
  */
 package com.albertoventurini.graphdbplugin.language.cypher.references;
 
-import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherSimpleType;
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherList;
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherType;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherMaybeVariableLength;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherNodePattern;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherPatternPart;
@@ -14,10 +15,6 @@ import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherRelationship
 import com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherTyped;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiReference;
-import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherList;
-import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherType;
-import com.intellij.psi.PsiReferenceService;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;

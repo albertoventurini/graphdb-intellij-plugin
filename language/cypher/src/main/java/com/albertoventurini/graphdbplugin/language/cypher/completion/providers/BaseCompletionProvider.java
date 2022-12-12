@@ -8,7 +8,6 @@ package com.albertoventurini.graphdbplugin.language.cypher.completion.providers;
 
 import com.intellij.codeInsight.completion.CompletionParameters;
 import com.intellij.codeInsight.completion.CompletionProvider;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
 
