@@ -5,28 +5,27 @@
 import org.jetbrains.grammarkit.tasks.GenerateLexerTask
 import org.jetbrains.grammarkit.tasks.GenerateParserTask
 
-plugins {
-    id "org.jetbrains.grammarkit" version "2021.2.2"
-}
-
 apply plugin: "org.jetbrains.intellij"
+apply plugin: "org.jetbrains.grammarkit"
 
 intellij {
     version = intellijSdkVersion
     plugins = ['java']
 }
 
-task generateCypherParser(type: GenerateParserTask) {
-    source = "src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/Cypher.bnf"
-    pathToParser = '/com/perl5/lang/pod/parser/PodParserGenerated.java'
-    pathToPsiRoot = '/com/perl5/lang/pod/psi'
+tasks.register("generateCypherLexer", GenerateLexerTask.class) {
+    source = "src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/CypherLexer.flex"
+    targetDir = "src/main/gen/com/albertoventurini/graphdbplugin/language/cypher/lexer/"
+    targetClass = "CypherLexer"
+    purgeOldFiles = true
 }
 
-
-task generateCypherLexer(type: GenerateLexerTask) {
-    source = "src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/Cypher.flex"
-    targetDir = "src/main/gen/com/perl5/lang/perl/lexer/"
-    targetClass = "PerlLexer"
+tasks.register("generateCypherParser", GenerateParserTask.class) {
+    source = "src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/Cypher.bnf"
+    targetRoot = "src/main/gen"
+    pathToParser = "com/albertoventurini/graphdbplugin/language/cypher/CypherParser.java"
+    pathToPsiRoot = "com/albertoventurini/graphdbplugin/language/cypher/psi"
+    purgeOldFiles = true
 }
 
 compileJava {
