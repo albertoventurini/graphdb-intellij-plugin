@@ -20,6 +20,8 @@ dependencies {
     testImplementation "org.assertj:assertj-core:$versionAssertj"
     testImplementation "org.mockito:mockito-core:$versionMockito"
     testImplementation "org.neo4j.driver:neo4j-java-driver:$versionNeo4jJavaBoltDriver"
+    testImplementation "org.testcontainers:testcontainers:$versionTestcontainers"
+    testImplementation "org.testcontainers:neo4j:$versionTestcontainers"
 }
 
 test {

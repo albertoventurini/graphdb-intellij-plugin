@@ -6,9 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.test.database.neo4j.common;
 
-public interface Neo4jServer {
-
-    void start();
+public interface Neo4jServer extends Startable {
 
     String getBoltHost();
 

@@ -14,7 +14,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.D
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
 import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
-import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4j44ServerLoader;
+import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4jContainerServers;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.Map;
 
 public abstract class BaseIntegrationTest extends LightJavaCodeInsightFixtureTestCase {
 
-    private static final String NEO4J40 = "neo4j40";
+    private static final String NEO4J52 = "neo4j52";
     private static final String UNAVAILABLE_DS = "unavailable";
     protected CypherMetadataContainer metadata;
     private Components components;
@@ -59,7 +59,12 @@ public abstract class BaseIntegrationTest extends LightJavaCodeInsightFixtureTes
         return dataSources;
     }
 
-    private DataSourceApi createDataSource(String name, String host, String port, String user, String password) {
+    private DataSourceApi createDataSource(
+            final String name,
+            final String host,
+            final String port,
+            final String user,
+            final String password) {
         Map<String, String> configuration = new HashMap<>();
         configuration.put(Neo4jBoltConfiguration.HOST, host);
         configuration.put(Neo4jBoltConfiguration.PORT, port);
@@ -74,16 +79,16 @@ public abstract class BaseIntegrationTest extends LightJavaCodeInsightFixtureTes
         );
     }
 
-    private DataSourceApi createDataSource(String name, Neo4jServer neo4jServer) {
+    private DataSourceApi createDataSource(final String name, final Neo4jServer neo4jServer) {
         return createDataSource(name, neo4jServer.getBoltHost(), neo4jServer.getBoltPort(), null, null);
     }
 
-    private DataSourceApi getNeo4jDataSource(String dataSourceName, Neo4jServer server) {
+    private DataSourceApi getNeo4jDataSource(final String dataSourceName, final Neo4jServer server) {
         return component().dataSources()
                 .getDataSourceContainer()
                 .getDataSource(dataSourceName)
                 .orElseGet(() -> {
-                    DataSourceApi dataSource = createDataSource(dataSourceName, server);
+                    final DataSourceApi dataSource = createDataSource(dataSourceName, server);
                     component().dataSources().getDataSourceContainer().addDataSource(dataSource);
                     component().dataSources().refreshAllMetadata();
                     return dataSource;
@@ -111,14 +116,14 @@ public abstract class BaseIntegrationTest extends LightJavaCodeInsightFixtureTes
      * Some tests might even don't need running Neo4j server!
      */
     public final class DataSources {
-        private DataSourceApi neo4j40DataSource;
+        private DataSourceApi neo4j52DataSource;
         private DataSourceApi unavailableDataSource;
 
         public DataSourceApi neo4j40() {
-            if (neo4j40DataSource == null) {
-                neo4j40DataSource = getNeo4jDataSource(NEO4J40, Neo4j44ServerLoader.getInstance());
+            if (neo4j52DataSource == null) {
+                neo4j52DataSource = getNeo4jDataSource(NEO4J52, Neo4jContainerServers.VERSION_5_2.getInstance());
             }
-            return neo4j40DataSource;
+            return neo4j52DataSource;
         }
 
         public DataSourceApi unavailable() {
