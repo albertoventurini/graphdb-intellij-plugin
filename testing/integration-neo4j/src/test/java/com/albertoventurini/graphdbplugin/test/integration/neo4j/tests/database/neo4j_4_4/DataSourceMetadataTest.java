@@ -21,7 +21,7 @@ public class DataSourceMetadataTest extends AbstractDataSourceMetadataTest {
 
     @Override
     public DataSourceApi getDataSource() {
-        return dataSource().neo4j40();
+        return dataSource().neo4j52();
     }
 
     @Override

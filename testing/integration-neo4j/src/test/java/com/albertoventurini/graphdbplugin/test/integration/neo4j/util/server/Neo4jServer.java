@@ -4,9 +4,9 @@
  * by Neueda Technologies, Ltd.
  * Modified by Alberto Venturini, 2022
  */
-package com.albertoventurini.graphdbplugin.test.database.neo4j.common;
+package com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server;
 
-public interface Neo4jServer extends Startable {
+public interface Neo4jServer {
 
     String getBoltHost();
 

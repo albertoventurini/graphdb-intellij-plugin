@@ -13,7 +13,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadat
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
-import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
+import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4jServer;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server.Neo4jContainerServers;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 
@@ -119,7 +119,7 @@ public abstract class BaseIntegrationTest extends LightJavaCodeInsightFixtureTes
         private DataSourceApi neo4j52DataSource;
         private DataSourceApi unavailableDataSource;
 
-        public DataSourceApi neo4j40() {
+        public DataSourceApi neo4j52() {
             if (neo4j52DataSource == null) {
                 neo4j52DataSource = getNeo4jDataSource(NEO4J52, Neo4jContainerServers.VERSION_5_2.getInstance());
             }

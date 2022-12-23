@@ -1,7 +1,5 @@
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server;
 
-import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Startable;
-
 import java.util.concurrent.CompletableFuture;
 
 /**

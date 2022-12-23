@@ -1,7 +1,7 @@
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server;
 
-import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
 import org.testcontainers.containers.Neo4jContainer;
+import org.testcontainers.containers.Neo4jLabsPlugin;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -22,6 +22,7 @@ final class Neo4jContainerServer extends AsyncStartable<Neo4jContainer<?>> imple
     protected CompletableFuture<Neo4jContainer<?>> startAsync() {
         return CompletableFuture.supplyAsync(() -> {
             final var neo4jContainer = new Neo4jContainer<>("neo4j:" + versionTag)
+                    .withLabsPlugins(Neo4jLabsPlugin.APOC)
                     .withoutAuthentication();
             neo4jContainer.start();
             return neo4jContainer;

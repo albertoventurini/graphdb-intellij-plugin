@@ -1,7 +1,5 @@
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.util.server;
 
-import com.albertoventurini.graphdbplugin.test.database.neo4j.common.Neo4jServer;
-
 /**
  * Lazily-initialised versions of Neo4j running in test containers.
  */
@@ -9,7 +7,7 @@ public enum Neo4jContainerServers {
     VERSION_5_2("5.2"),
     VERSION_5_3("5.3");
 
-    private volatile Neo4jServer instance;
+    private volatile Neo4jContainerServer instance;
     private final String versionTag;
 
     /**

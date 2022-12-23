@@ -26,8 +26,6 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:$versionJacksonMapper")
     implementation("com.fasterxml.jackson.core:jackson-databind:$versionJacksonMapper")
 
-    testImplementation project(':testing:common')
-
     testImplementation "junit:junit:$versionJunit"
     testImplementation "org.assertj:assertj-core:$versionAssertj"
     testImplementation "org.mockito:mockito-core:$versionMockito"
