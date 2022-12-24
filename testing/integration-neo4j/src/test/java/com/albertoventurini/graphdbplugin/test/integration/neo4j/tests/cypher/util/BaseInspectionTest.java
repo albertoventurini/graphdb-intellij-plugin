@@ -32,7 +32,7 @@ public abstract class BaseInspectionTest extends BaseIntegrationTest {
     }
 
     protected void addDataSourceFileAndCheck(String fileContent) {
-        String fileName = NameUtil.createDataSourceFileName(dataSource().neo4j40());
+        String fileName = NameUtil.createDataSourceFileName(dataSource().neo4j52());
         addFileAndCheck(fileName, fileContent);
     }
 

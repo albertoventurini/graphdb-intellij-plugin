@@ -18,7 +18,7 @@ public class UserFunctionCompletionTest extends BaseCompletionTest {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        dataSource().neo4j40();
+        dataSource().neo4j52();
     }
 
     public void testContainsTestUserFunction() throws Exception {

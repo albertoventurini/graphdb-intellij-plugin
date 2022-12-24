@@ -4,7 +4,7 @@
  * by Neueda Technologies, Ltd.
  * Modified by Alberto Venturini, 2022
  */
-package com.albertoventurini.graphdbplugin.test.mocks.services;
+package com.albertoventurini.graphdbplugin.test.mocks.service;
 
 import com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorService;
 import com.intellij.openapi.application.ModalityState;
