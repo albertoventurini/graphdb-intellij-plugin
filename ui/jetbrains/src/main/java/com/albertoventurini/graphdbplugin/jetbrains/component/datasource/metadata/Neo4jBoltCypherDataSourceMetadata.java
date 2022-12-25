@@ -9,6 +9,7 @@ package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metada
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultRow;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryResultRow;
 
 import java.util.*;
 
@@ -22,12 +23,19 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
 
     private Map<String, List<Map<String, String>>> dataReceiver = new HashMap<>();
 
+    private List<Neo4jFunctionMetadata> functions = new ArrayList<>();
+
     private List<Neo4jLabelMetadata> labels = new ArrayList<>();
     private List<Neo4jRelationshipTypeMetadata> relationshipTypes = new ArrayList<>();
 
     @Override
     public List<Map<String, String>> getMetadata(String metadataKey) {
         return dataReceiver.getOrDefault(metadataKey, new ArrayList<>());
+    }
+
+    @Override
+    public List<Neo4jFunctionMetadata> getFunctions() {
+        return Collections.unmodifiableList(functions);
     }
 
     @Override
@@ -43,8 +51,19 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         addDataSourceMetadata(STORED_PROCEDURES, storedProceduresResult);
     }
 
-    public void addUserFunctions(GraphQueryResult userFunctionsResult) {
-        addDataSourceMetadata(USER_FUNCTIONS, userFunctionsResult);
+    public void addFunctions(final GraphQueryResult functionsResult) {
+        //addDataSourceMetadata(USER_FUNCTIONS, userFunctionsResult);
+        try {
+            functionsResult.getRows().forEach(row -> {
+                final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+                final String name = (String) neo4jRow.getValue("name");
+                final String signature = (String) neo4jRow.getValue("signature");
+                final String description = (String) neo4jRow.getValue("description");
+                functions.add(new Neo4jFunctionMetadata(name, signature, description));
+            });
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void addDataSourceMetadata(String key, GraphQueryResult graphQueryResult) {

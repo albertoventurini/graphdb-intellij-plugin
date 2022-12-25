@@ -22,7 +22,7 @@ public class UserFunctionCompletionTest extends BaseCompletionTest {
     }
 
     public void testContainsTestUserFunction() throws Exception {
-        myFixture.configureByText("test.cyp", "RETURN testFunc<caret>");
+        myFixture.configureByText("test.cyp", "RETURN xml<caret>");
         myFixture.completeBasic();
         List<String> strings = myFixture.getLookupElementStrings();
         assertThat(strings)

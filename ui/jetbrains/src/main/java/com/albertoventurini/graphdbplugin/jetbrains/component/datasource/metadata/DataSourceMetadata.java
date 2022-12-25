@@ -13,5 +13,7 @@ public interface DataSourceMetadata {
 
     List<Map<String, String>> getMetadata(String metadataKey);
 
+    List<Neo4jFunctionMetadata> getFunctions();
+
     boolean isMetadataExists(String metadataKey);
 }

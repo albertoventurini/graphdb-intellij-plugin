@@ -10,6 +10,8 @@ import com.albertoventurini.graphdbplugin.database.api.data.GraphNode;
 import com.albertoventurini.graphdbplugin.database.api.data.GraphRelationship;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultRow;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.Value;
 import org.neo4j.driver.internal.util.Iterables;
 import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
@@ -24,9 +26,27 @@ import java.util.stream.Collectors;
 
 public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
 
+//    private final Record record;
+    // TODO: just store everything in a record, don't use row
     private Map<String, Object> row;
     private List<GraphNode> nodes;
     private List<GraphRelationship> relationships;
+
+//    public Neo4jBoltQueryResultRow(final Record record) {
+//        this.record = record;
+//
+//        this.row = new HashMap<>();
+//        this.nodes = new ArrayList<>();
+//        this.relationships = new ArrayList<>();
+//
+//        try {
+//            transform(record.asMap());
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        int i = 0;
+//    }
 
     public Neo4jBoltQueryResultRow(Map<String, Object> sourceRow) {
         this.row = new HashMap<>();
@@ -36,12 +56,23 @@ public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
         transform(sourceRow);
     }
 
-    @Override
-    public Object getValue(GraphQueryResultColumn column) {
-        return row.get(column.getName());
+    public Object getValue(final String columnName) {
+        return row.get(columnName);
     }
 
+    public <T> T getValue(final String columnName, final Class<T> clazz) {
+        final Object value = row.get(columnName);
+        if (clazz.isInstance(value)) {
+            return clazz.cast(value);
+        }
+        throw new RuntimeException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
+    }
 
+    @Override
+    public Object getValue(GraphQueryResultColumn column) {
+        //return convert(record.get(column.getName()));
+        return row.get(column.getName());
+    }
 
     @Override
     public List<GraphNode> getNodes() {
@@ -59,33 +90,28 @@ public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
 
     @SuppressWarnings("unchecked")
     private Object convert(Object o) {
-        if (o instanceof Map) {
-            Map originalMap = (Map) o;
-            Map map = new HashMap<>();
+        if (o instanceof Map<?,?> originalMap) {
+            Map<Object, Object> map = new HashMap<>();
 
             originalMap.forEach((key, value) -> map.put(convert(key), convert(value)));
             return map;
         }
-        if (o instanceof List) {
-            List originalList = (List) o;
+        if (o instanceof List<?> originalList) {
             return originalList.stream()
                     .map(this::convert)
                     .collect(Collectors.toList());
         }
-        if (o instanceof Node) {
-            Node node = (Node) o;
+        if (o instanceof Node node) {
             Neo4jBoltNode boltNode = new Neo4jBoltNode(node);
             nodes.add(boltNode);
             return boltNode;
         }
-        if (o instanceof Relationship) {
-            Relationship rel = (Relationship) o;
+        if (o instanceof Relationship rel) {
             Neo4jBoltRelationship boltRelationship = new Neo4jBoltRelationship(rel);
             relationships.add(boltRelationship);
             return boltRelationship;
         }
-        if (o instanceof Path) {
-            Path path = (Path) o;
+        if (o instanceof Path path) {
             Neo4jBoltPath boltPath = new Neo4jBoltPath();
 
             if (path.length() == 0) {
