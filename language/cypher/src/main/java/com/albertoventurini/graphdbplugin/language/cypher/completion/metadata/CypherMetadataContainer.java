@@ -18,14 +18,14 @@ public class CypherMetadataContainer {
     private final List<CypherRelationshipTypeElement> relationshipTypes;
     private final List<CypherPropertyKeyElement> propertyKeys;
     private final List<CypherProcedureElement> procedures;
-    private final List<CypherUserFunctionElement> userFunctions;
+    private final List<CypherFunctionElement> functions;
 
     public CypherMetadataContainer() {
         labels = new ArrayList<>();
         relationshipTypes = new ArrayList<>();
         propertyKeys = new ArrayList<>();
         procedures = new ArrayList<>();
-        userFunctions = new ArrayList<>();
+        functions = new ArrayList<>();
     }
 
     public void addLabel(String label) {
@@ -44,8 +44,11 @@ public class CypherMetadataContainer {
         procedures.add(new CypherProcedureElement(procedureName, procedureSignature, procedureDescription));
     }
 
-    public void addUserFunction(String userFunctionName, String userFunctionSignature, @Nullable String userFunctionDescription) {
-        userFunctions.add(new CypherUserFunctionElement(userFunctionName, userFunctionSignature, userFunctionDescription));
+    public void addFunction(
+            final String functionName,
+            final String functionSignature,
+            @Nullable final String functionDescription) {
+        functions.add(new CypherFunctionElement(functionName, functionSignature, functionDescription));
     }
 
     public List<CypherLabelElement> getLabels() {
@@ -64,7 +67,7 @@ public class CypherMetadataContainer {
         return procedures;
     }
 
-    public List<CypherUserFunctionElement> getUserFunctions() {
-        return userFunctions;
+    public List<CypherFunctionElement> getFunctions() {
+        return functions;
     }
 }

@@ -44,10 +44,6 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
         dataSourceRootTreeNode.add(createPropertyKeysNode(neo4jMetadata, dataSourceApi));
         dataSourceRootTreeNode.add(createStoredProceduresNode(neo4jMetadata, dataSourceApi));
 
-//        if (metadata.isMetadataExists(Neo4jBoltCypherDataSourceMetadata.USER_FUNCTIONS)) {
-//            dataSourceRootTreeNode.add(createUserFunctionNode(neo4jMetadata, dataSourceApi));
-//        }
-
         if (!metadata.getFunctions().isEmpty()) {
             dataSourceRootTreeNode.add(createFunctionNode(neo4jMetadata.getFunctions(), dataSourceApi));
         }
@@ -57,27 +53,19 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     private PatchedDefaultMutableTreeNode createFunctionNode(
             final List<Neo4jFunctionMetadata> functionMetadata,
             final DataSourceApi dataSourceApi) {
-        final PatchedDefaultMutableTreeNode userFunctionTreeNode = new PatchedDefaultMutableTreeNode(
-                new MetadataTreeNodeModel(USER_FUNCTIONS, dataSourceApi, USER_FUNCTIONS_TITLE, GraphIcons.Nodes.USER_FUNCTION));
+        final PatchedDefaultMutableTreeNode functionTreeNode = new PatchedDefaultMutableTreeNode(
+                new MetadataTreeNodeModel(FUNCTIONS, dataSourceApi, FUNCTIONS_TITLE, GraphIcons.Nodes.FUNCTION));
 
         functionMetadata.forEach(f -> {
             final PatchedDefaultMutableTreeNode nameNode =
-                    of(new MetadataTreeNodeModel(USER_FUNCTION, dataSourceApi, f.name()));
+                    of(new MetadataTreeNodeModel(FUNCTION, dataSourceApi, f.name()));
             final PatchedDefaultMutableTreeNode descriptionNode =
-                    of(new MetadataTreeNodeModel(USER_FUNCTION, dataSourceApi, f.description()));
+                    of(new MetadataTreeNodeModel(FUNCTION, dataSourceApi, f.description()));
             nameNode.add(descriptionNode);
-            userFunctionTreeNode.add(nameNode);
+            functionTreeNode.add(nameNode);
         });
-//        dataSourceMetadata
-//                .getMetadata(Neo4jBoltCypherDataSourceMetadata.USER_FUNCTIONS)
-//                .forEach((row) -> {
-//                    PatchedDefaultMutableTreeNode nameNode = of(new MetadataTreeNodeModel(USER_FUNCTION, dataSourceApi, row.get("name")));
-//                    PatchedDefaultMutableTreeNode descriptionNode = of(new MetadataTreeNodeModel(USER_FUNCTION, dataSourceApi, row.get("signature")));
-//                    nameNode.add(descriptionNode);
-//                    userFunctionTreeNode.add(nameNode);
-//                });
 
-        return userFunctionTreeNode;
+        return functionTreeNode;
     }
 
     @NotNull

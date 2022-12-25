@@ -7,7 +7,6 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.intellij.openapi.components.Service;
 import com.intellij.openapi.project.Project;
@@ -35,7 +34,7 @@ public final class DataSourceMetadataUpdateService {
     static final String PROPERTY_KEYS_TITLE = "property keys";
     static final String LABELS_TITLE = "labels (%s)";
     static final String STORED_PROCEDURES_TITLE = "stored procedures";
-    static final String USER_FUNCTIONS_TITLE = "user functions";
+    static final String FUNCTIONS_TITLE = "user functions";
     static final String INDEXES_TITLE = "indexes (%s)";
     static final String CONSTRAINTS_TITLE = "constraints (%s)";
 

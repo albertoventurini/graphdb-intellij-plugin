@@ -111,17 +111,8 @@ public class DataSourcesComponentMetadata {
 
         metadata.addPropertyKeys(propertyKeysResult);
 
-//        boolean supportsUserFunctions = metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.STORED_PROCEDURES)
-//                .stream()
-//                .anyMatch((map) -> map.get("name").equals("dbms.functions"));
-//
-//        if (supportsUserFunctions) {
-//            GraphQueryResult userFunctionsResult = db.execute("CALL dbms.functions()");
-//            metadata.addUserFunctions(userFunctionsResult);
-//        }
-
-        GraphQueryResult userFunctionsResult = db.execute("SHOW FUNCTIONS YIELD name, signature, description");
-        metadata.addFunctions(userFunctionsResult);
+        final GraphQueryResult functionsResult = db.execute("SHOW FUNCTIONS YIELD name, signature, description");
+        metadata.addFunctions(functionsResult);
 
         return metadata;
     }
@@ -176,12 +167,6 @@ public class DataSourcesComponentMetadata {
                 .forEach(row -> container.addProcedure(row.get("name"), row.get("signature"), row.get("description")));
 
         metadata.getFunctions().forEach(f ->
-                container.addUserFunction(f.name(), f.signature(), f.description()));
-
-//        List<Map<String, String>> userFunctionMetadata = metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.USER_FUNCTIONS);
-//        if (userFunctionMetadata != null) {
-//            userFunctionMetadata
-//                    .forEach(row -> container.addUserFunction(row.get("name"), row.get("signature"), row.get("description")));
-//        }
+                container.addFunction(f.name(), f.signature(), f.description()));
     }
 }

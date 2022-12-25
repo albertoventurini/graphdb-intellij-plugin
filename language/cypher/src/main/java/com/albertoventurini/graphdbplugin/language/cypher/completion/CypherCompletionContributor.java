@@ -21,10 +21,6 @@ class CypherCompletionContributor extends CompletionContributor {
                 new KeywordCompletionProvider());
 
         extend(CompletionType.BASIC,
-                BuiltInFunctionCompletionProvider.PATTERN,
-                new BuiltInFunctionCompletionProvider());
-
-        extend(CompletionType.BASIC,
                 LabelsCompletionProvider.PATTERN,
                 new LabelsCompletionProvider());
 
@@ -41,7 +37,7 @@ class CypherCompletionContributor extends CompletionContributor {
                 new ProceduresCompletionProvider());
 
         extend(CompletionType.BASIC,
-                UserFunctionsCompletionProvider.PATTERN,
-                new UserFunctionsCompletionProvider());
+                FunctionsCompletionProvider.PATTERN,
+                new FunctionsCompletionProvider());
     }
 }

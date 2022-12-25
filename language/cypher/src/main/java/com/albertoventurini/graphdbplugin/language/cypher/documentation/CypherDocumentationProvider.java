@@ -16,7 +16,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IElementType;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherProcedureElement;
-import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherUserFunctionElement;
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherFunctionElement;
 import com.albertoventurini.graphdbplugin.language.cypher.util.TraverseUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -75,7 +75,7 @@ public class CypherDocumentationProvider extends AbstractDocumentationProvider {
             return storedProcedureDocumentation.get();
         }
 
-        Optional<String> userFunctionDocumentation = userFunctionDocumentation(element);
+        Optional<String> userFunctionDocumentation = functionDocumentation(element);
         return userFunctionDocumentation.orElse(null);
 
     }
@@ -134,12 +134,11 @@ public class CypherDocumentationProvider extends AbstractDocumentationProvider {
         return Optional.empty();
     }
 
-    private Optional<String> userFunctionDocumentation(PsiElement element) {
-        if (element instanceof CypherFunctionInvocation) {
-            CypherFunctionInvocation cypherFunctionInvocation = (CypherFunctionInvocation) element;
+    private Optional<String> functionDocumentation(PsiElement element) {
+        if (element instanceof CypherFunctionInvocation cypherFunctionInvocation) {
             return getMetadataService(element)
-                    .findUserFunction(cypherFunctionInvocation.getFullName())
-                    .map(CypherUserFunctionElement::getDocumentation);
+                    .findFunction(cypherFunctionInvocation.getFullName())
+                    .map(CypherFunctionElement::getDocumentation);
         }
         return Optional.empty();
     }

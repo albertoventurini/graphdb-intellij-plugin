@@ -7,6 +7,7 @@
 package com.albertoventurini.graphdbplugin.language.cypher.completion.providers;
 
 import com.albertoventurini.graphdbplugin.language.cypher.CypherParserDefinition;
+import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.codeInsight.completion.CompletionParameters;
@@ -21,6 +22,7 @@ import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.el
 public final class ProceduresCompletionProvider extends BaseCompletionProvider {
     public static final ElementPattern<PsiElement> PATTERN = PlatformPatterns
             .psiElement()
+            .inside(PlatformPatterns.psiElement(CypherTypes.PROCEDURE_INVOCATION))
             .andNot(PlatformPatterns.psiElement(CypherParserDefinition.LINE_COMMENT))
             .andNot(PlatformPatterns.psiElement(CypherParserDefinition.BLOCK_COMMENT))
             .withLanguage(CypherLanguage.INSTANCE);

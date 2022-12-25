@@ -18,7 +18,7 @@ import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.at
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherType;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherBuiltInFunctionElement;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherProcedureElement;
-import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherUserFunctionElement;
+import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.CypherFunctionElement;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.elements.InvokableInformation;
 
 import java.util.*;
@@ -73,8 +73,8 @@ public interface CypherInvocation extends PsiElement, CypherTyped {
                 .collect(toList()));
 
         if (matchedInvocations.isEmpty()) {
-            svc.findUserFunction(getFullName())
-                .map(CypherUserFunctionElement::getInvokableInformation)
+            svc.findFunction(getFullName())
+                .map(CypherFunctionElement::getInvokableInformation)
                 .ifPresent(matchedInvocations::add);
         }
         return matchedInvocations;

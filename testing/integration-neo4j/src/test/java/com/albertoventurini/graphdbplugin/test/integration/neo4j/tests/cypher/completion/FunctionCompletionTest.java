@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserFunctionCompletionTest extends BaseCompletionTest {
+public class FunctionCompletionTest extends BaseCompletionTest {
 
     @Override
     public void setUp() throws Exception {
@@ -21,28 +21,31 @@ public class UserFunctionCompletionTest extends BaseCompletionTest {
         dataSource().neo4j52();
     }
 
-    public void testContainsTestUserFunction() throws Exception {
+    public void testContainsApocFunction() {
         myFixture.configureByText("test.cyp", "RETURN xml<caret>");
         myFixture.completeBasic();
         List<String> strings = myFixture.getLookupElementStrings();
-        assertThat(strings)
-                .contains(
-                        "com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.firstTestFunction",
-                        "com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.secondTestFunction"
-                );
+        assertThat(strings).contains("apoc.xml.parse");
     }
 
-    public void testCompletionCaretAfterParentheses() throws Exception {
-        myFixture.configureByText("test.cyp", "RETURN firstTestFuncti<caret>");
+    public void testCompletionCaretAfterParentheses() {
+        myFixture.configureByText("test.cyp", "RETURN version<caret>");
         myFixture.completeBasic();
         myFixture.finishLookup(Lookup.REPLACE_SELECT_CHAR);
-        myFixture.checkResult("RETURN com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.firstTestFunction()<caret>");
+        myFixture.checkResult("RETURN apoc.version()<caret>");
     }
 
-    public void testCompletionCaretAtParentheses() throws Exception {
-        myFixture.configureByText("test.cyp", "RETURN secondTestFuncti<caret>");
+    public void testCompletionCaretAtParentheses() {
+        myFixture.configureByText("test.cyp", "RETURN uuidHexToBase64<caret>");
         myFixture.completeBasic();
         myFixture.finishLookup(Lookup.REPLACE_SELECT_CHAR);
-        myFixture.checkResult("RETURN com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.secondTestFunction(<caret>)");
+        myFixture.checkResult("RETURN apoc.create.uuidHexToBase64(<caret>)");
+    }
+
+    public void testFunctionWithNamespace() {
+        myFixture.configureByText("test.cyp", "RETURN apoc.vers<caret>");
+        myFixture.completeBasic();
+        myFixture.finishLookup(Lookup.REPLACE_SELECT_CHAR);
+        myFixture.checkResult("RETURN apoc.version()<caret>");
     }
 }

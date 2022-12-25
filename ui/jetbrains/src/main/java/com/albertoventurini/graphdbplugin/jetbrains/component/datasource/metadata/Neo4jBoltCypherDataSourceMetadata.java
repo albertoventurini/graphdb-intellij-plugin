@@ -52,7 +52,6 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     }
 
     public void addFunctions(final GraphQueryResult functionsResult) {
-        //addDataSourceMetadata(USER_FUNCTIONS, userFunctionsResult);
         try {
             functionsResult.getRows().forEach(row -> {
                 final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;

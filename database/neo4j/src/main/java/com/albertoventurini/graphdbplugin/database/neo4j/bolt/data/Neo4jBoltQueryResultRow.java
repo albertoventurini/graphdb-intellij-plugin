@@ -10,8 +10,6 @@ import com.albertoventurini.graphdbplugin.database.api.data.GraphNode;
 import com.albertoventurini.graphdbplugin.database.api.data.GraphRelationship;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultRow;
-import org.neo4j.driver.Record;
-import org.neo4j.driver.Value;
 import org.neo4j.driver.internal.util.Iterables;
 import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
@@ -23,30 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
 
-//    private final Record record;
-    // TODO: just store everything in a record, don't use row
-    private Map<String, Object> row;
-    private List<GraphNode> nodes;
-    private List<GraphRelationship> relationships;
-
-//    public Neo4jBoltQueryResultRow(final Record record) {
-//        this.record = record;
-//
-//        this.row = new HashMap<>();
-//        this.nodes = new ArrayList<>();
-//        this.relationships = new ArrayList<>();
-//
-//        try {
-//            transform(record.asMap());
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        int i = 0;
-//    }
+    private final Map<String, Object> row;
+    private final List<GraphNode> nodes;
+    private final List<GraphRelationship> relationships;
 
     public Neo4jBoltQueryResultRow(Map<String, Object> sourceRow) {
         this.row = new HashMap<>();
@@ -60,17 +39,8 @@ public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
         return row.get(columnName);
     }
 
-    public <T> T getValue(final String columnName, final Class<T> clazz) {
-        final Object value = row.get(columnName);
-        if (clazz.isInstance(value)) {
-            return clazz.cast(value);
-        }
-        throw new RuntimeException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
-    }
-
     @Override
     public Object getValue(GraphQueryResultColumn column) {
-        //return convert(record.get(column.getName()));
         return row.get(column.getName());
     }
 
