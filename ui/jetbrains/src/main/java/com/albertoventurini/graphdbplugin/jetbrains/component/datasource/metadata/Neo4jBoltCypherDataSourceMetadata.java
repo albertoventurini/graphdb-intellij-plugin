@@ -19,7 +19,6 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     public static final String CONSTRAINTS = "constraints";
     public static final String PROPERTY_KEYS = "propertyKeys";
     public static final String STORED_PROCEDURES = "procedures";
-    public static final String USER_FUNCTIONS = "functions";
 
     private Map<String, List<Map<String, String>>> dataReceiver = new HashMap<>();
 
