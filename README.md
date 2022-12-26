@@ -52,10 +52,12 @@ Simply add the following comment right before a Cypher String:
 
 ## Building the plugin
 
-### Dependencies
+### Prerequisites
 
 The plugin depends on JDK17 and the latest release of IntelliJ. Please make sure
 you have those installed on your machine.
+
+Integration tests depend on Docker, because they run Neo4j server in a [Testcontainer](https://www.testcontainers.org/). Please ensure you have Docker up and running if you'd like to run integration tests.
 
 If you plan on making changes to a grammar or lexer files, you may find
 it useful to install the [Grammar-Kit](https://github.com/JetBrains/Grammar-Kit)
