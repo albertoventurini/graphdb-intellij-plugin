@@ -12,7 +12,7 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import icons.GraphIcons;
 import org.jetbrains.annotations.Nullable;
 
-public class CypherUserFunctionElement implements
+public class CypherFunctionElement implements
         CypherElement,
         CypherElementWithSignature,
         CypherElementWithDocumentation {
@@ -23,7 +23,7 @@ public class CypherUserFunctionElement implements
     private final InvokableInformation invokableInformation;
     private String documentation;
 
-    public CypherUserFunctionElement(String name, String signature, @Nullable String description) {
+    public CypherFunctionElement(String name, String signature, @Nullable String description) {
         this.name = name;
         this.description = description;
         this.invokableInformation = new InvokableInformation(signature, name);
@@ -61,7 +61,7 @@ public class CypherUserFunctionElement implements
         return LookupElementBuilder
                 .create(name)
                 .bold()
-                .withIcon(GraphIcons.Nodes.USER_FUNCTION)
+                .withIcon(GraphIcons.Nodes.FUNCTION)
                 .withTailText(invokableInformation.getSignature())
                 .withTypeText(invokableInformation.getReturnTypeString())
                 .withInsertHandler(ParenthesesInsertHandler.getInstance(invokableInformation.hasParameters()));

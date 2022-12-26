@@ -73,7 +73,6 @@ public class Neo4JBoltTreeUpdaterTest {
         metadata.addRelationshipType(new Neo4jRelationshipTypeMetadata(REL, 4L));
         metadata.addDataSourceMetadata(PROPERTY_KEYS, singletonList(propertyKeys));
         metadata.addDataSourceMetadata(STORED_PROCEDURES, singletonList(procedures));
-        metadata.addDataSourceMetadata(USER_FUNCTIONS, singletonList(new HashMap<>()));
         metadata.addDataSourceMetadata(INDEXES, singletonList(indexes));
         metadata.addDataSourceMetadata(CONSTRAINTS, singletonList(constraints));
 

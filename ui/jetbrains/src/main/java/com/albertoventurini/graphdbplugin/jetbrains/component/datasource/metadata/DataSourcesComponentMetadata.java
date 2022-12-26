@@ -11,7 +11,6 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.D
 import com.albertoventurini.graphdbplugin.jetbrains.database.DatabaseManagerService;
 import com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorService;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.MetadataRetrieveEvent;
-import com.albertoventurini.graphdbplugin.language.cypher.documentation.database.DocumentationStorage;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
@@ -112,14 +111,8 @@ public class DataSourcesComponentMetadata {
 
         metadata.addPropertyKeys(propertyKeysResult);
 
-        boolean supportsUserFunctions = metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.STORED_PROCEDURES)
-                .stream()
-                .anyMatch((map) -> map.get("name").equals("dbms.functions"));
-
-        if (supportsUserFunctions) {
-            GraphQueryResult userFunctionsResult = db.execute("CALL dbms.functions()");
-            metadata.addUserFunctions(userFunctionsResult);
-        }
+        final GraphQueryResult functionsResult = db.execute("SHOW FUNCTIONS YIELD name, signature, description");
+        metadata.addFunctions(functionsResult);
 
         return metadata;
     }
@@ -173,10 +166,7 @@ public class DataSourcesComponentMetadata {
         metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.STORED_PROCEDURES)
                 .forEach(row -> container.addProcedure(row.get("name"), row.get("signature"), row.get("description")));
 
-        List<Map<String, String>> userFunctionMetadata = metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.USER_FUNCTIONS);
-        if (userFunctionMetadata != null) {
-            userFunctionMetadata
-                    .forEach(row -> container.addUserFunction(row.get("name"), row.get("signature"), row.get("description")));
-        }
+        metadata.getFunctions().forEach(f ->
+                container.addFunction(f.name(), f.signature(), f.description()));
     }
 }

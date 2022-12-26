@@ -31,18 +31,18 @@ public class CypherFunctionCallInspectionTest extends BaseInspectionTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        metadata.addUserFunction("uany", "() :: (ANY)", null);
-        metadata.addUserFunction("ufint", "() :: (INTEGER)", null);
-        metadata.addUserFunction("uffloat", "() :: (FLOAT)", null);
-        metadata.addUserFunction("ufbool", "() :: (BOOLEAN)", null);
-        metadata.addUserFunction("ufstr", "() :: (STRING)", null);
-        metadata.addUserFunction("ufnode", "() :: (NODE)", null);
-        metadata.addUserFunction("ufpath", "() :: (PATH)", null);
-        metadata.addUserFunction("ufrel", "() :: (RELATIONSHIP)", null);
+        metadata.addFunction("uany", "() :: (ANY)", null);
+        metadata.addFunction("ufint", "() :: (INTEGER)", null);
+        metadata.addFunction("uffloat", "() :: (FLOAT)", null);
+        metadata.addFunction("ufbool", "() :: (BOOLEAN)", null);
+        metadata.addFunction("ufstr", "() :: (STRING)", null);
+        metadata.addFunction("ufnode", "() :: (NODE)", null);
+        metadata.addFunction("ufpath", "() :: (PATH)", null);
+        metadata.addFunction("ufrel", "() :: (RELATIONSHIP)", null);
 
-        metadata.addUserFunction("ufrnode", "(a :: NODE) :: (NODE)", null);
-        metadata.addUserFunction("ufrpath", "(a :: PATH) :: (NODE)", null);
-        metadata.addUserFunction("ufrrel", "(a :: RELATIONSHIP) :: (NODE)", null);
+        metadata.addFunction("ufrnode", "(a :: NODE) :: (NODE)", null);
+        metadata.addFunction("ufrpath", "(a :: PATH) :: (NODE)", null);
+        metadata.addFunction("ufrrel", "(a :: RELATIONSHIP) :: (NODE)", null);
 
         metadata.addProcedure("test.stringq", "(a :: STRING?) :: VOID", null);
         metadata.addProcedure("test.numq", "(a :: NUMBER?) :: VOID", null);

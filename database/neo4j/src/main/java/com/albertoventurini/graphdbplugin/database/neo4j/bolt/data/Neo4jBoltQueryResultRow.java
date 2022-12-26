@@ -21,12 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
 
-    private Map<String, Object> row;
-    private List<GraphNode> nodes;
-    private List<GraphRelationship> relationships;
+    private final Map<String, Object> row;
+    private final List<GraphNode> nodes;
+    private final List<GraphRelationship> relationships;
 
     public Neo4jBoltQueryResultRow(Map<String, Object> sourceRow) {
         this.row = new HashMap<>();
@@ -36,12 +35,14 @@ public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
         transform(sourceRow);
     }
 
+    public Object getValue(final String columnName) {
+        return row.get(columnName);
+    }
+
     @Override
     public Object getValue(GraphQueryResultColumn column) {
         return row.get(column.getName());
     }
-
-
 
     @Override
     public List<GraphNode> getNodes() {
@@ -59,33 +60,28 @@ public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
 
     @SuppressWarnings("unchecked")
     private Object convert(Object o) {
-        if (o instanceof Map) {
-            Map originalMap = (Map) o;
-            Map map = new HashMap<>();
+        if (o instanceof Map<?,?> originalMap) {
+            Map<Object, Object> map = new HashMap<>();
 
             originalMap.forEach((key, value) -> map.put(convert(key), convert(value)));
             return map;
         }
-        if (o instanceof List) {
-            List originalList = (List) o;
+        if (o instanceof List<?> originalList) {
             return originalList.stream()
                     .map(this::convert)
                     .collect(Collectors.toList());
         }
-        if (o instanceof Node) {
-            Node node = (Node) o;
+        if (o instanceof Node node) {
             Neo4jBoltNode boltNode = new Neo4jBoltNode(node);
             nodes.add(boltNode);
             return boltNode;
         }
-        if (o instanceof Relationship) {
-            Relationship rel = (Relationship) o;
+        if (o instanceof Relationship rel) {
             Neo4jBoltRelationship boltRelationship = new Neo4jBoltRelationship(rel);
             relationships.add(boltRelationship);
             return boltRelationship;
         }
-        if (o instanceof Path) {
-            Path path = (Path) o;
+        if (o instanceof Path path) {
             Neo4jBoltPath boltPath = new Neo4jBoltPath();
 
             if (path.length() == 0) {

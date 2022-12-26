@@ -13,9 +13,19 @@ import java.util.List;
 
 public interface GraphQueryResultRow {
 
+    Object getValue(final String columnName);
+
     Object getValue(GraphQueryResultColumn column);
 
     List<GraphNode> getNodes();
 
     List<GraphRelationship> getRelationships();
+
+    default <T> T getValue(final String columnName, final Class<T> clazz) {
+        final Object value = getValue(columnName);
+        if (clazz.isInstance(value)) {
+            return clazz.cast(value);
+        }
+        throw new RuntimeException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
+    }
 }

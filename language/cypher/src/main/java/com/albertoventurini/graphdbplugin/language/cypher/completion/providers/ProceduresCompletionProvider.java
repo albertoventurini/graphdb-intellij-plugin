@@ -7,6 +7,7 @@
 package com.albertoventurini.graphdbplugin.language.cypher.completion.providers;
 
 import com.albertoventurini.graphdbplugin.language.cypher.CypherParserDefinition;
+import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherTypes;
 import org.jetbrains.annotations.NotNull;
 
 import com.intellij.codeInsight.completion.CompletionParameters;
@@ -30,8 +31,8 @@ public final class ProceduresCompletionProvider extends BaseCompletionProvider {
             @NotNull final CompletionParameters parameters,
             @NotNull final ProcessingContext context,
             @NotNull final CompletionResultSet result) {
-        withCypherMetadataProvider(parameters, (metadataProvider -> metadataProvider.getProcedures().stream()
+        withCypherMetadataProvider(parameters, metadataProvider -> metadataProvider.getProcedures().stream()
                 .map(CypherElement::getLookupElement)
-                .forEach(result::addElement)));
+                .forEach(result::addElement));
     }
 }

@@ -27,7 +27,7 @@ public interface CypherMetadataProviderService {
 
     List<CypherProcedureElement> getProcedures();
 
-    List<CypherUserFunctionElement> getUserFunctions();
+    List<CypherFunctionElement> getFunctions();
 
     Optional<CypherLabelElement> findLabel(String labelName);
 
@@ -37,5 +37,5 @@ public interface CypherMetadataProviderService {
 
     Optional<CypherProcedureElement> findProcedure(String fullName);
 
-    Optional<CypherUserFunctionElement> findUserFunction(String fullName);
+    Optional<CypherFunctionElement> findFunction(String fullName);
 }

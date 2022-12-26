@@ -16,6 +16,7 @@ import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQuer
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryPlan;
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryResultRow;
+import org.neo4j.driver.Record;
 import org.neo4j.driver.summary.InputPosition;
 import org.neo4j.driver.summary.Plan;
 import org.neo4j.driver.summary.ResultSummary;
@@ -52,7 +53,7 @@ public class Neo4jBoltBuffer {
         this.resultSummary = resultSummary;
     }
 
-    public void addRow(Map<String, Object> row) {
+    public void addRow(final Map<String, Object> row) {
         this.rows.add(new Neo4jBoltQueryResultRow(row));
     }
 
