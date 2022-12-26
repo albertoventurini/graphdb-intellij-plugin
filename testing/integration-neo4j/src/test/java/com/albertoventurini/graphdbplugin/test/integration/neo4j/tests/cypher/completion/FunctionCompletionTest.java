@@ -42,10 +42,17 @@ public class FunctionCompletionTest extends BaseCompletionTest {
         myFixture.checkResult("RETURN apoc.create.uuidHexToBase64(<caret>)");
     }
 
-    public void testFunctionWithNamespace() {
-        myFixture.configureByText("test.cyp", "RETURN apoc.vers<caret>");
+    public void testBuiltInFunction() {
+        myFixture.configureByText("test.cyp", "RETURN toStrin<caret>");
         myFixture.completeBasic();
         myFixture.finishLookup(Lookup.REPLACE_SELECT_CHAR);
-        myFixture.checkResult("RETURN apoc.version()<caret>");
+        myFixture.checkResult("RETURN toString(<caret>)");
     }
+
+//    public void testFunctionWithNamespace() {
+//        myFixture.configureByText("test.cyp", "RETURN apoc.vers<caret>");
+//        myFixture.completeBasic();
+//        myFixture.finishLookup(Lookup.REPLACE_SELECT_CHAR);
+//        myFixture.checkResult("RETURN apoc.version()<caret>");
+//    }
 }

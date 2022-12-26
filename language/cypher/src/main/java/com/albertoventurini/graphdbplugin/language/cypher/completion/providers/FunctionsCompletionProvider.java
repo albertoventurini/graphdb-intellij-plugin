@@ -29,8 +29,8 @@ public final class FunctionsCompletionProvider extends BaseCompletionProvider {
             @NotNull final CompletionParameters parameters,
             @NotNull final ProcessingContext context,
             @NotNull final CompletionResultSet result) {
-        withCypherMetadataProvider(parameters, (metadataProvider -> metadataProvider.getFunctions().stream()
+        withCypherMetadataProvider(parameters, metadataProvider -> metadataProvider.getFunctions().stream()
                 .map(CypherElement::getLookupElement)
-                .forEach(result::addElement)));
+                .forEach(result::addElement));
     }
 }

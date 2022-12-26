@@ -22,7 +22,6 @@ import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.el
 public final class ProceduresCompletionProvider extends BaseCompletionProvider {
     public static final ElementPattern<PsiElement> PATTERN = PlatformPatterns
             .psiElement()
-            .inside(PlatformPatterns.psiElement(CypherTypes.PROCEDURE_INVOCATION))
             .andNot(PlatformPatterns.psiElement(CypherParserDefinition.LINE_COMMENT))
             .andNot(PlatformPatterns.psiElement(CypherParserDefinition.BLOCK_COMMENT))
             .withLanguage(CypherLanguage.INSTANCE);
@@ -32,8 +31,8 @@ public final class ProceduresCompletionProvider extends BaseCompletionProvider {
             @NotNull final CompletionParameters parameters,
             @NotNull final ProcessingContext context,
             @NotNull final CompletionResultSet result) {
-        withCypherMetadataProvider(parameters, (metadataProvider -> metadataProvider.getProcedures().stream()
+        withCypherMetadataProvider(parameters, metadataProvider -> metadataProvider.getProcedures().stream()
                 .map(CypherElement::getLookupElement)
-                .forEach(result::addElement)));
+                .forEach(result::addElement));
     }
 }

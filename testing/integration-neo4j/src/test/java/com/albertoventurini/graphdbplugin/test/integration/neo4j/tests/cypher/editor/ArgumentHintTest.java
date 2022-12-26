@@ -80,9 +80,9 @@ public class ArgumentHintTest extends BaseIntegrationTest {
                 "<html>(<b color=1d1d1d>indexName :: STRING?</b>)</html>");
     }
 
-    public void testUserDefinedFunction() {
-        doTest("RETURN com.albertoventurini.graphdbplugin.test.database.neo4j_4_4.secondTestFunction(<caret>\"test\");",
-                "<html>(<b color=1d1d1d>param :: STRING?</b>)</html>");
+    public void testApocFunction() {
+        doTest("RETURN apoc.text.capitalize(<caret>\"test\");",
+                "<html>(<b color=1d1d1d>text :: STRING?</b>)</html>");
     }
 
     public void testNoParams() {
