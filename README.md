@@ -1,5 +1,3 @@
-![Build Plugin]https://github.com/albertoventurini/graphdb-intellij-plugin/actions/workflows/build-plugin.yaml/badge.svg
-
 # Graph Database plugin for IntelliJ Platform
 
 This plugin adds support for graph databases to the IntelliJ IDEA platform.
