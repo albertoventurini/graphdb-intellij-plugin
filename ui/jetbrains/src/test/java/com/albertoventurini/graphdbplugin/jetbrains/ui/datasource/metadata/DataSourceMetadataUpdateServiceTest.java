@@ -5,7 +5,6 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadat
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.impl.DataSourceV1;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.RootTreeNodeModel;
-import com.intellij.testFramework.ServiceContainerUtil;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
 import org.junit.Before;
@@ -33,11 +32,6 @@ public class DataSourceMetadataUpdateServiceTest extends LightJavaCodeInsightFix
         final var metadataComponent = mock(DataSourcesComponentMetadata.class);
         final var treeUpdaters = mock(DataSourceTreeUpdaters.class);
 
-        ServiceContainerUtil.replaceService(
-                getProject(), DataSourcesComponentMetadata.class, metadataComponent, getTestRootDisposable());
-        ServiceContainerUtil.replaceService(
-                getProject(), DataSourceTreeUpdaters.class, treeUpdaters, getTestRootDisposable());
-
         final var dataSourceMetadata = mock(DataSourceMetadata.class);
         when(metadataComponent.getMetadata(any()))
                 .thenReturn(CompletableFuture.completedFuture(Optional.of(dataSourceMetadata)));
@@ -46,7 +40,7 @@ public class DataSourceMetadataUpdateServiceTest extends LightJavaCodeInsightFix
         when(treeUpdaters.get(DataSourceType.NEO4J_BOLT))
                 .thenReturn(Optional.of(treeUpdater));
 
-        service = getProject().getService(DataSourceMetadataUpdateService.class);
+        service = new DataSourceMetadataUpdateService(metadataComponent, treeUpdaters);
     }
 
     @Test

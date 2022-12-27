@@ -39,12 +39,19 @@ public final class DataSourceMetadataUpdateService {
     static final String CONSTRAINTS_TITLE = "constraints (%s)";
 
     private final DataSourcesComponentMetadata dataSourcesComponent;
-
     private final DataSourceTreeUpdaters treeUpdaters;
 
     DataSourceMetadataUpdateService(@NotNull final Project project) {
         dataSourcesComponent = project.getService(DataSourcesComponentMetadata.class);
         treeUpdaters = project.getService(DataSourceTreeUpdaters.class);
+    }
+
+    DataSourceMetadataUpdateService(
+            @NotNull final DataSourcesComponentMetadata dataSourcesComponentMetadata,
+            @NotNull final DataSourceTreeUpdaters treeUpdaters) {
+
+        this.dataSourcesComponent = dataSourcesComponentMetadata;
+        this.treeUpdaters = treeUpdaters;
     }
 
     /**

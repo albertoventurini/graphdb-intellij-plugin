@@ -53,6 +53,8 @@ public class CypherFormattingModelBuilder implements FormattingModelBuilder {
                 .before(CypherTypes.OP_COMMA).none()
                 .after(CypherTypes.OP_COMMA).spaces(1)
 
+                .between(CypherTypes.K_MATCH, CypherTypes.PATTERN_WITH_WHERE_CLAUSE).spaces(1)
+
                 .between(CypherTypes.NODE_LABELS, CypherTypes.PROPERTIES).spaces(1)
                 .between(CypherTypes.RELATIONSHIP_TYPES, CypherTypes.PROPERTIES).spaces(1)
                 .between(CypherTypes.PARENTHESIZED_EXPRESSION, CypherTypes.PATTERN).none()
