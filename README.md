@@ -1,5 +1,7 @@
 # Graph Database plugin for IntelliJ Platform
 
+[![Build](https://github.com/albertoventurini/graphdb-intellij-plugin/actions/workflows/build-plugin.yaml/badge.svg)][gh:build]
+
 This plugin adds support for graph databases to the IntelliJ IDEA platform.
 At the moment, the only supported database is Neo4j.
 
