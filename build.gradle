@@ -34,17 +34,18 @@ allprojects {
     }
 
     apply plugin: 'java'
-    apply plugin: 'checkstyle'
+//    apply plugin: 'checkstyle'
     apply plugin: 'org.jetbrains.grammarkit'
 
     sourceCompatibility = 17
     targetCompatibility = 17
 
-    checkstyle {
-        toolVersion = "7.0"
-        configFile = new File(checkstyleConfigDir, "checkstyle.xml")
-        configProperties.checkstyleConfigDir = checkstyleConfigDir
-    }
+//    checkstyle {
+//        toolVersion = "7.0"
+//        configFile = new File(checkstyleConfigDir, "checkstyle.xml")
+//        configProperties.checkstyleConfigDir = checkstyleConfigDir
+//        ignoreFailures = true
+//    }
 
     intellij {
         version = intellijSdkVersion
