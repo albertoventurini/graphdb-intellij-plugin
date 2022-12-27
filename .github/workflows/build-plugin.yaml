@@ -1,4 +1,4 @@
-name: Run Gradle on PRs
+name: Build and test
 
 # See https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows
 on:
