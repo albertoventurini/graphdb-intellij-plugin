@@ -3,6 +3,7 @@ package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jFunctionMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jProcedureMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.LabelTreeNodeModel;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.MetadataTreeNodeModel;
@@ -42,7 +43,10 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
         dataSourceRootTreeNode.add(createLabelsNode(neo4jMetadata, dataSourceApi));
         dataSourceRootTreeNode.add(createRelationshipTypesNode(neo4jMetadata, dataSourceApi));
         dataSourceRootTreeNode.add(createPropertyKeysNode(neo4jMetadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createStoredProceduresNode(neo4jMetadata, dataSourceApi));
+
+        if (!metadata.getProcedures().isEmpty()) {
+            dataSourceRootTreeNode.add(createProceduresNode(neo4jMetadata.getProcedures(), dataSourceApi));
+        }
 
         if (!metadata.getFunctions().isEmpty()) {
             dataSourceRootTreeNode.add(createFunctionNode(neo4jMetadata.getFunctions(), dataSourceApi));
@@ -69,14 +73,18 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     }
 
     @NotNull
-    private PatchedDefaultMutableTreeNode createStoredProceduresNode(Neo4jBoltCypherDataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
+    private PatchedDefaultMutableTreeNode createProceduresNode(
+            final List<Neo4jProcedureMetadata> procedureMetadata,
+            final DataSourceApi dataSourceApi) {
         PatchedDefaultMutableTreeNode storedProceduresTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(STORED_PROCEDURES, dataSourceApi, STORED_PROCEDURES_TITLE, GraphIcons.Nodes.STORED_PROCEDURE));
-        dataSourceMetadata
-                .getMetadata(Neo4jBoltCypherDataSourceMetadata.STORED_PROCEDURES)
-                .forEach((row) -> {
-                    PatchedDefaultMutableTreeNode nameNode = of(new MetadataTreeNodeModel(STORED_PROCEDURE, dataSourceApi, row.get("name")));
-                    PatchedDefaultMutableTreeNode descriptionNode = of(new MetadataTreeNodeModel(STORED_PROCEDURE, dataSourceApi, row.get("signature")));
+
+        procedureMetadata
+                .forEach(p -> {
+                    final PatchedDefaultMutableTreeNode nameNode =
+                            of(new MetadataTreeNodeModel(STORED_PROCEDURE, dataSourceApi,p.name()));
+                    final PatchedDefaultMutableTreeNode descriptionNode =
+                            of(new MetadataTreeNodeModel(STORED_PROCEDURE, dataSourceApi, p.description()));
                     nameNode.add(descriptionNode);
                     storedProceduresTreeNode.add(nameNode);
                 });

@@ -8,10 +8,9 @@ package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jFunctionMetadata;
-import com.albertoventurini.graphdbplugin.test.integration.neo4j.data.StoredProcedure;
-import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.common.AbstractDataSourceMetadataTest;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
-import java.util.Arrays;
+import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.common.AbstractDataSourceMetadataTest;
+
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,18 +20,6 @@ public class DataSourceMetadataTest extends AbstractDataSourceMetadataTest {
     @Override
     public DataSourceApi getDataSource() {
         return dataSource().neo4j52();
-    }
-
-    @Override
-    protected List<StoredProcedure> requiredProcedures() {
-        //TODO: needs update to match actual neo 4.0 procedures
-        return Arrays.asList(
-                procedure("db.labels",
-                        "db.labels() :: (label :: STRING?)",
-                        "List all available labels in the database.",
-                        null,
-                        null)
-        );
     }
 
     public void testHaveTestUserFunctions() {

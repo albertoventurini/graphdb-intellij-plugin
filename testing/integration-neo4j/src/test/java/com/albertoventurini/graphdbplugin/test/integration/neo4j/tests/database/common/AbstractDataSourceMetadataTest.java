@@ -6,23 +6,18 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.common;
 
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jProcedureMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
-import com.albertoventurini.graphdbplugin.test.integration.neo4j.data.StoredProcedure;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.base.BaseIntegrationTest;
 
-
-
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.stream.Collectors;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 
-import static com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata.STORED_PROCEDURES;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SuppressWarnings("unchecked")
@@ -42,28 +37,15 @@ public abstract class AbstractDataSourceMetadataTest extends BaseIntegrationTest
     }
 
     public void testMetadataHaveRequiredProcedures() {
-        DataSourceMetadata metadata = getMetadata();
-        List<Map<String, String>> storedProcedures = metadata.getMetadata(STORED_PROCEDURES);
+        final List<Neo4jProcedureMetadata> procedures = getMetadata().getProcedures();
 
-        List<Map<String, String>> requiredProcedures = requiredProcedures().stream()
-                .map(StoredProcedure::asMap)
-                .collect(Collectors.toList());
-        assertThat(storedProcedures)
-                .containsAll(requiredProcedures);
-    }
-
-    protected abstract List<StoredProcedure> requiredProcedures();
-
-    protected StoredProcedure procedure(final String name, final String signature, final String description, final String mode) {
-        return new StoredProcedure(name, signature, description, mode);
-    }
-
-    protected StoredProcedure procedure(final String name, final String signature, final String description, final String mode, final String worksOnSystem) {
-        return new StoredProcedure(name, signature, description, mode, worksOnSystem);
+        assertTrue(procedures.stream().anyMatch(p ->
+                p.name().equals("db.labels")
+                && p.signature().equals("db.labels() :: (label :: STRING?)")
+                && p.description().equals("List all available labels in the database.")));
     }
 
     protected DataSourceMetadata getMetadata() {
-
         try {
             CompletableFuture<Optional<DataSourceMetadata>> futureMeta = component().dataSourcesMetadata().getMetadata(getDataSource());
             return futureMeta.get(30, TimeUnit.SECONDS)

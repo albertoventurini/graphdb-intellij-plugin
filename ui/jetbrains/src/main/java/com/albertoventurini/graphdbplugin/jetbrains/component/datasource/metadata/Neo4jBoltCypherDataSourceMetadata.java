@@ -18,11 +18,11 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     public static final String INDEXES = "indexes";
     public static final String CONSTRAINTS = "constraints";
     public static final String PROPERTY_KEYS = "propertyKeys";
-    public static final String STORED_PROCEDURES = "procedures";
 
     private Map<String, List<Map<String, String>>> dataReceiver = new HashMap<>();
 
-    private List<Neo4jFunctionMetadata> functions = new ArrayList<>();
+    private final List<Neo4jFunctionMetadata> functions = new ArrayList<>();
+    private final List<Neo4jProcedureMetadata> procedures = new ArrayList<>();
 
     private List<Neo4jLabelMetadata> labels = new ArrayList<>();
     private List<Neo4jRelationshipTypeMetadata> relationshipTypes = new ArrayList<>();
@@ -38,6 +38,11 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     }
 
     @Override
+    public List<Neo4jProcedureMetadata> getProcedures() {
+        return Collections.unmodifiableList(procedures);
+    }
+
+    @Override
     public boolean isMetadataExists(final String metadataKey) {
         return dataReceiver.containsKey(metadataKey);
     }
@@ -46,22 +51,28 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         addDataSourceMetadata(PROPERTY_KEYS, propertyKeysResult);
     }
 
-    public void addStoredProcedures(GraphQueryResult storedProceduresResult) {
-        addDataSourceMetadata(STORED_PROCEDURES, storedProceduresResult);
+    public void addProcedure(final Neo4jProcedureMetadata procedure) {
+        procedures.add(procedure);
+    }
+
+    public void addProcedures(final GraphQueryResult proceduresResult) {
+        proceduresResult.getRows().forEach(row -> {
+            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+            final String name = neo4jRow.getValue("name", String.class);
+            final String signature = neo4jRow.getValue("signature", String.class);
+            final String description = neo4jRow.getValue("description", String.class);
+            procedures.add(new Neo4jProcedureMetadata(name, signature, description));
+        });
     }
 
     public void addFunctions(final GraphQueryResult functionsResult) {
-        try {
-            functionsResult.getRows().forEach(row -> {
-                final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-                final String name = (String) neo4jRow.getValue("name");
-                final String signature = (String) neo4jRow.getValue("signature");
-                final String description = (String) neo4jRow.getValue("description");
-                functions.add(new Neo4jFunctionMetadata(name, signature, description));
-            });
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        functionsResult.getRows().forEach(row -> {
+            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+            final String name = neo4jRow.getValue("name", String.class);
+            final String signature = neo4jRow.getValue("signature", String.class);
+            final String description = neo4jRow.getValue("description", String.class);
+            functions.add(new Neo4jFunctionMetadata(name, signature, description));
+        });
     }
 
     private void addDataSourceMetadata(String key, GraphQueryResult graphQueryResult) {

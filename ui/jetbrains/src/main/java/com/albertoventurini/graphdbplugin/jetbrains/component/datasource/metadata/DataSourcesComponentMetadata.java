@@ -88,7 +88,7 @@ public class DataSourcesComponentMetadata {
 
             metadata.addIndexes(indexesResult);
             metadata.addConstraints(constraintsResult);
-            metadata.addStoredProcedures(storedProceduresResult);
+            metadata.addProcedures(storedProceduresResult);
         } catch (Exception e) {
             LOG.warn("Unable to load indexes, constraints and procedures from the current database. Please upgrade to Neo4j 4 or 5 to fix this.");
         }
@@ -163,10 +163,8 @@ public class DataSourcesComponentMetadata {
         metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.PROPERTY_KEYS).stream()
                 .map((row) -> row.get("propertyKey"))
                 .forEach(container::addPropertyKey);
-        metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.STORED_PROCEDURES)
-                .forEach(row -> container.addProcedure(row.get("name"), row.get("signature"), row.get("description")));
 
-        metadata.getFunctions().forEach(f ->
-                container.addFunction(f.name(), f.signature(), f.description()));
+        metadata.getProcedures().forEach(p -> container.addProcedure(p.name(), p.signature(), p.description()));
+        metadata.getFunctions().forEach(f -> container.addFunction(f.name(), f.signature(), f.description()));
     }
 }

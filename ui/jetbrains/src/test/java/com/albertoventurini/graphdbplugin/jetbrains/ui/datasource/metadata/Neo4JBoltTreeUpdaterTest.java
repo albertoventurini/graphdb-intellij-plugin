@@ -9,6 +9,7 @@ package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jLabelMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jProcedureMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jRelationshipTypeMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.impl.DataSourceV1;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.*;
@@ -64,15 +65,15 @@ public class Neo4JBoltTreeUpdaterTest {
         HashMap<String, String> constraints = new HashMap<>();
         constraints.put("description", "constraint ON (:aaa) UNIQUE");
 
-        HashMap<String, String> procedures = new HashMap<>();
-        procedures.put("signature", "db.labels() :: (label :: STRING?)");
-        procedures.put("name", "db.labels");
-        procedures.put("description", "List all labels in the database.");
+        final Neo4jProcedureMetadata procedure = new Neo4jProcedureMetadata(
+                "db.labels",
+                "db.labels() :: (label :: STRING?)",
+                "List all labels in the database.");
 
         LABEL_METADATA.forEach(metadata::addLabel);
         metadata.addRelationshipType(new Neo4jRelationshipTypeMetadata(REL, 4L));
         metadata.addDataSourceMetadata(PROPERTY_KEYS, singletonList(propertyKeys));
-        metadata.addDataSourceMetadata(STORED_PROCEDURES, singletonList(procedures));
+        metadata.addProcedure(procedure);
         metadata.addDataSourceMetadata(INDEXES, singletonList(indexes));
         metadata.addDataSourceMetadata(CONSTRAINTS, singletonList(constraints));
 

@@ -26,6 +26,6 @@ public interface GraphQueryResultRow {
         if (clazz.isInstance(value)) {
             return clazz.cast(value);
         }
-        throw new RuntimeException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
+        throw new ClassCastException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
     }
 }
