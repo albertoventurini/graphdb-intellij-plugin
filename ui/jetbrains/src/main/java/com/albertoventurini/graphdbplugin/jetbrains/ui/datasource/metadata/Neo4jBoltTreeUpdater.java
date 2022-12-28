@@ -17,14 +17,20 @@ import javax.swing.tree.MutableTreeNode;
 import java.util.List;
 import java.util.Map;
 
-import static com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.DataSourceMetadataUpdateService.*;
 import static com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.Neo4jTreeNodeType.*;
-import static com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.Neo4jTreeNodeType.CONSTRAINT;
 
 /**
  * Updates the data source tree for Neo4j data source metadata.
  */
 final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
+
+    private static final String RELATIONSHIP_TYPES_TITLE = "relationship types (%s)";
+    private static final String PROPERTY_KEYS_TITLE = "property keys";
+    private static final String LABELS_TITLE = "labels (%s)";
+    private static final String PROCEDURES_TITLE = "procedures (%s)";
+    private static final String FUNCTIONS_TITLE = "functions (%s)";
+    private static final String INDEXES_TITLE = "indexes (%s)";
+    private static final String CONSTRAINTS_TITLE = "constraints (%s)";
 
     @Override
     public void updateTree(
@@ -58,7 +64,11 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
             final List<Neo4jFunctionMetadata> functionMetadata,
             final DataSourceApi dataSourceApi) {
         final PatchedDefaultMutableTreeNode functionTreeNode = new PatchedDefaultMutableTreeNode(
-                new MetadataTreeNodeModel(FUNCTIONS, dataSourceApi, FUNCTIONS_TITLE, GraphIcons.Nodes.FUNCTION));
+                new MetadataTreeNodeModel(
+                        FUNCTIONS,
+                        dataSourceApi,
+                        FUNCTIONS_TITLE.formatted(functionMetadata.size()),
+                        GraphIcons.Nodes.FUNCTION));
 
         functionMetadata.forEach(f -> {
             final PatchedDefaultMutableTreeNode nameNode =
@@ -77,7 +87,11 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
             final List<Neo4jProcedureMetadata> procedureMetadata,
             final DataSourceApi dataSourceApi) {
         PatchedDefaultMutableTreeNode storedProceduresTreeNode = new PatchedDefaultMutableTreeNode(
-                new MetadataTreeNodeModel(STORED_PROCEDURES, dataSourceApi, STORED_PROCEDURES_TITLE, GraphIcons.Nodes.STORED_PROCEDURE));
+                new MetadataTreeNodeModel(
+                        STORED_PROCEDURES,
+                        dataSourceApi,
+                        PROCEDURES_TITLE.formatted(procedureMetadata.size()),
+                        GraphIcons.Nodes.STORED_PROCEDURE));
 
         procedureMetadata
                 .forEach(p -> {
@@ -115,7 +129,9 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     }
 
     @NotNull
-    private PatchedDefaultMutableTreeNode createLabelsNode(Neo4jBoltCypherDataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
+    private PatchedDefaultMutableTreeNode createLabelsNode(
+            final Neo4jBoltCypherDataSourceMetadata dataSourceMetadata,
+            final DataSourceApi dataSourceApi) {
         int labelCount = dataSourceMetadata.getLabels().size();
         PatchedDefaultMutableTreeNode labelsTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(LABELS, dataSourceApi, String.format(LABELS_TITLE, labelCount), GraphIcons.Nodes.LABEL));

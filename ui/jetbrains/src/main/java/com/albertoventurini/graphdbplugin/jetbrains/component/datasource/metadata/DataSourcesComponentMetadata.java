@@ -47,7 +47,7 @@ public class DataSourcesComponentMetadata {
         cypherMetadataProviderService = project.getService(CypherMetadataProviderService.class);
         executorService = ApplicationManager.getApplication().getService(ExecutorService.class);
 
-        handlers.put(DataSourceType.NEO4J_BOLT, this::getNeo4jBoltMetadata);
+        handlers.put(DataSourceType.NEO4J_BOLT, this::buildNeo4jBoltMetadata);
     }
 
     public CompletableFuture<Optional<DataSourceMetadata>> getMetadata(DataSourceApi dataSource) {
@@ -77,7 +77,7 @@ public class DataSourcesComponentMetadata {
         return future;
     }
 
-    private DataSourceMetadata getNeo4jBoltMetadata(DataSourceApi dataSource) {
+    private DataSourceMetadata buildNeo4jBoltMetadata(DataSourceApi dataSource) {
         GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
         Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
 
