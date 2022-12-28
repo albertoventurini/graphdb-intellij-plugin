@@ -449,7 +449,7 @@ Parameter ::= NewParameter | OldParameter {
 OldParameter ::= "{" (SymbolicNameString | UnsignedInteger) "}"
 NewParameter ::= "$" (SymbolicNameString | UnsignedInteger)
 NodeLabel ::= ":" LabelName
-StringLiteral ::= l_string {
+StringLiteral ::= L_STRING {
     implements="com.albertoventurini.graphdbplugin.language.cypher.references.types.CypherStringYielding"
 }
 BooleanLiteral ::= K_TRUE | K_FALSE {
@@ -585,10 +585,10 @@ ReservedWord ::= K_MATCH
                 | K_ALL
                 | K_ADD
 
-EscapedSymbolicNameString ::= l_identifier_text
-UnescapedSymbolicNameString ::= l_identifier
+EscapedSymbolicNameString ::= L_IDENTIFIER_TEXT
+UnescapedSymbolicNameString ::= L_IDENTIFIER
 Dash ::= "-" // todo: migrate all variants
 LeftArrowHead ::= "<" // todo: migrate all variants
 RightArrowHead ::= ">" // todo: migrate all variants
-UnsignedDouble ::= l_decimal
-UnsignedInteger ::= l_integer
+UnsignedDouble ::= L_DECIMAL
+UnsignedInteger ::= L_INTEGER
