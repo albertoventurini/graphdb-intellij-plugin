@@ -33,7 +33,6 @@ import static java.util.stream.Collectors.toMap;
 public class Neo4jBoltBuffer {
 
     private List<GraphQueryResultColumn> columns;
-    private final List<Record> records;
     private List<GraphQueryResultRow> rows;
     private ResultSummary resultSummary;
     private List<GraphNode> nodes;
@@ -41,7 +40,6 @@ public class Neo4jBoltBuffer {
     private List<GraphQueryNotification> notifications;
 
     public Neo4jBoltBuffer() {
-        records = new ArrayList<>();
         this.rows = new ArrayList<>();
     }
 
@@ -55,10 +53,6 @@ public class Neo4jBoltBuffer {
         this.resultSummary = resultSummary;
     }
 
-    public void addRecord(final Record record) {
-        records.add(record);
-    }
-
     public void addRow(final Map<String, Object> row) {
         this.rows.add(new Neo4jBoltQueryResultRow(row));
     }
@@ -69,10 +63,6 @@ public class Neo4jBoltBuffer {
 
     public List<GraphQueryResultRow> getRows() {
         return rows;
-    }
-
-    public List<Record> getRecords() {
-        return Collections.unmodifiableList(records);
     }
 
     public List<GraphNode> getNodes() {

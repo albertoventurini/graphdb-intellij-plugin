@@ -29,14 +29,4 @@ public interface GraphQueryResultRow {
         }
         throw new ClassCastException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
     }
-
-    default <T> Optional<T> getOptionalValue(final String columnName, final Class<T> clazz) {
-        return Optional.ofNullable(getValue(columnName))
-                .map(v -> {
-                    if (clazz.isInstance(v)) {
-                        return clazz.cast(v);
-                    }
-                    throw new ClassCastException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
-                });
-    }
 }

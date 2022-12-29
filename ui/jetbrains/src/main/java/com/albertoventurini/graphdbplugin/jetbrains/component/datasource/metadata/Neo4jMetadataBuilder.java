@@ -3,7 +3,6 @@ package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metada
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
-import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryResultRow;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.jetbrains.database.DatabaseManagerService;
 import com.intellij.openapi.application.ApplicationManager;
@@ -59,19 +58,6 @@ class Neo4jMetadataBuilder implements MetadataBuilder {
 
         return metadata;
     }
-
-//    private List<Neo4jIndexMetadata> buildIndexMetadata(final GraphDatabaseApi db) {
-//        final GraphQueryResult indexesResult = db.execute("SHOW INDEXES");
-//        indexesResult.getRows().stream().map(row -> {
-//            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-//            final String name = neo4jRow.getOptionalValue("name", String.class).orElse(null);
-//            final String state = neo4jRow.getOptionalValue("state", String.class).orElse(null);
-//            final double populationPercent = neo4jRow.getOptionalValue("populationPercent", Double.class).orElse(0.0);
-//            final String type = neo4jRow.getOptionalValue("type", String.class).orElse(null);
-//            final String entityType = neo4jRow.getOptionalValue("entityType", String.class).orElse(null);
-//            final List<String> labelsOrTypes = neo4jRow.getOptionalValue("labelsOrTypes", List.class).orElse(List.of());
-//        })
-//    }
 
     private List<String> extractRelationshipTypes(GraphQueryResult relationshipQueryResult) {
         GraphQueryResultColumn column = relationshipQueryResult.getColumns().get(0);
