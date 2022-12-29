@@ -13,9 +13,9 @@ import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryPlan;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultRow;
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryNotification;
-import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryPlan;
-import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryResultColumn;
-import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryResultRow;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryPlan;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultColumn;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultRow;
 import org.neo4j.driver.Record;
 import org.neo4j.driver.summary.InputPosition;
 import org.neo4j.driver.summary.Plan;
@@ -53,8 +53,8 @@ public class Neo4jBoltBuffer {
         this.resultSummary = resultSummary;
     }
 
-    public void addRow(final Map<String, Object> row) {
-        this.rows.add(new Neo4jBoltQueryResultRow(row));
+    public void addRow(final Record record) {
+        this.rows.add(new Neo4jBoltQueryResultRow(record));
     }
 
     public List<GraphQueryResultColumn> getColumns() {

@@ -91,7 +91,7 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
 
                     for (Record record : statementResult.list()) {
                         // Add row
-                        buffer.addRow(record.asMap());
+                        buffer.addRow(record);
                     }
                     buffer.addResultSummary(statementResult.consume());
                     long endTime = System.currentTimeMillis();

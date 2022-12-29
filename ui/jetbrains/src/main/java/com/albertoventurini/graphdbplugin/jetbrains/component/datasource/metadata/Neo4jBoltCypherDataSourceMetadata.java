@@ -9,7 +9,7 @@ package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metada
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultRow;
-import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryResultRow;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultRow;
 
 import java.util.*;
 

@@ -4,7 +4,7 @@
  * by Neueda Technologies, Ltd.
  * Modified by Alberto Venturini, 2022
  */
-package com.albertoventurini.graphdbplugin.database.neo4j.bolt.data;
+package com.albertoventurini.graphdbplugin.database.neo4j.bolt.query;
 
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 
