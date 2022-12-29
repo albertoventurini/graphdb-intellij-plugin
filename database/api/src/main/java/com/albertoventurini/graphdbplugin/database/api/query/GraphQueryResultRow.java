@@ -10,6 +10,7 @@ import com.albertoventurini.graphdbplugin.database.api.data.GraphNode;
 import com.albertoventurini.graphdbplugin.database.api.data.GraphRelationship;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GraphQueryResultRow {
 
@@ -27,5 +28,15 @@ public interface GraphQueryResultRow {
             return clazz.cast(value);
         }
         throw new ClassCastException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
+    }
+
+    default <T> Optional<T> getOptionalValue(final String columnName, final Class<T> clazz) {
+        return Optional.ofNullable(getValue(columnName))
+                .map(v -> {
+                    if (clazz.isInstance(v)) {
+                        return clazz.cast(v);
+                    }
+                    throw new ClassCastException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
+                });
     }
 }
