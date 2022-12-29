@@ -58,9 +58,9 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     public void addProcedures(final GraphQueryResult proceduresResult) {
         proceduresResult.getRows().forEach(row -> {
             final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-            final String name = neo4jRow.getValue("name", String.class);
-            final String signature = neo4jRow.getValue("signature", String.class);
-            final String description = neo4jRow.getValue("description", String.class);
+            final String name = neo4jRow.getValue("name").asString();
+            final String signature = neo4jRow.getValue("signature").asString();
+            final String description = neo4jRow.getValue("description").asString();
             procedures.add(new Neo4jProcedureMetadata(name, signature, description));
         });
     }
@@ -68,9 +68,9 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     public void addFunctions(final GraphQueryResult functionsResult) {
         functionsResult.getRows().forEach(row -> {
             final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-            final String name = neo4jRow.getValue("name", String.class);
-            final String signature = neo4jRow.getValue("signature", String.class);
-            final String description = neo4jRow.getValue("description", String.class);
+            final String name = neo4jRow.getValue("name").asString();
+            final String signature = neo4jRow.getValue("signature").asString();
+            final String description = neo4jRow.getValue("description").asString();
             functions.add(new Neo4jFunctionMetadata(name, signature, description));
         });
     }

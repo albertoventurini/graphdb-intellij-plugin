@@ -14,6 +14,7 @@ import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltNode
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltPath;
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltRelationship;
 import org.neo4j.driver.Record;
+import org.neo4j.driver.Value;
 import org.neo4j.driver.internal.util.Iterables;
 import org.neo4j.driver.types.Node;
 import org.neo4j.driver.types.Path;
@@ -42,8 +43,8 @@ public class Neo4jBoltQueryResultRow implements GraphQueryResultRow {
         });
     }
 
-    public Object getValue(final String columnName) {
-        return record.get(columnName).asObject();
+    public Value getValue(final String columnName) {
+        return record.get(columnName);
     }
 
     @Override
