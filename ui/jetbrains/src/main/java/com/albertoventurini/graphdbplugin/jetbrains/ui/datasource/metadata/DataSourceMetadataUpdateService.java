@@ -30,14 +30,6 @@ import static java.util.concurrent.CompletableFuture.completedFuture;
 @Service
 public final class DataSourceMetadataUpdateService {
 
-    static final String RELATIONSHIP_TYPES_TITLE = "relationship types (%s)";
-    static final String PROPERTY_KEYS_TITLE = "property keys";
-    static final String LABELS_TITLE = "labels (%s)";
-    static final String STORED_PROCEDURES_TITLE = "stored procedures";
-    static final String FUNCTIONS_TITLE = "user functions";
-    static final String INDEXES_TITLE = "indexes (%s)";
-    static final String CONSTRAINTS_TITLE = "constraints (%s)";
-
     private final DataSourcesComponentMetadata dataSourcesComponent;
     private final DataSourceTreeUpdaters treeUpdaters;
 

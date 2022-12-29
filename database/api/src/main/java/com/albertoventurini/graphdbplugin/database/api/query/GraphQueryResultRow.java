@@ -10,6 +10,7 @@ import com.albertoventurini.graphdbplugin.database.api.data.GraphNode;
 import com.albertoventurini.graphdbplugin.database.api.data.GraphRelationship;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GraphQueryResultRow {
 
@@ -20,12 +21,4 @@ public interface GraphQueryResultRow {
     List<GraphNode> getNodes();
 
     List<GraphRelationship> getRelationships();
-
-    default <T> T getValue(final String columnName, final Class<T> clazz) {
-        final Object value = getValue(columnName);
-        if (clazz.isInstance(value)) {
-            return clazz.cast(value);
-        }
-        throw new ClassCastException("Unable to cast value to " + clazz.getName() + " at column " + columnName);
-    }
 }

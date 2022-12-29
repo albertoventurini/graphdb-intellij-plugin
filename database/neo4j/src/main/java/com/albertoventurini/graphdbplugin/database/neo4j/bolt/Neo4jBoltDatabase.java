@@ -78,7 +78,7 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
     @Override
     public GraphQueryResult execute(String query, Map<String, Object> statementParameters) {
         try {
-            // TODO: driver can be instantiated when this object is constructed. No need to create a new driver every time a query is executed.
+            // TODO: driver might be instantiated when this object is constructed. No need to create a new driver every time a query is executed.
             Driver driver = GraphDatabase.driver(url, auth);
             try {
                 try (Session session = driver.session(dbConfig)) {
@@ -91,7 +91,7 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
 
                     for (Record record : statementResult.list()) {
                         // Add row
-                        buffer.addRow(record.asMap());
+                        buffer.addRow(record);
                     }
                     buffer.addResultSummary(statementResult.consume());
                     long endTime = System.currentTimeMillis();

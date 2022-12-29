@@ -112,12 +112,11 @@ public class TablePanel {
             }
         });
 
-        messageBus.connect().subscribe(CopyQueryOutputEvent.COPY_QUERY_OUTPUT_TOPIC, () -> {
+        messageBus.connect().subscribe(CopyQueryOutputEvent.COPY_QUERY_OUTPUT_TOPIC, (CopyQueryOutputEvent) () -> {
             JBTable tableToExport = graphConsoleView.getTableExecuteResults();
             StringSelection selection = new StringSelection(SerialisationHelper.convertToCsv(tableToExport, false));
             Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
             clipboard.setContents(selection, selection);
-
         });
 
     }

@@ -44,9 +44,10 @@ public class GraphPanelInteractions {
 
     private void registerMessageBusSubscribers() {
         messageBus.connect()
-                .subscribe(ExecuteQueryEvent.EXECUTE_QUERY_TOPIC, queryExecutionService::executeQuery);
+                .subscribe(ExecuteQueryEvent.EXECUTE_QUERY_TOPIC,
+                        (ExecuteQueryEvent) queryExecutionService::executeQuery);
         messageBus.connect()
-                .subscribe(CleanCanvasEvent.CLEAN_CANVAS_TOPIC, () -> {
+                .subscribe(CleanCanvasEvent.CLEAN_CANVAS_TOPIC, (CleanCanvasEvent) () -> {
                     visualization.stop();
                     visualization.clear();
                     visualization.paint();

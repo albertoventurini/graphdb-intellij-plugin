@@ -9,13 +9,12 @@ package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metada
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultRow;
-import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jBoltQueryResultRow;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultRow;
 
 import java.util.*;
 
 public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
 
-    public static final String INDEXES = "indexes";
     public static final String CONSTRAINTS = "constraints";
     public static final String PROPERTY_KEYS = "propertyKeys";
 
@@ -26,6 +25,7 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
 
     private List<Neo4jLabelMetadata> labels = new ArrayList<>();
     private List<Neo4jRelationshipTypeMetadata> relationshipTypes = new ArrayList<>();
+    private List<Neo4jIndexMetadata> indexes = new ArrayList<>();
 
     @Override
     public List<Map<String, String>> getMetadata(String metadataKey) {
@@ -42,6 +42,10 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         return Collections.unmodifiableList(procedures);
     }
 
+    public List<Neo4jIndexMetadata> getIndexes() {
+        return Collections.unmodifiableList(indexes);
+    }
+
     @Override
     public boolean isMetadataExists(final String metadataKey) {
         return dataReceiver.containsKey(metadataKey);
@@ -55,12 +59,16 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         procedures.add(procedure);
     }
 
+    public void addIndex(final Neo4jIndexMetadata indexMetadata) {
+        indexes.add(indexMetadata);
+    }
+
     public void addProcedures(final GraphQueryResult proceduresResult) {
         proceduresResult.getRows().forEach(row -> {
             final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-            final String name = neo4jRow.getValue("name", String.class);
-            final String signature = neo4jRow.getValue("signature", String.class);
-            final String description = neo4jRow.getValue("description", String.class);
+            final String name = neo4jRow.getValue("name").asString();
+            final String signature = neo4jRow.getValue("signature").asString();
+            final String description = neo4jRow.getValue("description").asString();
             procedures.add(new Neo4jProcedureMetadata(name, signature, description));
         });
     }
@@ -68,10 +76,19 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     public void addFunctions(final GraphQueryResult functionsResult) {
         functionsResult.getRows().forEach(row -> {
             final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-            final String name = neo4jRow.getValue("name", String.class);
-            final String signature = neo4jRow.getValue("signature", String.class);
-            final String description = neo4jRow.getValue("description", String.class);
+            final String name = neo4jRow.getValue("name").asString();
+            final String signature = neo4jRow.getValue("signature").asString();
+            final String description = neo4jRow.getValue("description").asString();
             functions.add(new Neo4jFunctionMetadata(name, signature, description));
+        });
+    }
+
+    public void addIndexes(final GraphQueryResult indexesResult) {
+        indexesResult.getRows().forEach(row -> {
+            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+            final String name = neo4jRow.getValue("name").asString();
+            final String state = neo4jRow.getValue("state").asString();
+            indexes.add(new Neo4jIndexMetadata(name, state));
         });
     }
 
@@ -135,10 +152,6 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
 
     public List<Neo4jRelationshipTypeMetadata> getRelationshipTypes() {
         return relationshipTypes;
-    }
-
-    public void addIndexes(GraphQueryResult indexesResult) {
-        addDataSourceMetadata(INDEXES, indexesResult);
     }
 
     public void addConstraints(GraphQueryResult constraintsResult) {

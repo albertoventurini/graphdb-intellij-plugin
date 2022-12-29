@@ -17,6 +17,7 @@ import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.Disposable;
+import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.IconButton;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
@@ -130,7 +131,7 @@ public class LogPanel implements Disposable {
         });
 
         messageBus.connect().subscribe(QueryParametersRetrievalErrorEvent.QUERY_PARAMETERS_RETRIEVAL_ERROR_EVENT_TOPIC,
-                (exception, editor) -> {
+                (QueryParametersRetrievalErrorEvent) (exception, editor) -> {
                     error(String.format("%s ", QueryParametersRetrievalErrorEvent.PARAMS_ERROR_COMMON_MSG));
                     printException(exception);
                 });
