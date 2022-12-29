@@ -17,5 +17,7 @@ public interface DataSourceMetadata {
 
     List<Neo4jProcedureMetadata> getProcedures();
 
+    List<Neo4jIndexMetadata> getIndexes();
+
     boolean isMetadataExists(String metadataKey);
 }

@@ -1,9 +1,6 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jFunctionMetadata;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jProcedureMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.*;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.LabelTreeNodeModel;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.MetadataTreeNodeModel;
@@ -143,16 +140,16 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     }
 
     private MutableTreeNode createIndexesNode(DataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
-        List<Map<String, String>> indexesMetadata =
-                dataSourceMetadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.INDEXES);
+        final List<Neo4jIndexMetadata> indexesMetadata = dataSourceMetadata.getIndexes();
         PatchedDefaultMutableTreeNode indexTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(INDEXES,
                         dataSourceApi,
                         String.format(INDEXES_TITLE, indexesMetadata.size()),
                         GraphIcons.Nodes.INDEX));
+
         indexesMetadata
-                .forEach(row -> indexTreeNode.add(of(new MetadataTreeNodeModel(INDEX, dataSourceApi,
-                        row.get("name") + " " + row.get("state")))));
+                .forEach(i -> indexTreeNode.add(of(new MetadataTreeNodeModel(INDEX, dataSourceApi,
+                        i.name() + " " + i.state()))));
 
         return indexTreeNode;
     }

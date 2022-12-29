@@ -7,10 +7,7 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jLabelMetadata;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jProcedureMetadata;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jRelationshipTypeMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.*;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.impl.DataSourceV1;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.*;
 import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
@@ -58,9 +55,7 @@ public class Neo4JBoltTreeUpdaterTest {
         HashMap<String, String> propertyKeys = new HashMap<>();
         propertyKeys.put("propertyKey", PROPERTY);
 
-        HashMap<String, String> indexes = new HashMap<>();
-        indexes.put("name", "DummyIndexName");
-        indexes.put("state", "ONLINE");
+        final Neo4jIndexMetadata indexMetadata = new Neo4jIndexMetadata("DummyIndexName", "ONLINE");
 
         HashMap<String, String> constraints = new HashMap<>();
         constraints.put("description", "constraint ON (:aaa) UNIQUE");
@@ -74,7 +69,7 @@ public class Neo4JBoltTreeUpdaterTest {
         metadata.addRelationshipType(new Neo4jRelationshipTypeMetadata(REL, 4L));
         metadata.addDataSourceMetadata(PROPERTY_KEYS, singletonList(propertyKeys));
         metadata.addProcedure(procedure);
-        metadata.addDataSourceMetadata(INDEXES, singletonList(indexes));
+        metadata.addIndex(indexMetadata);
         metadata.addDataSourceMetadata(CONSTRAINTS, singletonList(constraints));
 
         var neo4jHandler = new Neo4jBoltTreeUpdater();
