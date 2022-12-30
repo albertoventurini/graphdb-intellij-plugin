@@ -6,17 +6,11 @@
  */
 package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j;
 
-import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
-import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
-import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultRow;
-import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultRow;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 
 import java.util.*;
 
 public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
-
-    private Map<String, List<Map<String, String>>> dataReceiver = new HashMap<>();
 
     private final List<Neo4jFunctionMetadata> functions = new ArrayList<>();
     private final List<Neo4jProcedureMetadata> procedures = new ArrayList<>();
@@ -26,11 +20,6 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     private List<Neo4jRelationshipTypeMetadata> relationshipTypes = new ArrayList<>();
     private List<Neo4jIndexMetadata> indexes = new ArrayList<>();
     private List<String> propertyKeys = new ArrayList<>();
-
-    @Override
-    public List<Map<String, String>> getMetadata(String metadataKey) {
-        return dataReceiver.getOrDefault(metadataKey, new ArrayList<>());
-    }
 
     @Override
     public List<Neo4jFunctionMetadata> getFunctions() {
@@ -52,11 +41,6 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
 
     public List<String> getPropertyKeys() {
         return Collections.unmodifiableList(propertyKeys);
-    }
-
-    @Override
-    public boolean isMetadataExists(final String metadataKey) {
-        return dataReceiver.containsKey(metadataKey);
     }
 
     public void addPropertyKeys(final List<String> propertyKeys) {
@@ -95,12 +79,8 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         return labels;
     }
 
-    public void addRelationshipTypes(GraphQueryResult relationshipTypeCountResult, List<String> relationshipTypeNames) {
-        GraphQueryResultColumn column = relationshipTypeCountResult.getColumns().get(0);
-        for (int i = 0; i < relationshipTypeCountResult.getRows().size(); i++) {
-            GraphQueryResultRow row = relationshipTypeCountResult.getRows().get(i);
-            relationshipTypes.add(new Neo4jRelationshipTypeMetadata(relationshipTypeNames.get(i), (Long) row.getValue(column)));
-        }
+    public void addRelationshipTypes(final List<Neo4jRelationshipTypeMetadata> relationshipTypes) {
+        this.relationshipTypes.addAll(relationshipTypes);
     }
 
     public void addRelationshipType(Neo4jRelationshipTypeMetadata relationshipTypeMetadata) {

@@ -122,7 +122,7 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
                 new MetadataTreeNodeModel(RELATIONSHIPS, dataSourceApi, relationshipTypesName, GraphIcons.Nodes.RELATIONSHIP_TYPE));
         dataSourceMetadata.getRelationshipTypes()
                 .stream()
-                .map(rel -> new RelationshipTypeTreeNodeModel(RELATIONSHIP, dataSourceApi, rel.getName(), rel.getCount()))
+                .map(rel -> new RelationshipTypeTreeNodeModel(RELATIONSHIP, dataSourceApi, rel.name(), rel.count()))
                 .forEach(relModel -> relationshipTypesTreeNode.add(of(relModel)));
         return relationshipTypesTreeNode;
     }

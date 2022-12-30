@@ -1,8 +1,6 @@
 package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j;
 
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
-import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
-import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultRow;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.MetadataBuilder;
@@ -12,7 +10,6 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -39,6 +36,13 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
             RETURN labelName, SUM(cnt) AS labelCount
             """;
 
+    private static final String RELATIONSHIP_TYPES_QUERY = """
+            MATCH ()-[r]->()
+            WITH DISTINCT TYPE(r) AS relationshipsTypeNames, COUNT(r) AS cnt
+            UNWIND relationshipsTypeNames AS relationshipTypeName
+            RETURN relationshipTypeName, SUM(cnt) AS relationshipTypeCount
+            """;
+
     private static final Logger LOG = Logger.getInstance(Neo4jMetadataBuilder.class);
 
     @Override
@@ -55,18 +59,11 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
             LOG.warn("Unable to load indexes, constraints and procedures from the current database. Please upgrade to Neo4j 4 or 5 to fix this.");
         }
 
-        GraphQueryResult relationshipQueryResult = db.execute("CALL db.relationshipTypes()");
-
         final var propertyKeys = getPropertyKeys(db);
         metadata.addPropertyKeys(propertyKeys);
 
         metadata.addLabels(getLabels(db));
-
-        List<String> listOfRelationshipTypes = extractRelationshipTypes(relationshipQueryResult);
-        if (!listOfRelationshipTypes.isEmpty()) {
-            GraphQueryResult relationshipTypeCountResult = db.execute(queryRelationshipTypeCount(listOfRelationshipTypes));
-            metadata.addRelationshipTypes(relationshipTypeCountResult, listOfRelationshipTypes);
-        }
+        metadata.addRelationshipTypes(getRelationshipTypes(db));
 
         metadata.addFunctions(getFunctions(db));
 
@@ -126,18 +123,12 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
         }).collect(toList());
     }
 
-    private List<String> extractRelationshipTypes(GraphQueryResult relationshipQueryResult) {
-        GraphQueryResultColumn column = relationshipQueryResult.getColumns().get(0);
-        return relationshipQueryResult.getRows()
-                .stream()
-                .map(row -> (String) row.getValue(column))
-                .collect(toList());
-    }
-
-    private String queryRelationshipTypeCount(List<String> relationshipTypes) {
-        return relationshipTypes
-                .stream()
-                .map(relationshipType -> "MATCH ()-[r:`" + relationshipType + "`]->() RETURN count(r)")
-                .collect(Collectors.joining(" UNION ALL "));
+    private List<Neo4jRelationshipTypeMetadata> getRelationshipTypes(final GraphDatabaseApi db) {
+        return db.execute(RELATIONSHIP_TYPES_QUERY).getRows().stream().map(row -> {
+            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+            final String name = neo4jRow.getValue("relationshipTypeName").asString();
+            final long count = neo4jRow.getValue("relationshipTypeCount").asLong();
+            return new Neo4jRelationshipTypeMetadata(name, count);
+        }).collect(toList());
     }
 }
