@@ -7,7 +7,7 @@
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.neo4j;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jFunctionMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jFunctionMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.common.AbstractDataSourceMetadataTest;
 

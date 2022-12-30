@@ -1,6 +1,7 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.*;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.*;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.LabelTreeNodeModel;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.MetadataTreeNodeModel;
@@ -106,9 +107,10 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     private PatchedDefaultMutableTreeNode createPropertyKeysNode(Neo4jBoltCypherDataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
         PatchedDefaultMutableTreeNode propertyKeysTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(PROPERTY_KEYS, dataSourceApi, PROPERTY_KEYS_TITLE, GraphIcons.Nodes.PROPERTY_KEY));
-        dataSourceMetadata
-                .getMetadata(Neo4jBoltCypherDataSourceMetadata.PROPERTY_KEYS)
-                .forEach((row) -> propertyKeysTreeNode.add(of(new MetadataTreeNodeModel(PROPERTY_KEY, dataSourceApi, row.get("propertyKey")))));
+
+        dataSourceMetadata.getPropertyKeys().forEach(p ->
+                propertyKeysTreeNode.add(of(new MetadataTreeNodeModel(PROPERTY_KEY, dataSourceApi, p))));
+
         return propertyKeysTreeNode;
     }
 
@@ -155,15 +157,14 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     }
 
     private MutableTreeNode createConstraintsNode(DataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
-        List<Map<String, String>> constraintsMetadata =
-                dataSourceMetadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.CONSTRAINTS);
+        final List<Neo4jConstraintMetadata> constraintsMetadata = dataSourceMetadata.getConstraints();
         PatchedDefaultMutableTreeNode indexTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(CONSTRAINTS, dataSourceApi,
                         String.format(CONSTRAINTS_TITLE, constraintsMetadata.size()), GraphIcons.Nodes.CONSTRAINT));
         constraintsMetadata
-                .forEach(row ->
+                .forEach(c ->
                         indexTreeNode.add(of(new MetadataTreeNodeModel(CONSTRAINT, dataSourceApi,
-                                row.get("name")))));
+                                c.name()))));
 
         return indexTreeNode;
     }

@@ -4,13 +4,13 @@
  * by Neueda Technologies, Ltd.
  * Modified by Alberto Venturini, 2022
  */
-package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata;
+package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j;
 
-public class Neo4jRelationshipTypeMetadata {
+public class Neo4jLabelMetadata {
     private String name;
     private Long count;
 
-    public Neo4jRelationshipTypeMetadata(String name, Long count) {
+    public Neo4jLabelMetadata(String name, Long count) {
         this.name = name;
         this.count = count;
     }

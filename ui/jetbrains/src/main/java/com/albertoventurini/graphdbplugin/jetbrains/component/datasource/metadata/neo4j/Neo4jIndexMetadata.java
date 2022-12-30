@@ -1,4 +1,4 @@
-package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata;
+package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j;
 
 import java.util.List;
 

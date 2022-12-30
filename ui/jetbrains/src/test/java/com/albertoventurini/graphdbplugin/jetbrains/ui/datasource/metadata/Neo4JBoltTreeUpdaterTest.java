@@ -7,7 +7,7 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.*;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.*;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.impl.DataSourceV1;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.*;
 import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
@@ -21,7 +21,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.Neo4jBoltCypherDataSourceMetadata.*;
+import static com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jBoltCypherDataSourceMetadata.*;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -52,13 +52,8 @@ public class Neo4JBoltTreeUpdaterTest {
         root.add(datasource);
         Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
 
-        HashMap<String, String> propertyKeys = new HashMap<>();
-        propertyKeys.put("propertyKey", PROPERTY);
-
         final Neo4jIndexMetadata indexMetadata = new Neo4jIndexMetadata("DummyIndexName", "ONLINE");
-
-        HashMap<String, String> constraints = new HashMap<>();
-        constraints.put("description", "constraint ON (:aaa) UNIQUE");
+        final Neo4jConstraintMetadata constraintMetadata = new Neo4jConstraintMetadata("constraint ON (:aaa) UNIQUE");
 
         final Neo4jProcedureMetadata procedure = new Neo4jProcedureMetadata(
                 "db.labels",
@@ -67,10 +62,10 @@ public class Neo4JBoltTreeUpdaterTest {
 
         LABEL_METADATA.forEach(metadata::addLabel);
         metadata.addRelationshipType(new Neo4jRelationshipTypeMetadata(REL, 4L));
-        metadata.addDataSourceMetadata(PROPERTY_KEYS, singletonList(propertyKeys));
+        metadata.addPropertyKeys(singletonList(PROPERTY));
         metadata.addProcedure(procedure);
         metadata.addIndex(indexMetadata);
-        metadata.addDataSourceMetadata(CONSTRAINTS, singletonList(constraints));
+        metadata.addConstraints(singletonList(constraintMetadata));
 
         var neo4jHandler = new Neo4jBoltTreeUpdater();
         neo4jHandler.updateTree(datasource, metadata);

@@ -4,28 +4,28 @@
  * by Neueda Technologies, Ltd.
  * Modified by Alberto Venturini, 2022
  */
-package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata;
+package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j;
 
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultRow;
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultRow;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 
 import java.util.*;
 
 public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
 
-    public static final String CONSTRAINTS = "constraints";
-    public static final String PROPERTY_KEYS = "propertyKeys";
-
     private Map<String, List<Map<String, String>>> dataReceiver = new HashMap<>();
 
     private final List<Neo4jFunctionMetadata> functions = new ArrayList<>();
     private final List<Neo4jProcedureMetadata> procedures = new ArrayList<>();
+    private final List<Neo4jConstraintMetadata> constraints = new ArrayList<>();
 
     private List<Neo4jLabelMetadata> labels = new ArrayList<>();
     private List<Neo4jRelationshipTypeMetadata> relationshipTypes = new ArrayList<>();
     private List<Neo4jIndexMetadata> indexes = new ArrayList<>();
+    private List<String> propertyKeys = new ArrayList<>();
 
     @Override
     public List<Map<String, String>> getMetadata(String metadataKey) {
@@ -46,13 +46,21 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         return Collections.unmodifiableList(indexes);
     }
 
+    public List<Neo4jConstraintMetadata> getConstraints() {
+        return Collections.unmodifiableList(constraints);
+    }
+
+    public List<String> getPropertyKeys() {
+        return Collections.unmodifiableList(propertyKeys);
+    }
+
     @Override
     public boolean isMetadataExists(final String metadataKey) {
         return dataReceiver.containsKey(metadataKey);
     }
 
-    public void addPropertyKeys(GraphQueryResult propertyKeysResult) {
-        addDataSourceMetadata(PROPERTY_KEYS, propertyKeysResult);
+    public void addPropertyKeys(final List<String> propertyKeys) {
+        this.propertyKeys.addAll(propertyKeys);
     }
 
     public void addProcedure(final Neo4jProcedureMetadata procedure) {
@@ -92,30 +100,6 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         });
     }
 
-    private void addDataSourceMetadata(String key, GraphQueryResult graphQueryResult) {
-        List<Map<String, String>> dataSourceMetadata = new ArrayList<>();
-
-        List<GraphQueryResultColumn> columns = graphQueryResult.getColumns();
-        for (GraphQueryResultRow row : graphQueryResult.getRows()) {
-            Map<String, String> data = new HashMap<>();
-
-            for (GraphQueryResultColumn column : columns) {
-                Object value = row.getValue(column);
-                if (value != null) {
-                    data.put(column.getName(), value.toString());
-                }
-            }
-
-            dataSourceMetadata.add(data);
-        }
-
-        dataReceiver.put(key, dataSourceMetadata);
-    }
-
-    public void addDataSourceMetadata(String key, List<Map<String, String>> data) {
-        dataReceiver.put(key, data);
-    }
-
     public void addLabels(GraphQueryResult labelCountResult, List<String> labelNames) {
         GraphQueryResultColumn column = labelCountResult.getColumns().get(0);
         for (int i = 0; i < labelCountResult.getRows().size(); i++) {
@@ -144,17 +128,11 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         relationshipTypes.add(relationshipTypeMetadata);
     }
 
-    public void addPropertyKey(String key) {
-        List<Map<String, String>> propertyKeys = getMetadata(PROPERTY_KEYS);
-        propertyKeys.add(Collections.singletonMap("propertyKey", key));
-        dataReceiver.put(PROPERTY_KEYS, propertyKeys);
-    }
-
     public List<Neo4jRelationshipTypeMetadata> getRelationshipTypes() {
         return relationshipTypes;
     }
 
-    public void addConstraints(GraphQueryResult constraintsResult) {
-        addDataSourceMetadata(CONSTRAINTS, constraintsResult);
+    public void addConstraints(final Collection<Neo4jConstraintMetadata> constraintMetadata) {
+        constraints.addAll(constraintMetadata);
     }
 }

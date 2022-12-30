@@ -7,29 +7,23 @@
 package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jBoltCypherDataSourceMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jLabelMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jMetadataBuilder;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jRelationshipTypeMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
-import com.albertoventurini.graphdbplugin.jetbrains.database.DatabaseManagerService;
 import com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorService;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.MetadataRetrieveEvent;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBus;
-import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
-import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
-import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResultColumn;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataContainer;
 import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.CypherMetadataProviderService;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 public class DataSourcesComponentMetadata {
 
@@ -86,10 +80,8 @@ public class DataSourcesComponentMetadata {
                 .stream()
                 .map(Neo4jRelationshipTypeMetadata::getName)
                 .forEach(container::addRelationshipType);
-        metadata.getMetadata(Neo4jBoltCypherDataSourceMetadata.PROPERTY_KEYS).stream()
-                .map((row) -> row.get("propertyKey"))
-                .forEach(container::addPropertyKey);
 
+        metadata.getPropertyKeys().forEach(container::addPropertyKey);
         metadata.getProcedures().forEach(p -> container.addProcedure(p.name(), p.signature(), p.description()));
         metadata.getFunctions().forEach(f -> container.addFunction(f.name(), f.signature(), f.description()));
     }
