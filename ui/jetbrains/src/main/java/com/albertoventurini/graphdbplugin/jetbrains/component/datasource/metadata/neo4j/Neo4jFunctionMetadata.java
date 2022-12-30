@@ -1,4 +1,4 @@
-package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata;
+package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j;
 
 public record Neo4jFunctionMetadata(String name, String signature, String description) {
 }

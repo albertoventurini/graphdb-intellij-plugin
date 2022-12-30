@@ -6,12 +6,14 @@
  */
 package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata;
 
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jConstraintMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jFunctionMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jIndexMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jProcedureMetadata;
+
 import java.util.List;
-import java.util.Map;
 
 public interface DataSourceMetadata {
-
-    List<Map<String, String>> getMetadata(String metadataKey);
 
     List<Neo4jFunctionMetadata> getFunctions();
 
@@ -19,5 +21,5 @@ public interface DataSourceMetadata {
 
     List<Neo4jIndexMetadata> getIndexes();
 
-    boolean isMetadataExists(String metadataKey);
+    List<Neo4jConstraintMetadata> getConstraints();
 }

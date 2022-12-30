@@ -10,7 +10,6 @@ import com.albertoventurini.graphdbplugin.database.api.data.GraphNode;
 import com.albertoventurini.graphdbplugin.database.api.data.GraphRelationship;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface GraphQueryResultRow {
 

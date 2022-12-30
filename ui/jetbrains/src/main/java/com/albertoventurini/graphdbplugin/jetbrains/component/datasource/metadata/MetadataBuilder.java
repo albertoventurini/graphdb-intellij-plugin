@@ -2,6 +2,6 @@ package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metada
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 
-interface MetadataBuilder {
+public interface MetadataBuilder {
     DataSourceMetadata buildMetadata(DataSourceApi dataSource);
 }
