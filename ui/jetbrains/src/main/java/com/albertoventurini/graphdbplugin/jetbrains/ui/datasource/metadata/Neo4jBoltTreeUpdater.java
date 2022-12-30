@@ -136,7 +136,7 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
                 new MetadataTreeNodeModel(LABELS, dataSourceApi, String.format(LABELS_TITLE, labelCount), GraphIcons.Nodes.LABEL));
         dataSourceMetadata.getLabels()
                 .stream()
-                .map(label -> new LabelTreeNodeModel(LABEL, dataSourceApi, label.getName(), label.getCount()))
+                .map(label -> new LabelTreeNodeModel(LABEL, dataSourceApi, label.name(), label.count()))
                 .forEach(labelModel -> labelsTreeNode.add(of(labelModel)));
         return labelsTreeNode;
     }

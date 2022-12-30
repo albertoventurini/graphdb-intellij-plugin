@@ -18,6 +18,27 @@ import static java.util.stream.Collectors.toList;
 
 public class Neo4jMetadataBuilder implements MetadataBuilder {
 
+    private static final String FUNCTIONS_QUERY = """
+            SHOW FUNCTIONS YIELD name, signature, description
+            """;
+
+    private static final String PROCEDURES_QUERY = """
+            SHOW PROCEDURES YIELD name, signature, description
+            """;
+
+    private static final String INDEXES_QUERY = "SHOW INDEXES";
+
+    private static final String CONSTRAINTS_QUERY = "SHOW CONSTRAINTS";
+
+    private static final String PROPERTY_KEYS_QUERY = "CALL db.propertyKeys()";
+
+    private static final String LABELS_QUERY = """
+            MATCH (n)
+            WITH DISTINCT LABELS(n) AS labels, COUNT(n) AS cnt
+            UNWIND labels AS labelName
+            RETURN labelName, SUM(cnt) AS labelCount
+            """;
+
     private static final Logger LOG = Logger.getInstance(Neo4jMetadataBuilder.class);
 
     @Override
@@ -27,28 +48,19 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
         Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
 
         try {
-            GraphQueryResult indexesResult = db.execute("SHOW INDEXES");
-            GraphQueryResult storedProceduresResult = db.execute("SHOW PROCEDURES YIELD name, signature, description");
-
-            metadata.addIndexes(indexesResult);
-            metadata.addProcedures(storedProceduresResult);
-
+            metadata.addIndexes(getIndexes(db));
+            metadata.addProcedures(getProcedures(db));
             metadata.addConstraints(getConstraints(db));
         } catch (Exception e) {
             LOG.warn("Unable to load indexes, constraints and procedures from the current database. Please upgrade to Neo4j 4 or 5 to fix this.");
         }
 
-        GraphQueryResult labelsQueryResult = db.execute("CALL db.labels()");
         GraphQueryResult relationshipQueryResult = db.execute("CALL db.relationshipTypes()");
 
         final var propertyKeys = getPropertyKeys(db);
         metadata.addPropertyKeys(propertyKeys);
 
-        List<String> listOfLabels = extractLabels(labelsQueryResult);
-        if (!listOfLabels.isEmpty()) {
-            GraphQueryResult labelCount = db.execute(queryLabelCount(listOfLabels));
-            metadata.addLabels(labelCount, listOfLabels);
-        }
+        metadata.addLabels(getLabels(db));
 
         List<String> listOfRelationshipTypes = extractRelationshipTypes(relationshipQueryResult);
         if (!listOfRelationshipTypes.isEmpty()) {
@@ -56,14 +68,42 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
             metadata.addRelationshipTypes(relationshipTypeCountResult, listOfRelationshipTypes);
         }
 
-        final GraphQueryResult functionsResult = db.execute("SHOW FUNCTIONS YIELD name, signature, description");
-        metadata.addFunctions(functionsResult);
+        metadata.addFunctions(getFunctions(db));
 
         return metadata;
     }
 
+    private List<Neo4jFunctionMetadata> getFunctions(final GraphDatabaseApi db) {
+        return db.execute(FUNCTIONS_QUERY).getRows().stream().map(row -> {
+            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+            final String name = neo4jRow.getValue("name").asString();
+            final String signature = neo4jRow.getValue("signature").asString();
+            final String description = neo4jRow.getValue("description").asString();
+            return new Neo4jFunctionMetadata(name, signature, description);
+        }).collect(toList());
+    }
+
+    private List<Neo4jProcedureMetadata> getProcedures(final GraphDatabaseApi db) {
+        return db.execute(PROCEDURES_QUERY).getRows().stream().map(row -> {
+            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+            final String name = neo4jRow.getValue("name").asString();
+            final String signature = neo4jRow.getValue("signature").asString();
+            final String description = neo4jRow.getValue("description").asString();
+            return new Neo4jProcedureMetadata(name, signature, description);
+        }).collect(toList());
+    }
+
+    private List<Neo4jIndexMetadata> getIndexes(final GraphDatabaseApi db) {
+        return db.execute(INDEXES_QUERY).getRows().stream().map(row -> {
+            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+            final String name = neo4jRow.getValue("name").asString();
+            final String state = neo4jRow.getValue("state").asString();
+            return new Neo4jIndexMetadata(name, state);
+        }).collect(toList());
+    }
+
     private List<Neo4jConstraintMetadata> getConstraints(final GraphDatabaseApi db) {
-        return db.execute("SHOW CONSTRAINTS").getRows().stream().map(row -> {
+        return db.execute(CONSTRAINTS_QUERY).getRows().stream().map(row -> {
             final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
             final String name = neo4jRow.getValue("name").asString();
             return new Neo4jConstraintMetadata(name);
@@ -71,9 +111,18 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
     }
 
     private List<String> getPropertyKeys(final GraphDatabaseApi db) {
-        return db.execute("CALL db.propertyKeys()").getRows().stream().map(row -> {
+        return db.execute(PROPERTY_KEYS_QUERY).getRows().stream().map(row -> {
             final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
             return neo4jRow.getValue("propertyKey").asString();
+        }).collect(toList());
+    }
+
+    private List<Neo4jLabelMetadata> getLabels(final GraphDatabaseApi db) {
+        return db.execute(LABELS_QUERY).getRows().stream().map(row -> {
+            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
+            final String name = neo4jRow.getValue("labelName").asString();
+            final long count = neo4jRow.getValue("labelCount").asLong();
+            return new Neo4jLabelMetadata(name, count);
         }).collect(toList());
     }
 
@@ -85,26 +134,10 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
                 .collect(toList());
     }
 
-    private List<String> extractLabels(GraphQueryResult labelsQueryResult) {
-        GraphQueryResultColumn column = labelsQueryResult.getColumns().get(0);
-        return labelsQueryResult.getRows()
-                .stream()
-                .map(row -> (String) row.getValue(column))
-                .collect(toList());
-    }
-
     private String queryRelationshipTypeCount(List<String> relationshipTypes) {
         return relationshipTypes
                 .stream()
                 .map(relationshipType -> "MATCH ()-[r:`" + relationshipType + "`]->() RETURN count(r)")
                 .collect(Collectors.joining(" UNION ALL "));
     }
-
-    private String queryLabelCount(List<String> labels) {
-        return labels
-                .stream()
-                .map(label -> "MATCH (n:`" + label + "`) RETURN count(n)")
-                .collect(Collectors.joining(" UNION ALL "));
-    }
-
 }

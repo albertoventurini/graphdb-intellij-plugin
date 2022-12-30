@@ -95,8 +95,8 @@ public class Neo4JBoltTreeUpdaterTest {
             final var model = (LabelTreeNodeModel) labelNode.getUserObject();
             assertTrue(model.getText().isPresent());
 
-            final String labelName = labelMetadata.getName();
-            final int count = labelMetadata.getCount().intValue();
+            final String labelName = labelMetadata.name();
+            final long count = labelMetadata.count();
             assertEquals(labelName + " (" + count + ")", model.getText().get());
         }
     }

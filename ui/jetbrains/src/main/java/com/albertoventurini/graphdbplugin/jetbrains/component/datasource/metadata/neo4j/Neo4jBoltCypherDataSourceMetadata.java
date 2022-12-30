@@ -71,41 +71,20 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
         indexes.add(indexMetadata);
     }
 
-    public void addProcedures(final GraphQueryResult proceduresResult) {
-        proceduresResult.getRows().forEach(row -> {
-            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-            final String name = neo4jRow.getValue("name").asString();
-            final String signature = neo4jRow.getValue("signature").asString();
-            final String description = neo4jRow.getValue("description").asString();
-            procedures.add(new Neo4jProcedureMetadata(name, signature, description));
-        });
+    public void addProcedures(final List<Neo4jProcedureMetadata> procedures) {
+        this.procedures.addAll(procedures);
     }
 
-    public void addFunctions(final GraphQueryResult functionsResult) {
-        functionsResult.getRows().forEach(row -> {
-            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-            final String name = neo4jRow.getValue("name").asString();
-            final String signature = neo4jRow.getValue("signature").asString();
-            final String description = neo4jRow.getValue("description").asString();
-            functions.add(new Neo4jFunctionMetadata(name, signature, description));
-        });
+    public void addFunctions(final List<Neo4jFunctionMetadata> functions) {
+        this.functions.addAll(functions);
     }
 
-    public void addIndexes(final GraphQueryResult indexesResult) {
-        indexesResult.getRows().forEach(row -> {
-            final Neo4jBoltQueryResultRow neo4jRow = (Neo4jBoltQueryResultRow) row;
-            final String name = neo4jRow.getValue("name").asString();
-            final String state = neo4jRow.getValue("state").asString();
-            indexes.add(new Neo4jIndexMetadata(name, state));
-        });
+    public void addIndexes(final List<Neo4jIndexMetadata> indexes) {
+        this.indexes.addAll(indexes);
     }
 
-    public void addLabels(GraphQueryResult labelCountResult, List<String> labelNames) {
-        GraphQueryResultColumn column = labelCountResult.getColumns().get(0);
-        for (int i = 0; i < labelCountResult.getRows().size(); i++) {
-            GraphQueryResultRow row = labelCountResult.getRows().get(i);
-            labels.add(new Neo4jLabelMetadata(labelNames.get(i), (Long) row.getValue(column)));
-        }
+    public void addLabels(final List<Neo4jLabelMetadata> labels) {
+        this.labels.addAll(labels);
     }
 
     public void addLabel(Neo4jLabelMetadata labelMetadata) {

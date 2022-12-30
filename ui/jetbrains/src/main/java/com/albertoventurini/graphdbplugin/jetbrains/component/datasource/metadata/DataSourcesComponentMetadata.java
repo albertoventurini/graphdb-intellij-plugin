@@ -74,7 +74,7 @@ public class DataSourcesComponentMetadata {
 
         metadata.getLabels()
                 .stream()
-                .map(Neo4jLabelMetadata::getName)
+                .map(Neo4jLabelMetadata::name)
                 .forEach(container::addLabel);
         metadata.getRelationshipTypes()
                 .stream()
