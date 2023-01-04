@@ -9,6 +9,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.database.DatabaseManagerServ
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.diagnostic.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -48,26 +49,33 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
     @Override
     public DataSourceMetadata buildMetadata(DataSourceApi dataSource) {
         final var databaseManager = ApplicationManager.getApplication().getService(DatabaseManagerService.class);
-        GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
-        Neo4jMetadata metadata = new Neo4jMetadata();
+        final GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
+
+        final List<Neo4jIndexMetadata> indexes = new ArrayList<>();
+        final List<Neo4jProcedureMetadata> procedures = new ArrayList<>();
+        final List<Neo4jConstraintMetadata> constraints = new ArrayList<>();
 
         try {
-            metadata.addIndexes(getIndexes(db));
-            metadata.addProcedures(getProcedures(db));
-            metadata.addConstraints(getConstraints(db));
+            indexes.addAll(getIndexes(db));
+            procedures.addAll(getProcedures(db));
+            constraints.addAll(getConstraints(db));
         } catch (Exception e) {
             LOG.warn("Unable to load indexes, constraints and procedures from the current database. Please upgrade to Neo4j 4 or 5 to fix this.");
         }
 
         final var propertyKeys = getPropertyKeys(db);
-        metadata.addPropertyKeys(propertyKeys);
+        final var labels = getLabels(db);
+        final var relationshipTypes = getRelationshipTypes(db);
+        final var functions = getFunctions(db);
 
-        metadata.addLabels(getLabels(db));
-        metadata.addRelationshipTypes(getRelationshipTypes(db));
-
-        metadata.addFunctions(getFunctions(db));
-
-        return metadata;
+        return new Neo4jMetadata(
+                functions,
+                procedures,
+                constraints,
+                labels,
+                relationshipTypes,
+                indexes,
+                propertyKeys);
     }
 
     private List<Neo4jFunctionMetadata> getFunctions(final GraphDatabaseApi db) {

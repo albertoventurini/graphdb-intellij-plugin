@@ -25,14 +25,14 @@ public class DataSourceMetadataTest extends AbstractDataSourceMetadataTest {
 
     public void testHaveTestUserFunctions() {
         final Neo4jMetadata metadata = (Neo4jMetadata) getMetadata();
-        final List<Neo4jFunctionMetadata> functionsMetadata = metadata.getFunctions();
+        final List<Neo4jFunctionMetadata> functionsMetadata = metadata.functions();
         assertThat(functionsMetadata)
                 .isNotEmpty();
     }
 
     public void testMetadataHaveRequiredProcedures() {
         final Neo4jMetadata metadata = (Neo4jMetadata) getMetadata();
-        final List<Neo4jProcedureMetadata> procedures = metadata.getProcedures();
+        final List<Neo4jProcedureMetadata> procedures = metadata.procedures();
 
         assertTrue(procedures.stream().anyMatch(p ->
                 p.name().equals("db.labels")

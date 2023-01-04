@@ -1,6 +1,5 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.*;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.*;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.LabelTreeNodeModel;
@@ -39,18 +38,18 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jMetadata>
         TreeNodeModelApi model = (TreeNodeModelApi) dataSourceRootTreeNode.getUserObject();
         DataSourceApi dataSourceApi = model.getDataSourceApi();
 
-        dataSourceRootTreeNode.add(createConstraintsNode(neo4jMetadata.getConstraints(), dataSourceApi));
-        dataSourceRootTreeNode.add(createIndexesNode(neo4jMetadata.getIndexes(), dataSourceApi));
+        dataSourceRootTreeNode.add(createConstraintsNode(neo4jMetadata.constraints(), dataSourceApi));
+        dataSourceRootTreeNode.add(createIndexesNode(neo4jMetadata.indexes(), dataSourceApi));
         dataSourceRootTreeNode.add(createLabelsNode(neo4jMetadata, dataSourceApi));
         dataSourceRootTreeNode.add(createRelationshipTypesNode(neo4jMetadata, dataSourceApi));
         dataSourceRootTreeNode.add(createPropertyKeysNode(neo4jMetadata, dataSourceApi));
 
-        if (!neo4jMetadata.getProcedures().isEmpty()) {
-            dataSourceRootTreeNode.add(createProceduresNode(neo4jMetadata.getProcedures(), dataSourceApi));
+        if (!neo4jMetadata.procedures().isEmpty()) {
+            dataSourceRootTreeNode.add(createProceduresNode(neo4jMetadata.procedures(), dataSourceApi));
         }
 
-        if (!neo4jMetadata.getFunctions().isEmpty()) {
-            dataSourceRootTreeNode.add(createFunctionNode(neo4jMetadata.getFunctions(), dataSourceApi));
+        if (!neo4jMetadata.functions().isEmpty()) {
+            dataSourceRootTreeNode.add(createFunctionNode(neo4jMetadata.functions(), dataSourceApi));
         }
     }
 
@@ -105,7 +104,7 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jMetadata>
         PatchedDefaultMutableTreeNode propertyKeysTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(PROPERTY_KEYS, dataSourceApi, PROPERTY_KEYS_TITLE, GraphIcons.Nodes.PROPERTY_KEY));
 
-        dataSourceMetadata.getPropertyKeys().forEach(p ->
+        dataSourceMetadata.propertyKeys().forEach(p ->
                 propertyKeysTreeNode.add(of(new MetadataTreeNodeModel(PROPERTY_KEY, dataSourceApi, p))));
 
         return propertyKeysTreeNode;
@@ -113,11 +112,11 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jMetadata>
 
     @NotNull
     private PatchedDefaultMutableTreeNode createRelationshipTypesNode(Neo4jMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
-        int relationshipTypesCount = dataSourceMetadata.getRelationshipTypes().size();
+        int relationshipTypesCount = dataSourceMetadata.relationshipTypes().size();
         String relationshipTypesName = String.format(RELATIONSHIP_TYPES_TITLE, relationshipTypesCount);
         PatchedDefaultMutableTreeNode relationshipTypesTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(RELATIONSHIPS, dataSourceApi, relationshipTypesName, GraphIcons.Nodes.RELATIONSHIP_TYPE));
-        dataSourceMetadata.getRelationshipTypes()
+        dataSourceMetadata.relationshipTypes()
                 .stream()
                 .map(rel -> new RelationshipTypeTreeNodeModel(RELATIONSHIP, dataSourceApi, rel.name(), rel.count()))
                 .forEach(relModel -> relationshipTypesTreeNode.add(of(relModel)));
@@ -128,10 +127,10 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jMetadata>
     private PatchedDefaultMutableTreeNode createLabelsNode(
             final Neo4jMetadata dataSourceMetadata,
             final DataSourceApi dataSourceApi) {
-        int labelCount = dataSourceMetadata.getLabels().size();
+        int labelCount = dataSourceMetadata.labels().size();
         PatchedDefaultMutableTreeNode labelsTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(LABELS, dataSourceApi, String.format(LABELS_TITLE, labelCount), GraphIcons.Nodes.LABEL));
-        dataSourceMetadata.getLabels()
+        dataSourceMetadata.labels()
                 .stream()
                 .map(label -> new LabelTreeNodeModel(LABEL, dataSourceApi, label.name(), label.count()))
                 .forEach(labelModel -> labelsTreeNode.add(of(labelModel)));

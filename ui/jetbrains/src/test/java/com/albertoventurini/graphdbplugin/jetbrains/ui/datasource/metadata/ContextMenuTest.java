@@ -24,6 +24,7 @@ import org.junit.runners.JUnit4;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 
@@ -60,7 +61,6 @@ public class ContextMenuTest extends LightJavaCodeInsightFixtureTestCase {
         datasource = new PatchedDefaultMutableTreeNode(model);
 
         root.add(datasource);
-        Neo4jMetadata metadata = new Neo4jMetadata();
 
         final Neo4jIndexMetadata indexMetadata = new Neo4jIndexMetadata("DummyIndexName", "ONLINE");
         final Neo4jConstraintMetadata constraintMetadata = new Neo4jConstraintMetadata("constraint ON (:aaa) UNIQUE");
@@ -70,13 +70,14 @@ public class ContextMenuTest extends LightJavaCodeInsightFixtureTestCase {
                 "db.labels() :: (label :: STRING?)",
                 "List all labels in the database.");
 
-        metadata.addLabel(new Neo4jLabelMetadata(LABEL, 3L));
-        metadata.addRelationshipType(new Neo4jRelationshipTypeMetadata(REL, 4L));
-        metadata.addPropertyKeys(singletonList(PROPERTY));
-        metadata.addProcedure(procedure);
-        metadata.addIndex(indexMetadata);
-
-        metadata.addConstraints(singletonList(constraintMetadata));
+        final Neo4jMetadata metadata = new Neo4jMetadata(
+                Collections.emptyList(),
+                Collections.singletonList(procedure),
+                Collections.singletonList(constraintMetadata),
+                Collections.singletonList(new Neo4jLabelMetadata(LABEL, 3L)),
+                Collections.singletonList(new Neo4jRelationshipTypeMetadata(REL, 4L)),
+                Collections.singletonList(indexMetadata),
+                Collections.singletonList(PROPERTY));
 
         var neo4jHandler = new Neo4jBoltTreeUpdater();
         neo4jHandler.updateTree(datasource, metadata);
