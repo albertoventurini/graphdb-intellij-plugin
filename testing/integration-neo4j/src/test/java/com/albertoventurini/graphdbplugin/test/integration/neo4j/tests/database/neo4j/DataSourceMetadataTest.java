@@ -6,8 +6,9 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.neo4j;
 
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jFunctionMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jProcedureMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.common.AbstractDataSourceMetadataTest;
 
@@ -23,9 +24,19 @@ public class DataSourceMetadataTest extends AbstractDataSourceMetadataTest {
     }
 
     public void testHaveTestUserFunctions() {
-        DataSourceMetadata metadata = getMetadata();
-        List<Neo4jFunctionMetadata> functionsMetadata = metadata.getFunctions();
+        final Neo4jMetadata metadata = (Neo4jMetadata) getMetadata();
+        final List<Neo4jFunctionMetadata> functionsMetadata = metadata.functions();
         assertThat(functionsMetadata)
                 .isNotEmpty();
+    }
+
+    public void testMetadataHaveRequiredProcedures() {
+        final Neo4jMetadata metadata = (Neo4jMetadata) getMetadata();
+        final List<Neo4jProcedureMetadata> procedures = metadata.procedures();
+
+        assertTrue(procedures.stream().anyMatch(p ->
+                p.name().equals("db.labels")
+                        && p.signature().equals("db.labels() :: (label :: STRING?)")
+                        && p.description().equals("List all available labels in the database.")));
     }
 }

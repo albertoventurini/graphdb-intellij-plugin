@@ -36,15 +36,6 @@ public abstract class AbstractDataSourceMetadataTest extends BaseIntegrationTest
         assertThat(metadata).isPresent();
     }
 
-    public void testMetadataHaveRequiredProcedures() {
-        final List<Neo4jProcedureMetadata> procedures = getMetadata().getProcedures();
-
-        assertTrue(procedures.stream().anyMatch(p ->
-                p.name().equals("db.labels")
-                && p.signature().equals("db.labels() :: (label :: STRING?)")
-                && p.description().equals("List all available labels in the database.")));
-    }
-
     protected DataSourceMetadata getMetadata() {
         try {
             CompletableFuture<Optional<DataSourceMetadata>> futureMeta = component().dataSourcesMetadata().getMetadata(getDataSource());

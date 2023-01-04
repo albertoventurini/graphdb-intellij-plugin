@@ -7,7 +7,7 @@
 package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata;
 
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jBoltCypherDataSourceMetadata;
+import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jLabelMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jMetadataBuilder;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jRelationshipTypeMetadata;
@@ -51,8 +51,8 @@ public class DataSourcesComponentMetadata {
             executorService.runInBackground(
                     () -> handlers.get(sourceType).buildMetadata(dataSource),
                     (metadata) -> {
-                        updateNeo4jBoltMetadata(dataSource, (Neo4jBoltCypherDataSourceMetadata) metadata);
-                        metadataRetrieveEvent.metadataRefreshSucceed(dataSource, metadata);
+                        updateNeo4jBoltMetadata(dataSource, (Neo4jMetadata) metadata);
+                        metadataRetrieveEvent.metadataRefreshSucceed(dataSource);
                         future.complete(Optional.of(metadata));
                     },
                     (exception) -> {
@@ -67,22 +67,22 @@ public class DataSourcesComponentMetadata {
         return future;
     }
 
-    private void updateNeo4jBoltMetadata(DataSourceApi dataSource, Neo4jBoltCypherDataSourceMetadata metadata) {
+    private void updateNeo4jBoltMetadata(DataSourceApi dataSource, Neo4jMetadata metadata) {
         // Refresh cypher metadata provider
         cypherMetadataProviderService.wipeContainer(dataSource.getName());
         CypherMetadataContainer container = cypherMetadataProviderService.getContainer(dataSource.getName());
 
-        metadata.getLabels()
+        metadata.labels()
                 .stream()
                 .map(Neo4jLabelMetadata::name)
                 .forEach(container::addLabel);
-        metadata.getRelationshipTypes()
+        metadata.relationshipTypes()
                 .stream()
                 .map(Neo4jRelationshipTypeMetadata::name)
                 .forEach(container::addRelationshipType);
 
-        metadata.getPropertyKeys().forEach(container::addPropertyKey);
-        metadata.getProcedures().forEach(p -> container.addProcedure(p.name(), p.signature(), p.description()));
-        metadata.getFunctions().forEach(f -> container.addFunction(f.name(), f.signature(), f.description()));
+        metadata.propertyKeys().forEach(container::addPropertyKey);
+        metadata.procedures().forEach(p -> container.addProcedure(p.name(), p.signature(), p.description()));
+        metadata.functions().forEach(f -> container.addFunction(f.name(), f.signature(), f.description()));
     }
 }
