@@ -13,14 +13,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.tree.MutableTreeNode;
 import java.util.List;
-import java.util.Map;
 
 import static com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.Neo4jTreeNodeType.*;
 
 /**
  * Updates the data source tree for Neo4j data source metadata.
  */
-final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
+final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jMetadata> {
 
     private static final String RELATIONSHIP_TYPES_TITLE = "relationship types (%s)";
     private static final String PROPERTY_KEYS_TITLE = "property keys";
@@ -33,26 +32,24 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     @Override
     public void updateTree(
             final PatchedDefaultMutableTreeNode dataSourceRootTreeNode,
-            final DataSourceMetadata metadata) {
-
-        final var neo4jMetadata = (Neo4jBoltCypherDataSourceMetadata) metadata;
+            final Neo4jMetadata neo4jMetadata) {
 
         // Remove existing metadata from ui
         dataSourceRootTreeNode.removeAllChildren();
         TreeNodeModelApi model = (TreeNodeModelApi) dataSourceRootTreeNode.getUserObject();
         DataSourceApi dataSourceApi = model.getDataSourceApi();
 
-        dataSourceRootTreeNode.add(createConstraintsNode(neo4jMetadata, dataSourceApi));
-        dataSourceRootTreeNode.add(createIndexesNode(neo4jMetadata, dataSourceApi));
+        dataSourceRootTreeNode.add(createConstraintsNode(neo4jMetadata.getConstraints(), dataSourceApi));
+        dataSourceRootTreeNode.add(createIndexesNode(neo4jMetadata.getIndexes(), dataSourceApi));
         dataSourceRootTreeNode.add(createLabelsNode(neo4jMetadata, dataSourceApi));
         dataSourceRootTreeNode.add(createRelationshipTypesNode(neo4jMetadata, dataSourceApi));
         dataSourceRootTreeNode.add(createPropertyKeysNode(neo4jMetadata, dataSourceApi));
 
-        if (!metadata.getProcedures().isEmpty()) {
+        if (!neo4jMetadata.getProcedures().isEmpty()) {
             dataSourceRootTreeNode.add(createProceduresNode(neo4jMetadata.getProcedures(), dataSourceApi));
         }
 
-        if (!metadata.getFunctions().isEmpty()) {
+        if (!neo4jMetadata.getFunctions().isEmpty()) {
             dataSourceRootTreeNode.add(createFunctionNode(neo4jMetadata.getFunctions(), dataSourceApi));
         }
     }
@@ -104,7 +101,7 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     }
 
     @NotNull
-    private PatchedDefaultMutableTreeNode createPropertyKeysNode(Neo4jBoltCypherDataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
+    private PatchedDefaultMutableTreeNode createPropertyKeysNode(Neo4jMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
         PatchedDefaultMutableTreeNode propertyKeysTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(PROPERTY_KEYS, dataSourceApi, PROPERTY_KEYS_TITLE, GraphIcons.Nodes.PROPERTY_KEY));
 
@@ -115,7 +112,7 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
     }
 
     @NotNull
-    private PatchedDefaultMutableTreeNode createRelationshipTypesNode(Neo4jBoltCypherDataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
+    private PatchedDefaultMutableTreeNode createRelationshipTypesNode(Neo4jMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
         int relationshipTypesCount = dataSourceMetadata.getRelationshipTypes().size();
         String relationshipTypesName = String.format(RELATIONSHIP_TYPES_TITLE, relationshipTypesCount);
         PatchedDefaultMutableTreeNode relationshipTypesTreeNode = new PatchedDefaultMutableTreeNode(
@@ -129,7 +126,7 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
 
     @NotNull
     private PatchedDefaultMutableTreeNode createLabelsNode(
-            final Neo4jBoltCypherDataSourceMetadata dataSourceMetadata,
+            final Neo4jMetadata dataSourceMetadata,
             final DataSourceApi dataSourceApi) {
         int labelCount = dataSourceMetadata.getLabels().size();
         PatchedDefaultMutableTreeNode labelsTreeNode = new PatchedDefaultMutableTreeNode(
@@ -141,8 +138,9 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
         return labelsTreeNode;
     }
 
-    private MutableTreeNode createIndexesNode(DataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
-        final List<Neo4jIndexMetadata> indexesMetadata = dataSourceMetadata.getIndexes();
+    private MutableTreeNode createIndexesNode(
+            final List<Neo4jIndexMetadata> indexesMetadata,
+            final DataSourceApi dataSourceApi) {
         PatchedDefaultMutableTreeNode indexTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(INDEXES,
                         dataSourceApi,
@@ -156,8 +154,9 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater {
         return indexTreeNode;
     }
 
-    private MutableTreeNode createConstraintsNode(DataSourceMetadata dataSourceMetadata, DataSourceApi dataSourceApi) {
-        final List<Neo4jConstraintMetadata> constraintsMetadata = dataSourceMetadata.getConstraints();
+    private MutableTreeNode createConstraintsNode(
+            final List<Neo4jConstraintMetadata> constraintsMetadata,
+            final DataSourceApi dataSourceApi) {
         PatchedDefaultMutableTreeNode indexTreeNode = new PatchedDefaultMutableTreeNode(
                 new MetadataTreeNodeModel(CONSTRAINTS, dataSourceApi,
                         String.format(CONSTRAINTS_TITLE, constraintsMetadata.size()), GraphIcons.Nodes.CONSTRAINT));

@@ -16,7 +16,7 @@ public interface MetadataRetrieveEvent {
 
     void startMetadataRefresh(DataSourceApi nodeDataSource);
 
-    void metadataRefreshSucceed(DataSourceApi nodeDataSource, DataSourceMetadata metadata);
+    void metadataRefreshSucceed(DataSourceApi nodeDataSource);
 
     void metadataRefreshFailed(DataSourceApi nodeDataSource, Exception exception);
 }

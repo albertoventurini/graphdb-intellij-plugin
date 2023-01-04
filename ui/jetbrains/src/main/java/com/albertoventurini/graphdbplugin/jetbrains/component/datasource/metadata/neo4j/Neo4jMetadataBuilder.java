@@ -49,7 +49,7 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
     public DataSourceMetadata buildMetadata(DataSourceApi dataSource) {
         final var databaseManager = ApplicationManager.getApplication().getService(DatabaseManagerService.class);
         GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
-        Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
+        Neo4jMetadata metadata = new Neo4jMetadata();
 
         try {
             metadata.addIndexes(getIndexes(db));

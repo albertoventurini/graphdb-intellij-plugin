@@ -21,7 +21,6 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jBoltCypherDataSourceMetadata.*;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.*;
@@ -50,7 +49,7 @@ public class Neo4JBoltTreeUpdaterTest {
         datasource = new PatchedDefaultMutableTreeNode(model);
 
         root.add(datasource);
-        Neo4jBoltCypherDataSourceMetadata metadata = new Neo4jBoltCypherDataSourceMetadata();
+        Neo4jMetadata metadata = new Neo4jMetadata();
 
         final Neo4jIndexMetadata indexMetadata = new Neo4jIndexMetadata("DummyIndexName", "ONLINE");
         final Neo4jConstraintMetadata constraintMetadata = new Neo4jConstraintMetadata("constraint ON (:aaa) UNIQUE");

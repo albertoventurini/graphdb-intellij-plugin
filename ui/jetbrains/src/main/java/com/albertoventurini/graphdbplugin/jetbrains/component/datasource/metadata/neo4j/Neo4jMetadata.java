@@ -10,7 +10,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadat
 
 import java.util.*;
 
-public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
+public class Neo4jMetadata implements DataSourceMetadata {
 
     private final List<Neo4jFunctionMetadata> functions = new ArrayList<>();
     private final List<Neo4jProcedureMetadata> procedures = new ArrayList<>();
@@ -21,12 +21,10 @@ public class Neo4jBoltCypherDataSourceMetadata implements DataSourceMetadata {
     private List<Neo4jIndexMetadata> indexes = new ArrayList<>();
     private List<String> propertyKeys = new ArrayList<>();
 
-    @Override
     public List<Neo4jFunctionMetadata> getFunctions() {
         return Collections.unmodifiableList(functions);
     }
 
-    @Override
     public List<Neo4jProcedureMetadata> getProcedures() {
         return Collections.unmodifiableList(procedures);
     }
