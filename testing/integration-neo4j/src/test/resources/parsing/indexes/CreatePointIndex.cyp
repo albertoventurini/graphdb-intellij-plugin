@@ -1,0 +1,1 @@
+CREATE POINT INDEX node_range_index_name FOR (n:Person) ON (n.surname);

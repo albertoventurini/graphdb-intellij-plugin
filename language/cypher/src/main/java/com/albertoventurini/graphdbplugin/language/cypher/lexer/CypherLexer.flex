@@ -112,6 +112,16 @@ K_MANDATORY=[Mm][Aa][Nn][Dd][Aa][Tt][Oo][Rr][Yy]
 K_SCALAR=[Ss][Cc][Aa][Ll][Aa][Rr]
 K_OF=[Oo][Ff]
 K_ADD=[Aa][Dd][Dd]
+K_IF=[Ii][Ff]
+K_RANGE=[Rr][Aa][Nn][Gg][Ee]
+K_LOOKUP=[Ll][Oo][Oo][Kk][Uu][Pp]
+K_TEXT=[Tt][Ee][Xx][Tt]
+K_POINT=[Pp][Oo][Ii][Nn][Tt]
+K_OPTIONS=[Oo][Pp][Tt][Ii][Oo][Nn][Ss]
+K_EACH=[Ee][Aa][Cc][Hh]
+K_LABELS=[Ll][Aa][Bb][Ee][Ll][Ss]
+K_TYPE=[Tt][Yy][Pp][Ee]
+
 L_IDENTIFIER=[a-zA-Z_][a-zA-Z_$0-9]*
 L_IDENTIFIER_TEXT=\`[^`]+\`
 L_DECIMAL=(0|[1-9][0-9]*)\.[0-9]+
@@ -244,6 +254,15 @@ BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
   {K_SCALAR}                { return K_SCALAR; }
   {K_OF}                    { return K_OF; }
   {K_ADD}                   { return K_ADD; }
+  {K_IF}                    { return K_IF; }
+  {K_RANGE}                 { return K_RANGE; }
+  {K_LOOKUP}                { return K_LOOKUP; }
+  {K_TEXT}                  { return K_TEXT; }
+  {K_POINT}                 { return K_POINT; }
+  {K_OPTIONS}               { return K_OPTIONS; }
+  {K_EACH}                  { return K_EACH; }
+  {K_LABELS}                { return K_LABELS; }
+  {K_TYPE}                  { return K_TYPE; }
 
   {L_IDENTIFIER}            { return L_IDENTIFIER; }
   {L_IDENTIFIER_TEXT}       { return L_IDENTIFIER_TEXT; }
