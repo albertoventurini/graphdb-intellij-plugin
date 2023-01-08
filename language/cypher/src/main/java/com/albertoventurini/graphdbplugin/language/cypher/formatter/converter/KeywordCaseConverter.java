@@ -34,9 +34,12 @@ public class KeywordCaseConverter extends AbstractCypherConverter {
             CypherTypes.K_SINGLE
     );
 
-    private static final Map<IElementType, String> SPECIAL_FUNCTIONS = Map.of(
+    private static final Map<IElementType, String> SPECIAL_KEYWORDS = Map.of(
             CypherTypes.K_SHORTESTPATH, "shortestPath",
-            CypherTypes.K_ALLSHORTESTPATHS, "allShortestPaths"
+            CypherTypes.K_ALLSHORTESTPATHS, "allShortestPaths",
+            CypherTypes.K_ON_TYPE, "ON type",
+            CypherTypes.K_ON_EACH_TYPE, "ON EACH type",
+            CypherTypes.K_ON_EACH_LABELS, "ON EACH labels"
     );
 
     public KeywordCaseConverter(CypherPreFormatter.FormatterTask formatterTask, @NotNull Document document) {
@@ -59,8 +62,8 @@ public class KeywordCaseConverter extends AbstractCypherConverter {
                     return null;
                 }
 
-                if (SPECIAL_FUNCTIONS.containsKey(type)) {
-                    return SPECIAL_FUNCTIONS.get(type);
+                if (SPECIAL_KEYWORDS.containsKey(type)) {
+                    return SPECIAL_KEYWORDS.get(type);
                 }
 
                 if (TO_LOWER_CASE_SPECIAL.contains(type)) {

@@ -112,15 +112,27 @@ K_MANDATORY=[Mm][Aa][Nn][Dd][Aa][Tt][Oo][Rr][Yy]
 K_SCALAR=[Ss][Cc][Aa][Ll][Aa][Rr]
 K_OF=[Oo][Ff]
 K_ADD=[Aa][Dd][Dd]
-K_IF=[Ii][Ff]
-K_RANGE=[Rr][Aa][Nn][Gg][Ee]
-K_LOOKUP=[Ll][Oo][Oo][Kk][Uu][Pp]
-K_TEXT=[Tt][Ee][Xx][Tt]
-K_POINT=[Pp][Oo][Ii][Nn][Tt]
 K_OPTIONS=[Oo][Pp][Tt][Ii][Oo][Nn][Ss]
-K_EACH=[Ee][Aa][Cc][Hh]
-K_LABELS=[Ll][Aa][Bb][Ee][Ll][Ss]
-K_TYPE=[Tt][Yy][Pp][Ee]
+
+_EACH=[Ee][Aa][Cc][Hh]
+_IF=[Ii][Ff]
+_RANGE=[Rr][Aa][Nn][Gg][Ee]
+_LOOKUP=[Ll][Oo][Oo][Kk][Uu][Pp]
+_TEXT=[Tt][Ee][Xx][Tt]
+_POINT=[Pp][Oo][Ii][Nn][Tt]
+_LABELS=[Ll][Aa][Bb][Ee][Ll][Ss]
+_TYPE=[Tt][Yy][Pp][Ee]
+
+K_CREATE_INDEX={K_CREATE}{WHITE_SPACE}{K_INDEX}
+K_CREATE_RANGE_INDEX={K_CREATE}{WHITE_SPACE}{_RANGE}{WHITE_SPACE}{K_INDEX}
+K_CREATE_LOOKUP_INDEX={K_CREATE}{WHITE_SPACE}{_LOOKUP}{WHITE_SPACE}{K_INDEX}
+K_CREATE_TEXT_INDEX={K_CREATE}{WHITE_SPACE}{_TEXT}{WHITE_SPACE}{K_INDEX}
+K_CREATE_POINT_INDEX={K_CREATE}{WHITE_SPACE}{_POINT}{WHITE_SPACE}{K_INDEX}
+K_IF_EXISTS={_IF}{WHITE_SPACE}{K_EXISTS}
+K_IF_NOT_EXISTS={_IF}{WHITE_SPACE}{K_NOT}{WHITE_SPACE}{K_EXISTS}
+K_ON_EACH_LABELS={K_ON}{WHITE_SPACE}{_EACH}{WHITE_SPACE}{_LABELS}
+K_ON_EACH_TYPE={K_ON}{WHITE_SPACE}{_EACH}{WHITE_SPACE}{_TYPE}
+K_ON_TYPE={K_ON}{WHITE_SPACE}{_TYPE}
 
 L_IDENTIFIER=[a-zA-Z_][a-zA-Z_$0-9]*
 L_IDENTIFIER_TEXT=\`[^`]+\`
@@ -254,15 +266,19 @@ BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
   {K_SCALAR}                { return K_SCALAR; }
   {K_OF}                    { return K_OF; }
   {K_ADD}                   { return K_ADD; }
-  {K_IF}                    { return K_IF; }
-  {K_RANGE}                 { return K_RANGE; }
-  {K_LOOKUP}                { return K_LOOKUP; }
-  {K_TEXT}                  { return K_TEXT; }
-  {K_POINT}                 { return K_POINT; }
+
   {K_OPTIONS}               { return K_OPTIONS; }
-  {K_EACH}                  { return K_EACH; }
-  {K_LABELS}                { return K_LABELS; }
-  {K_TYPE}                  { return K_TYPE; }
+
+  {K_CREATE_INDEX}          { return K_CREATE_INDEX; }
+  {K_CREATE_RANGE_INDEX}    { return K_CREATE_RANGE_INDEX; }
+  {K_CREATE_LOOKUP_INDEX}   { return K_CREATE_LOOKUP_INDEX; }
+  {K_CREATE_TEXT_INDEX}     { return K_CREATE_TEXT_INDEX; }
+  {K_CREATE_POINT_INDEX}    { return K_CREATE_POINT_INDEX; }
+  {K_IF_EXISTS}             { return K_IF_EXISTS; }
+  {K_IF_NOT_EXISTS}         { return K_IF_NOT_EXISTS; }
+  {K_ON_EACH_LABELS}        { return K_ON_EACH_LABELS; }
+  {K_ON_EACH_TYPE}          { return K_ON_EACH_TYPE; }
+  {K_ON_TYPE}               { return K_ON_TYPE; }
 
   {L_IDENTIFIER}            { return L_IDENTIFIER; }
   {L_IDENTIFIER_TEXT}       { return L_IDENTIFIER_TEXT; }

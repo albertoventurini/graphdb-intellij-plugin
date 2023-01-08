@@ -222,7 +222,7 @@ public class CypherFormattingTest extends BaseFormattingTest {
 
     //negative line-breaking tests
     public void testNoBreakOnIndexOn() {
-        doTest("create index on :Person(name)", "CREATE INDEX ON :Person(name)");
+        doTest("create index for (n:Person) on (n.name)", "CREATE INDEX FOR (n:Person) ON (n.name)");
     }
 
     public void testNoBreakOnConstraintOn() {
@@ -377,5 +377,10 @@ public class CypherFormattingTest extends BaseFormattingTest {
     public void testAssertFormatting() {
         doTest("CALL apoc.schema.assert({}, {});",
                 "CALL apoc.schema.assert({}, {});");
+    }
+
+    public void testCreateLookupIndex() {
+        doTest("create lookup index node_label_lookup_index for (n) on each LABELS(n)",
+                "CREATE LOOKUP INDEX node_label_lookup_index FOR (n) ON EACH labels(n)");
     }
 }
