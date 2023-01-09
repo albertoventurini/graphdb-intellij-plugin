@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0]
+
+### Added
+
+- Support new syntax for CREATE INDEX commands (#45)
+- Add scrollbars to new database panel (#44)
+
+### Changed
+
+Various internal improvements (e.g. using Testcontainers, enabling GitHub actions)
+and refactorings.
+
 ## [0.3.0]
 
 ### Added
