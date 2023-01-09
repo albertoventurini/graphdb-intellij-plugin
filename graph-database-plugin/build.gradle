@@ -34,7 +34,7 @@ intellij {
 
 // See https://plugins.jetbrains.com/docs/intellij/configuring-plugin-project.html#patching-the-plugin-configuration-file
 patchPluginXml {
-    sinceBuild = "222.0"
+    sinceBuild = "223.0"
     untilBuild = "223.*"
 
     def allChanges = {
