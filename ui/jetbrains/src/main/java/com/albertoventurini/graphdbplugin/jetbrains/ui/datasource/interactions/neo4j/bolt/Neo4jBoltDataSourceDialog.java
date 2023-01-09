@@ -32,7 +32,6 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
     private final DataSourcesComponent dataSourcesComponent;
     private DataSourceApi dataSourceToEdit;
 
-    private JPanel content;
     private JBTextField dataSourceNameField;
     private JComboBox<String> protocolComboBox;
     private JBTextField hostField;
@@ -44,6 +43,7 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
     private JPanel loadingPanel;
     private AsyncProcessIcon loadingIcon;
     private JComboBox<String> authTypeComboBox;
+    private JScrollPane scrollPane;
 
     public Neo4jBoltDataSourceDialog(
             @NotNull final Project project,
@@ -122,7 +122,7 @@ public class Neo4jBoltDataSourceDialog extends DataSourceDialog {
             userField.setText(user);
             passwordField.setText(password);
         }
-        return content;
+        return scrollPane;
     }
 
     private void handleAuthTypeChanged(final ActionEvent e) {
