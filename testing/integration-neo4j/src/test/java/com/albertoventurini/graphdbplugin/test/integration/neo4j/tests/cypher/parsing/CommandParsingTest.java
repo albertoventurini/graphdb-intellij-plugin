@@ -37,12 +37,4 @@ public class CommandParsingTest extends BaseParsingTest {
     public void testConstraintPropertyUniqueDrop() {
         doTest(true);
     }
-
-    public void testIndexCreate() {
-        doTest(true);
-    }
-
-    public void testIndexDrop() {
-        doTest(true);
-    }
 }

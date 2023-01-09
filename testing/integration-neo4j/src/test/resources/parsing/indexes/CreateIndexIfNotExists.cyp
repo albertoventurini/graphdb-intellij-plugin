@@ -1,0 +1,1 @@
+CREATE INDEX node_range_index_name IF NOT EXISTS FOR (n:Person) ON (n.surname);

@@ -66,6 +66,11 @@ private statement_recover::= !(';'
                         | K_UNWIND
                         | K_MERGE
                         | K_CREATE
+                        | K_CREATE_INDEX
+                        | K_CREATE_RANGE_INDEX
+                        | K_CREATE_LOOKUP_INDEX
+                        | K_CREATE_POINT_INDEX
+                        | K_CREATE_TEXT_INDEX
                         | K_DROP
                         | K_SET
                         | K_DELETE
@@ -110,10 +115,6 @@ Command ::= CreateIndex
           | CreateRelationshipPropertyExistenceConstraint
           | DropRelationshipPropertyExistenceConstraint
 
-CreateIndex ::= K_CREATE IndexSyntax
-DropIndex ::= K_DROP IndexSyntax
-IndexSyntax ::= K_INDEX K_ON NodeLabel "(" PropertyKeyNames ")"
-
 CreateUniqueConstraint ::= K_CREATE UniqueConstraintSyntax
 DropUniqueConstraint ::= K_DROP UniqueConstraintSyntax
 UniqueConstraintSyntax ::= K_CONSTRAINT K_ON "(" Variable NodeLabel ")" K_ASSERT PropertyExpression K_IS K_UNIQUE
@@ -128,6 +129,50 @@ RelationshipPropertyExistenceConstraintSyntax ::= K_CONSTRAINT K_ON Relationship
 RelationshipPatternSyntax ::= ("(" ")" "-" "[" Variable RelType "]" "-" "(" ")")
       | ("(" ")" "-" "[" Variable RelType "]" "-" ">" "(" ")")
       | ("(" ")" "<" "-" "[" Variable RelType "]" "-" "(" ")")
+
+/*************************
+ * Indexes
+ */
+
+CreateIndex ::= CreateRangeIndex
+              | CreateTextIndex
+              | CreatePointIndex
+              | CreateLookupIndex
+
+CreateRangeIndex ::= CreateNamedRangeIndex | CreateUnnamedRangeIndex
+private CreateNamedRangeIndex ::= (K_CREATE_INDEX | K_CREATE_RANGE_INDEX) IndexName CreateIndexBody
+private CreateUnnamedRangeIndex ::= (K_CREATE_INDEX | K_CREATE_RANGE_INDEX) CreateIndexBody
+
+CreateTextIndex ::= CreateNamedTextIndex | CreateUnnamedTextIndex
+private CreateNamedTextIndex ::= K_CREATE_TEXT_INDEX IndexName CreateIndexBody
+private CreateUnnamedTextIndex ::= K_CREATE_TEXT_INDEX CreateIndexBody
+
+CreatePointIndex ::= CreateNamedPointIndex | CreateUnnamedPointIndex
+private CreateNamedPointIndex ::= K_CREATE_POINT_INDEX IndexName CreateIndexBody
+private CreateUnnamedPointIndex ::= K_CREATE_POINT_INDEX CreateIndexBody
+
+IndexName ::= SymbolicNameString
+
+private CreateIndexBody ::= K_IF_NOT_EXISTS? CreateIndexForPart CreateIndexOnPropertiesPart CreateIndexOptionsPart?
+
+private CreateIndexForPart ::= K_FOR (CreateIndexForNodePart | CreateIndexForRelationshipPart)
+CreateIndexForNodePart ::= "(" Variable NodeLabel ")"
+CreateIndexForRelationshipPart ::= "(" ")" "-" "[" Variable RelType "]" "-" "(" ")"
+
+CreateIndexOnPropertiesPart ::= K_ON "(" Variable "." PropertyKeyName ("," Variable "." PropertyKeyName)* ")"
+
+// CREATE LOOKUP INDEX is a little different, so it is handled separately
+CreateLookupIndex ::= CreateNamedLookupIndex | CreateUnnamedLookupIndex
+private CreateNamedLookupIndex ::= K_CREATE_LOOKUP_INDEX IndexName CreateLookupIndexBody
+private CreateUnnamedLookupIndex ::= K_CREATE_LOOKUP_INDEX CreateLookupIndexBody
+
+private CreateLookupIndexBody ::= K_IF_NOT_EXISTS? (CreateLookupIndexForNodePart | CreateLookupIndexForRelationshipPart) CreateIndexOptionsPart?
+CreateLookupIndexForNodePart ::= K_FOR "(" Variable ")" K_ON_EACH_LABELS "(" Variable ")"
+CreateLookupIndexForRelationshipPart ::= K_FOR "(" ")" "-" "[" Variable "]" "-" "(" ")" (K_ON_EACH_TYPE|K_ON_TYPE) "(" Variable ")"
+
+CreateIndexOptionsPart ::= K_OPTIONS "{" LiteralEntry? ("," LiteralEntry)* "}"
+
+DropIndex ::= K_DROP K_INDEX IndexName K_IF_EXISTS?
 
 /*************************
  * Query
