@@ -54,19 +54,20 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
         final List<Neo4jIndexMetadata> indexes = new ArrayList<>();
         final List<Neo4jProcedureMetadata> procedures = new ArrayList<>();
         final List<Neo4jConstraintMetadata> constraints = new ArrayList<>();
+        final List<Neo4jFunctionMetadata> functions = new ArrayList<>();
 
         try {
             indexes.addAll(getIndexes(db));
             procedures.addAll(getProcedures(db));
             constraints.addAll(getConstraints(db));
+            functions.addAll(getFunctions(db));
         } catch (Exception e) {
-            LOG.warn("Unable to load indexes, constraints and procedures from the current database. Please upgrade to Neo4j 4 or 5 to fix this.");
+            LOG.warn("Unable to load indexes, constraints, procedures, or functions from the current database. Please upgrade to Neo4j 4.2+ to fix this.");
         }
 
         final var propertyKeys = getPropertyKeys(db);
         final var labels = getLabels(db);
         final var relationshipTypes = getRelationshipTypes(db);
-        final var functions = getFunctions(db);
 
         return new Neo4jMetadata(
                 functions,
