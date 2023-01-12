@@ -65,7 +65,6 @@ public final class CypherBuiltInFunctions {
             element("abs", "(expression :: NUMBER)", CypherSimpleType.INTEGER),
             element("ceil", "(expression :: NUMBER)", CypherSimpleType.INTEGER),
             element("floor", "(expression :: NUMBER)", CypherSimpleType.INTEGER),
-            element("round", "(expression :: NUMBER)", CypherSimpleType.INTEGER),
             element("sign", "(expression :: NUMBER)", CypherSimpleType.INTEGER),
             element("rand", "()", CypherSimpleType.FLOAT)
     );

@@ -108,10 +108,10 @@ public class CypherMetadataProviderServiceImpl implements CypherMetadataProvider
     }
 
     @Override
-    public Optional<CypherFunctionElement> findFunction(String name) {
+    public List<CypherFunctionElement> findFunctions(String name) {
         return sourceData.values().stream()
                 .flatMap(container -> container.getFunctions().stream())
                 .filter(functionElement -> functionElement.getName().equals(name))
-                .findFirst();
+                .collect(Collectors.toList());
     }
 }

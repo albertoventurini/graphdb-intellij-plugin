@@ -37,5 +37,5 @@ public interface CypherMetadataProviderService {
 
     Optional<CypherProcedureElement> findProcedure(String fullName);
 
-    Optional<CypherFunctionElement> findFunction(String fullName);
+    List<CypherFunctionElement> findFunctions(String fullName);
 }
