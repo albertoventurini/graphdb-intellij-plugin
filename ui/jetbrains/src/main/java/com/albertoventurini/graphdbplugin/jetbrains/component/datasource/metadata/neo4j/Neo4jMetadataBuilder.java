@@ -39,9 +39,8 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
 
     private static final String RELATIONSHIP_TYPES_QUERY = """
             MATCH ()-[r]->()
-            WITH DISTINCT TYPE(r) AS relationshipsTypeNames, COUNT(r) AS cnt
-            UNWIND relationshipsTypeNames AS relationshipTypeName
-            RETURN relationshipTypeName, SUM(cnt) AS relationshipTypeCount
+            WITH DISTINCT TYPE(r) AS relationshipTypeName, COUNT(r) AS relationshipTypeCount
+            RETURN relationshipTypeName, relationshipTypeCount
             """;
 
     private static final Logger LOG = Logger.getInstance(Neo4jMetadataBuilder.class);
