@@ -37,5 +37,13 @@ public interface CypherMetadataProviderService {
 
     Optional<CypherProcedureElement> findProcedure(String fullName);
 
+    /**
+     * Find all functions that match the given name.
+     * The result is a collection (instead of an Optional) because
+     * there could be multiple functions that share the same name (i.e.
+     * method overloading)
+     * @param fullName the name of the function
+     * @return known functions that match the given name
+     */
     List<CypherFunctionElement> findFunctions(String fullName);
 }

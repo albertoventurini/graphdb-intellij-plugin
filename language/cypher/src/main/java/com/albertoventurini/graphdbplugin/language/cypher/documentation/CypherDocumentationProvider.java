@@ -139,6 +139,8 @@ public class CypherDocumentationProvider extends AbstractDocumentationProvider {
             return getMetadataService(element)
                     .findFunctions(cypherFunctionInvocation.getFullName())
                     .stream()
+                    .filter(f -> f.getInvokableInformation().getArguments().size() == cypherFunctionInvocation.arguments().size())
+
                     .findFirst()
                     .map(CypherFunctionElement::getDocumentation);
         }

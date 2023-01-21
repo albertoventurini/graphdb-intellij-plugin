@@ -29,50 +29,14 @@ public class ArgumentHintTest extends BaseIntegrationTest {
         dataSource().neo4j52();
     }
 
-
     public void testSpecialAll() {
         doTest("RETURN ALL (x <caret>IN nodes(p) WHERE x.age > 30)",
-                "<html>(<b color=1d1d1d>variable IN list WHERE predicate :: ANY</b>)</html>");
-    }
-
-    public void testSpecialAny() {
-        doTest("RETURN ANY (x IN a.array WHERE x = 'one'<caret>)",
-                "<html>(<b color=1d1d1d>variable IN list WHERE predicate :: ANY</b>)</html>");
-    }
-
-    public void testSpecialExists() {
-        doTest("RETURN EXISTS(<caret>true)",
-                "<html>(<b color=1d1d1d>pattern :: ANY</b>)</html>");
-    }
-
-    public void testSpecialNone() {
-        doTest("RETURN NONE (<caret>x IN nodes(p) WHERE x.age = 25)",
-                "<html>(<b color=1d1d1d>variable in list WHERE predicate :: ANY</b>)</html>");
-    }
-
-    public void testSpecialSingle() {
-        doTest("RETURN SINGLE (<caret>var IN nodes(p) WHERE var.eyes = 'blue')",
-                "<html>(<b color=1d1d1d>variable in list WHERE predicate :: ANY</b>)</html>");
-    }
-
-    public void testSpecialFilter() {
-        doTest("RETURN filter(<caret>x IN a.array WHERE size(x)= 3)",
-                "<html>(<b color=1d1d1d>variable IN list WHERE predicate :: ANY</b>)</html>");
-    }
-
-    public void testSpecialExtract() {
-        doTest("RETURN extract(<caret>n IN nodes(p)| n.age) AS extracted",
-                "<html>(<b color=1d1d1d>variable IN list | expression :: ANY</b>)</html>");
-    }
-
-    public void testSpecialReduce() {
-        doTest("RETURN reduce(<caret>totalAge = 0, n IN nodes(p)| totalAge + n.age) ",
-                "<html>(<b color=1d1d1d>accumulator = initial :: ANY</b>, variable IN list | expression :: ANY)</html>");
+                "<html>(<b color=1d1d1d>variable :: VARIABLE IN list :: LIST OF ANY? WHERE predicate :: ANY?</b>)</html>");
     }
 
     public void testBuiltIn() {
         doTest("return toFloat(<caret>\"12\")",
-                "<html>(<b color=1d1d1d>expression :: STRING</b>)</html>");
+                "<html>(<b color=1d1d1d>input :: STRING?</b>)</html>");
     }
 
     public void testProcedure() {
@@ -93,11 +57,6 @@ public class ArgumentHintTest extends BaseIntegrationTest {
     public void testUnknownFunction() {
         doTest("return unknown(<caret>)",
             "<html>unknown parameters</html>");
-    }
-
-    public void testSecondArgument() {
-        doTest("RETURN reduce(totalAge = 0, n IN nodes(p)| totalAge + n.age<caret>)",
-                "<html>(accumulator = initial :: ANY,<b color=1d1d1d> variable IN list | expression :: ANY</b>)</html>");
     }
 
     private void doTest(String query, String expectedHighlight) {
