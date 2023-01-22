@@ -85,7 +85,8 @@ private statement_recover::= !(';'
                         | K_EXPLAIN
                         | K_CALL
                         | K_OPTIONAL
-                        | K_DETACH)
+                        | K_DETACH
+                        | "}")
 
 /*************************
  * Statement
@@ -201,6 +202,7 @@ ReadingClause ::= LoadCSV
               | Start
               | Match
               | Unwind
+              | CallSubQuery
               | InQueryCall
 
 //-- BulkImportQuery
@@ -260,7 +262,10 @@ SortItem ::= Expression (K_DESCENDING | K_DESC | K_ASCENDING | K_ASC)?
 Skip ::= K_SKIP Expression
 Limit ::= K_LIMIT Expression
 
-//-- Call
+//-- Call subquery
+CallSubQuery ::= K_CALL "{" Query "}" (K_IN_TRANSACTIONS (K_OF IntegerLiteral K_ROWS)?)? {pin=2}
+
+//-- Call procedure
 Call ::= K_CALL ProcedureInvocation ProcedureResults?
 InQueryCall ::= Call Where?
 StandaloneCall ::= Call (Where? Return)?
