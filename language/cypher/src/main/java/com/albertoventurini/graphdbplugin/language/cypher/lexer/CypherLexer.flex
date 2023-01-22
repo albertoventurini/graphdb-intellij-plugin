@@ -75,7 +75,6 @@ K_ASCENDING=[Aa][Ss][Cc][Ee][Nn][Dd][Ii][Nn][Gg]
 K_ASC=[Aa][Ss][Cc]
 K_SKIP=[Ss][Kk][Ii][Pp]
 K_LIMIT=[Ll][Ii][Mm][Ii][Tt]
-K_PERIODIC=[Pp][Ee][Rr][Ii][Oo][Dd][Ii][Cc]
 K_BEGIN=[Bb][Ee][Gg][Ii][Nn]
 K_COMMIT=[Cc][Oo][Mm][Mm][Ii][Tt]
 K_XOR=[Xx][Oo][Rr]
@@ -233,7 +232,6 @@ BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
   {K_ASC}                   { return K_ASC; }
   {K_SKIP}                  { return K_SKIP; }
   {K_LIMIT}                 { return K_LIMIT; }
-  {K_PERIODIC}              { return K_PERIODIC; }
   {K_BEGIN}                 { return K_BEGIN; }
   {K_COMMIT}                { return K_COMMIT; }
   {K_XOR}                   { return K_XOR; }

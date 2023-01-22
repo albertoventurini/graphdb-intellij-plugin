@@ -178,7 +178,7 @@ DropIndex ::= K_DROP K_INDEX IndexName K_IF_EXISTS?
 /*************************
  * Query
  */
-Query ::= StandaloneCall | BulkImportQuery | RegularQuery
+Query ::= StandaloneCall | RegularQuery
 
 //-- RegularQuery
 RegularQuery ::= SingleQuery Union*
@@ -204,11 +204,6 @@ ReadingClause ::= LoadCSV
               | Unwind
               | CallSubQuery
               | InQueryCall
-
-//-- BulkImportQuery
-BulkImportQuery ::= PeriodicCommitHint LoadCSVQuery
-PeriodicCommitHint ::= K_USING K_PERIODIC K_COMMIT IntegerLiteral?
-LoadCSVQuery ::= LoadCSV SingleQuery?
 
 /*************************
  * Clauses
@@ -576,7 +571,6 @@ ReservedWord ::= K_MATCH
                 | K_REL
                 | K_REDUCE
                 | K_PROFILE
-                | K_PERIODIC
                 | K_ORDER
                 | K_OR
                 | K_OPTIONAL
