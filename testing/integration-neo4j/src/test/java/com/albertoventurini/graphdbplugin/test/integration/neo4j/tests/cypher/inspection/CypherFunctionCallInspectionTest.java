@@ -133,7 +133,7 @@ public class CypherFunctionCallInspectionTest extends BaseInspectionTest {
 
     public void testStringTypeCheck() {
         String query = "MATCH p=(n)-[r]-() RETURN ltrim(%s)";
-        generateTypeCompatibilityTests(query, "STRING", Collections.singletonList("STRING"));
+        generateTypeCompatibilityTests(query, "STRING?", asList("STRING", "NULL"));
     }
 
     public void testNullableStringTypeCheck() {
@@ -143,7 +143,7 @@ public class CypherFunctionCallInspectionTest extends BaseInspectionTest {
 
     public void testNumberTypeCheck() {
         String query = "MATCH p=(n)-[r]-() RETURN sin(%s)";
-        generateTypeCompatibilityTests(query, "NUMBER", asList("INTEGER", "FLOAT"));
+        generateTypeCompatibilityTests(query, "FLOAT?", asList("INTEGER", "FLOAT", "NULL"));
     }
 
     public void testNullableNumberTypeCheck() {
@@ -153,7 +153,7 @@ public class CypherFunctionCallInspectionTest extends BaseInspectionTest {
 
     public void testIntegerTypeCheck() {
         String query = "MATCH p=(n)-[r]-() RETURN substring(\"a\", %s)";
-        generateTypeCompatibilityTests(query, "INTEGER", Collections.singletonList("INTEGER"));
+        generateTypeCompatibilityTests(query, "INTEGER?", asList("INTEGER", "NULL"));
     }
 
     public void testNullableIntegerTypeCheck() {
@@ -200,16 +200,12 @@ public class CypherFunctionCallInspectionTest extends BaseInspectionTest {
         addDataSourceFileAndCheck("RETURN size([])");
     }
 
-    public void testSizePatternExpression() {
-        addDataSourceFileAndCheck("MATCH (a) RETURN size((a)-[]-())");
-    }
-
     public void testSizeString() {
         addDataSourceFileAndCheck("RETURN size('')");
     }
 
     public void testRelationshipSizeWithoutVariableLength() {
-        addDataSourceFileAndCheck("MATCH (a)-[c]->(b) WITH size(<error descr=\"expected LIST OF ANY, " +
+        addDataSourceFileAndCheck("MATCH (a)-[c]->(b) WITH size(<error descr=\"expected LIST? OF ANY?, " +
             "got RELATIONSHIP\">c</error>) as derp RETURN derp");
     }
 

@@ -137,7 +137,11 @@ public class CypherDocumentationProvider extends AbstractDocumentationProvider {
     private Optional<String> functionDocumentation(PsiElement element) {
         if (element instanceof CypherFunctionInvocation cypherFunctionInvocation) {
             return getMetadataService(element)
-                    .findFunction(cypherFunctionInvocation.getFullName())
+                    .findFunctions(cypherFunctionInvocation.getFullName())
+                    .stream()
+                    .filter(f -> f.getInvokableInformation().getArguments().size() == cypherFunctionInvocation.arguments().size())
+
+                    .findFirst()
                     .map(CypherFunctionElement::getDocumentation);
         }
         return Optional.empty();

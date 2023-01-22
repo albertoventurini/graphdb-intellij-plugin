@@ -9,7 +9,6 @@ package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.d
 import com.albertoventurini.graphdbplugin.language.cypher.documentation.database.CypherDocumentation;
 import com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.cypher.util.BaseDocumentationTest;
 
-
 public class BuiltInFunctionDocumentationTest extends BaseDocumentationTest {
 
     private String expectedDocumentation;
@@ -17,21 +16,21 @@ public class BuiltInFunctionDocumentationTest extends BaseDocumentationTest {
     @Override
     public void setUp() throws Exception {
         super.setUp();
-        expectedDocumentation = CypherDocumentation.BUILT_IN_FUNCTIONS.lookup("toString").get();
+        expectedDocumentation = CypherDocumentation.BUILT_IN_FUNCTIONS.lookup("timestamp").get();
     }
 
     public void testFunctionBody() throws Exception {
-        configure("RETURN toStr<caret>ing(42);");
+        configure("RETURN timest<caret>amp();");
         verify(expectedDocumentation);
     }
 
     public void testFunctionParameters() throws Exception {
-        configure("RETURN toString(4<caret>2);");
+        configure("RETURN timestamp(<caret>);");
         verify(expectedDocumentation);
     }
 
     public void testIgnoreCase() throws Exception {
-        configure("RETURN to<caret>STRING(42);");
+        configure("RETURN time<caret>STAMP();");
         verify(expectedDocumentation);
     }
 

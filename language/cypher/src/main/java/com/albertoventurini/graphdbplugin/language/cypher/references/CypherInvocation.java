@@ -6,7 +6,6 @@
  */
 package com.albertoventurini.graphdbplugin.language.cypher.references;
 
-
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherFunctionArguments;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherFunctionInvocation;
 import com.albertoventurini.graphdbplugin.language.cypher.psi.CypherProcedureInvocation;
@@ -24,7 +23,6 @@ import com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.el
 import java.util.*;
 
 import static com.albertoventurini.graphdbplugin.language.cypher.completion.metadata.atoms.CypherSimpleType.ANY;
-import static java.util.stream.Collectors.toList;
 
 public interface CypherInvocation extends PsiElement, CypherTyped {
 
@@ -58,24 +56,25 @@ public interface CypherInvocation extends PsiElement, CypherTyped {
         CypherMetadataProviderService svc = getProject().getService(CypherMetadataProviderService.class);
         final List<InvokableInformation> matchedInvocations = new ArrayList<>();
 
+        final String name = getFullName();
+
         if (this instanceof CypherProcedureInvocation) {
-            svc.findProcedure(getFullName())
+            svc.findProcedure(name)
                 .map(CypherProcedureElement::getInvokableInformation)
                 .ifPresent(matchedInvocations::add);
             return matchedInvocations;
         }
 
-        String name = getFullName();
-
         matchedInvocations.addAll(CypherBuiltInFunctions.FUNCTIONS.stream()
                 .map(CypherBuiltInFunctionElement::getInvokable)
                 .filter(invokable -> Objects.equals(invokable.getName(), name))
-                .collect(toList()));
+                .toList());
 
         if (matchedInvocations.isEmpty()) {
-            svc.findFunction(getFullName())
-                .map(CypherFunctionElement::getInvokableInformation)
-                .ifPresent(matchedInvocations::add);
+            matchedInvocations.addAll(svc.findFunctions(getFullName())
+                    .stream()
+                    .map(CypherFunctionElement::getInvokableInformation)
+                    .toList());
         }
         return matchedInvocations;
     }
