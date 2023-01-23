@@ -17,8 +17,4 @@ public class QueryParsingTest extends BaseParsingTest {
     public void testMultipleQueries() {
         doTest(true);
     }
-
-    public void testBulkImport() {
-        doTest(true);
-    }
 }

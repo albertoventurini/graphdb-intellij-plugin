@@ -85,7 +85,8 @@ private statement_recover::= !(';'
                         | K_EXPLAIN
                         | K_CALL
                         | K_OPTIONAL
-                        | K_DETACH)
+                        | K_DETACH
+                        | "}")
 
 /*************************
  * Statement
@@ -177,7 +178,7 @@ DropIndex ::= K_DROP K_INDEX IndexName K_IF_EXISTS?
 /*************************
  * Query
  */
-Query ::= StandaloneCall | BulkImportQuery | RegularQuery
+Query ::= StandaloneCall | RegularQuery
 
 //-- RegularQuery
 RegularQuery ::= SingleQuery Union*
@@ -201,12 +202,8 @@ ReadingClause ::= LoadCSV
               | Start
               | Match
               | Unwind
+              | CallSubQuery
               | InQueryCall
-
-//-- BulkImportQuery
-BulkImportQuery ::= PeriodicCommitHint LoadCSVQuery
-PeriodicCommitHint ::= K_USING K_PERIODIC K_COMMIT IntegerLiteral?
-LoadCSVQuery ::= LoadCSV SingleQuery?
 
 /*************************
  * Clauses
@@ -260,7 +257,10 @@ SortItem ::= Expression (K_DESCENDING | K_DESC | K_ASCENDING | K_ASC)?
 Skip ::= K_SKIP Expression
 Limit ::= K_LIMIT Expression
 
-//-- Call
+//-- Call subquery
+CallSubQuery ::= K_CALL "{" Query "}" (K_IN_TRANSACTIONS (K_OF IntegerLiteral K_ROWS)?)? {pin=2}
+
+//-- Call procedure
 Call ::= K_CALL ProcedureInvocation ProcedureResults?
 InQueryCall ::= Call Where?
 StandaloneCall ::= Call (Where? Return)?
@@ -571,7 +571,6 @@ ReservedWord ::= K_MATCH
                 | K_REL
                 | K_REDUCE
                 | K_PROFILE
-                | K_PERIODIC
                 | K_ORDER
                 | K_OR
                 | K_OPTIONAL

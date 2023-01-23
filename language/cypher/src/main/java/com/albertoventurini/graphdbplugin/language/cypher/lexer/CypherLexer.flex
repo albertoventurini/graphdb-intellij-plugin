@@ -75,7 +75,6 @@ K_ASCENDING=[Aa][Ss][Cc][Ee][Nn][Dd][Ii][Nn][Gg]
 K_ASC=[Aa][Ss][Cc]
 K_SKIP=[Ss][Kk][Ii][Pp]
 K_LIMIT=[Ll][Ii][Mm][Ii][Tt]
-K_PERIODIC=[Pp][Ee][Rr][Ii][Oo][Dd][Ii][Cc]
 K_BEGIN=[Bb][Ee][Gg][Ii][Nn]
 K_COMMIT=[Cc][Oo][Mm][Mm][Ii][Tt]
 K_XOR=[Xx][Oo][Rr]
@@ -113,6 +112,7 @@ K_SCALAR=[Ss][Cc][Aa][Ll][Aa][Rr]
 K_OF=[Oo][Ff]
 K_ADD=[Aa][Dd][Dd]
 K_OPTIONS=[Oo][Pp][Tt][Ii][Oo][Nn][Ss]
+K_ROWS=[Rr][Oo][Ww][Ss]
 
 _EACH=[Ee][Aa][Cc][Hh]
 _IF=[Ii][Ff]
@@ -122,6 +122,8 @@ _TEXT=[Tt][Ee][Xx][Tt]
 _POINT=[Pp][Oo][Ii][Nn][Tt]
 _LABELS=[Ll][Aa][Bb][Ee][Ll][Ss]
 _TYPE=[Tt][Yy][Pp][Ee]
+_IN=[Ii][Nn]
+_TRANSACTIONS=[Tt][Rr][Aa][Nn][Ss][Aa][Cc][Tt][Ii][Oo][Nn][Ss]
 
 K_CREATE_INDEX={K_CREATE}{WHITE_SPACE}{K_INDEX}
 K_CREATE_RANGE_INDEX={K_CREATE}{WHITE_SPACE}{_RANGE}{WHITE_SPACE}{K_INDEX}
@@ -133,6 +135,7 @@ K_IF_NOT_EXISTS={_IF}{WHITE_SPACE}{K_NOT}{WHITE_SPACE}{K_EXISTS}
 K_ON_EACH_LABELS={K_ON}{WHITE_SPACE}{_EACH}{WHITE_SPACE}{_LABELS}
 K_ON_EACH_TYPE={K_ON}{WHITE_SPACE}{_EACH}{WHITE_SPACE}{_TYPE}
 K_ON_TYPE={K_ON}{WHITE_SPACE}{_TYPE}
+K_IN_TRANSACTIONS={_IN}{WHITE_SPACE}{_TRANSACTIONS}
 
 L_IDENTIFIER=[a-zA-Z_][a-zA-Z_$0-9]*
 L_IDENTIFIER_TEXT=\`[^`]+\`
@@ -229,7 +232,6 @@ BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
   {K_ASC}                   { return K_ASC; }
   {K_SKIP}                  { return K_SKIP; }
   {K_LIMIT}                 { return K_LIMIT; }
-  {K_PERIODIC}              { return K_PERIODIC; }
   {K_BEGIN}                 { return K_BEGIN; }
   {K_COMMIT}                { return K_COMMIT; }
   {K_XOR}                   { return K_XOR; }
@@ -268,6 +270,7 @@ BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
   {K_ADD}                   { return K_ADD; }
 
   {K_OPTIONS}               { return K_OPTIONS; }
+  {K_ROWS}                  { return K_ROWS; }
 
   {K_CREATE_INDEX}          { return K_CREATE_INDEX; }
   {K_CREATE_RANGE_INDEX}    { return K_CREATE_RANGE_INDEX; }
@@ -279,6 +282,7 @@ BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
   {K_ON_EACH_LABELS}        { return K_ON_EACH_LABELS; }
   {K_ON_EACH_TYPE}          { return K_ON_EACH_TYPE; }
   {K_ON_TYPE}               { return K_ON_TYPE; }
+  {K_IN_TRANSACTIONS}       { return K_IN_TRANSACTIONS; }
 
   {L_IDENTIFIER}            { return L_IDENTIFIER; }
   {L_IDENTIFIER_TEXT}       { return L_IDENTIFIER_TEXT; }
