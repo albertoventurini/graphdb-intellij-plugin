@@ -18,4 +18,8 @@ public class PatternsParsingTest extends BaseParsingTest {
         doTest(true);
     }
 
+    public void testWhereInsidePatterns() {
+        doTest(true);
+    }
+
 }
