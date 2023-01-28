@@ -137,11 +137,19 @@ K_ON_EACH_TYPE={K_ON}{WHITE_SPACE}{_EACH}{WHITE_SPACE}{_TYPE}
 K_ON_TYPE={K_ON}{WHITE_SPACE}{_TYPE}
 K_IN_TRANSACTIONS={_IN}{WHITE_SPACE}{_TRANSACTIONS}
 
-L_IDENTIFIER=[a-zA-Z_][a-zA-Z_$0-9]*
+_DECIMAL_EXPONENT=[eE] [+-]? {_INTEGER_PART}+ {_PART_LETTER}*
+_INTEGER_PART= "_"? [0-9]
+
+L_IDENTIFIER={_LETTER}{_PART_LETTER}*
 L_IDENTIFIER_TEXT=\`[^`]+\`
-L_DECIMAL=(0|[1-9][0-9]*)\.[0-9]+
+L_DECIMAL=[0-9] {_INTEGER_PART}* "_"? "." {_INTEGER_PART}+ {_DECIMAL_EXPONENT}? {L_IDENTIFIER}?
+         | "." {_INTEGER_PART}+ {_DECIMAL_EXPONENT}? {L_IDENTIFIER}?
+         | [0-9] {_INTEGER_PART}* {_DECIMAL_EXPONENT} {L_IDENTIFIER}?
 L_INTEGER=0|[1-9][0-9]*
 L_STRING=('([^'\\]|\\.)*'|\"([^\"\\]|\\.)*\")
+
+_LETTER=[a-zA-Z]
+_PART_LETTER=[a-zA-Z_$0-9]
 
 LINE_COMMENT = "//" [^\r\n]*
 BLOCK_COMMENT = "/*" ( ([^"*"]|[\r\n])* ("*"+ [^"*""/"] )? )* ("*" | "*"+"/")?
