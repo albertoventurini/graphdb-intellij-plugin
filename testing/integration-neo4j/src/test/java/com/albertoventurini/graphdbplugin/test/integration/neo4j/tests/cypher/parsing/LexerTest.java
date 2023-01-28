@@ -12,4 +12,12 @@ public class LexerTest extends BaseParsingTest {
         doTest(true);
     }
 
+    public void testHexNumbers() {
+        doTest(true);
+    }
+
+    public void testOctalNumbers() {
+        doTest(true);
+    }
+
 }

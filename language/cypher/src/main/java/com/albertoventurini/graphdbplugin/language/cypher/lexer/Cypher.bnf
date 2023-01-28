@@ -635,4 +635,4 @@ Dash ::= "-" // todo: migrate all variants
 LeftArrowHead ::= "<" // todo: migrate all variants
 RightArrowHead ::= ">" // todo: migrate all variants
 UnsignedDouble ::= l_decimal
-UnsignedInteger ::= l_integer
+UnsignedInteger ::= l_integer | l_hex_integer | l_octal_integer
