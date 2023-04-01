@@ -12,8 +12,6 @@ import com.albertoventurini.graphdbplugin.test.integration.neo4j.util.base.BaseI
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.intellij.psi.PsiElement;
 
-
-
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,24 +21,14 @@ public class CypherParametersProviderTest extends BaseIntegrationTest {
     private class TestParametersProvider implements ParametersProvider {
 
         private String globalParametersJson;
-        private String fileSpecificParametersJson;
 
         @Override
         public String getGlobalParametersJson() {
             return globalParametersJson;
         }
 
-        @Override
-        public String getFileSpecificParametersJson() {
-            return fileSpecificParametersJson;
-        }
-
         public void setGlobalParametersJson(String parametersJson) {
             this.globalParametersJson = parametersJson;
-        }
-
-        public void setFileSpecificParametersJson(String fileSpecificParametersJson) {
-            this.fileSpecificParametersJson = fileSpecificParametersJson;
         }
     }
 
@@ -57,43 +45,24 @@ public class CypherParametersProviderTest extends BaseIntegrationTest {
 
     public void testParsingEmptyJsonObject() throws Exception {
         parametersProvider.setGlobalParametersJson("{}");
-        parametersProvider.setFileSpecificParametersJson("{}");
         Map<String, Object> parameters = parametersService.getParameters(getPsiFile("RETURN $param"));
         assertThat(parameters).isEmpty();
     }
 
     public void testParsingEmptyParameters() throws Exception {
         parametersProvider.setGlobalParametersJson("");
-        parametersProvider.setFileSpecificParametersJson("");
         Map<String, Object> result = parametersService.getParameters(getPsiFile("RETURN $param"));
         assertThat(result).isEmpty();
     }
 
     public void testParsingEmptyGlobalParameters() throws Exception {
         parametersProvider.setGlobalParametersJson("");
-        parametersProvider.setFileSpecificParametersJson("{\"param\": \"non-empty\"}");
         Map<String, Object> result = parametersService.getParameters(getPsiFile("RETURN $param"));
         assertThat(result).containsEntry("param", "non-empty");
     }
-
-    public void testParsingEmptyFileSpecificParameters() throws Exception {
-        parametersProvider.setGlobalParametersJson("{\"param\": \"non-empty\"}");
-        parametersProvider.setFileSpecificParametersJson("");
-        Map<String, Object> result = parametersService.getParameters(getPsiFile("RETURN $param"));
-        assertThat(result).containsEntry("param", "non-empty");
-    }
-
 
     public void testParsingEmptyJsonInGlobalParameters() throws Exception {
         parametersProvider.setGlobalParametersJson("{}");
-        parametersProvider.setFileSpecificParametersJson("{\"param\": \"non-empty\"}");
-        Map<String, Object> result = parametersService.getParameters(getPsiFile("RETURN $param"));
-        assertThat(result).containsEntry("param", "non-empty");
-    }
-
-    public void testParsingEmptyJsonInFileSpecificParameters() throws Exception {
-        parametersProvider.setGlobalParametersJson("{\"param\": \"non-empty\"}");
-        parametersProvider.setFileSpecificParametersJson("{}");
         Map<String, Object> result = parametersService.getParameters(getPsiFile("RETURN $param"));
         assertThat(result).containsEntry("param", "non-empty");
     }
@@ -135,10 +104,6 @@ public class CypherParametersProviderTest extends BaseIntegrationTest {
         parametersProvider.setGlobalParametersJson(
                 "{\"firstName\": \"Kaleb\", \'age\': 35, \"city\": \"Paris\", \"country\": \"France\"}"
         );
-        parametersProvider.setFileSpecificParametersJson(
-                "{\"lastName\": \"Green\", \"age\": 90}"
-        );
-
         Map<String, Object> result = parametersService
                 .getParameters(getPsiFile("match (p:Person)\n" +
                         "where p.first_name = $firstName " +

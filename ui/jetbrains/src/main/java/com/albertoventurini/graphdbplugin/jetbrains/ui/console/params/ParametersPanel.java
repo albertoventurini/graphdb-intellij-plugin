@@ -6,36 +6,27 @@
  */
 package com.albertoventurini.graphdbplugin.jetbrains.ui.console.params;
 
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourcesComponent;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.console.GraphConsoleView;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent;
 import com.albertoventurini.graphdbplugin.jetbrains.util.FileUtil;
 import com.google.common.base.Throwables;
 import com.intellij.codeInsight.hint.HintManager;
 import com.intellij.icons.AllIcons;
 import com.intellij.json.JsonFileType;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.fileEditor.*;
-import com.intellij.openapi.fileEditor.impl.EditorTabPresentationUtil;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileEvent;
-import com.intellij.openapi.vfs.VirtualFileListener;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.testFramework.LightVirtualFile;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.messages.MessageBusConnection;
-import com.albertoventurini.graphdbplugin.jetbrains.ui.console.GraphConsoleView;
-import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent;
-import com.albertoventurini.graphdbplugin.language.cypher.util.FileTypeExtensionUtil;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
 
-import static com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent.*;
+import static com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent.PARAMS_ERROR_COMMON_MSG;
 
 public class ParametersPanel implements ParametersProvider {
 
@@ -43,39 +34,27 @@ public class ParametersPanel implements ParametersProvider {
     public static final Icon ICON_HELP = AllIcons.Actions.Help;
 
     private Editor globalParamEditor;
-    private Editor fileSpecificParamEditor;
     private GraphConsoleView graphConsoleView;
     private MessageBus messageBus;
     private ParametersService service;
-    private Project project;
 
     public void initialize(GraphConsoleView graphConsoleView, Project project) {
         this.graphConsoleView = graphConsoleView;
         this.messageBus = project.getMessageBus();
         this.service = project.getService(ParametersService.class);
-        this.project = project;
         setupEditor(project);
-        FileEditor selectedEditor = FileEditorManager.getInstance(project).getSelectedEditor();
-        if (selectedEditor != null && selectedEditor.getFile() != null &&
-                FileTypeExtensionUtil.isCypherFileTypeExtension(selectedEditor.getFile().getExtension())) {
-            setupFileSpecificEditor(project, selectedEditor.getFile());
-        }
     }
 
     public String getGlobalParametersJson() {
         return globalParamEditor.getDocument().getText();
     }
 
-    public String getFileSpecificParametersJson() {
-        return fileSpecificParamEditor != null ? fileSpecificParamEditor.getDocument().getText() : null;
-    }
-
     private void initializeUi() {
-        graphConsoleView.getGlobalParametersTab().add(globalParamEditor.getComponent(), BorderLayout.CENTER);
+        graphConsoleView.getParametersTab().add(globalParamEditor.getComponent(), BorderLayout.CENTER);
         service.registerParametersProvider(this);
         MessageBusConnection mbConnection = messageBus.connect();
         mbConnection.subscribe(QueryParametersRetrievalErrorEvent.QUERY_PARAMETERS_RETRIEVAL_ERROR_EVENT_TOPIC,
-                (exception, editor) -> {
+                (QueryParametersRetrievalErrorEvent) (exception, editor) -> {
                     if (editor == null) {
                         return;
                     }
@@ -87,19 +66,6 @@ public class ParametersPanel implements ParametersProvider {
                     }
                     HintManager.getInstance().showErrorHint(editor, errorMessage);
                 });
-
-        mbConnection.subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new FileEditorManagerListener() {
-            // If file opened, fileOpenedSync->selectionChanged->fileOpened are called
-            @Override
-            public void selectionChanged(@NotNull FileEditorManagerEvent event) {
-                releaseFileSpecificEditor(event.getOldFile());
-                VirtualFile newFile = event.getNewFile();
-                if (newFile != null && FileTypeExtensionUtil.isCypherFileTypeExtension(newFile.getExtension()) &&
-                        project.getService(DataSourcesComponent.class).getDataSourceContainer().isDataSourceExists(getTabTitle(newFile))) {
-                    setupFileSpecificEditor(project, newFile);
-                }
-            }
-        });
     }
 
     private void setupEditor(Project project) {
@@ -108,7 +74,7 @@ public class ParametersPanel implements ParametersProvider {
                 VirtualFile file = FileUtil.getScratchFile(project, "Neo4jGraphDbConsoleParametersPanel.json");
                 Document document = FILE_DOCUMENT_MANAGER.getDocument(file);
                 globalParamEditor = createEditor(project, document);
-                JLabel jLabel = new JLabel("<html>Global parameters:</html>");
+                JLabel jLabel = new JLabel("<html>Query parameters:</html>");
                 jLabel.setIcon(ICON_HELP);
                 jLabel.setToolTipText("Enter parameters in JSON format. Will be applied to any data source when executed");
                 globalParamEditor.setHeaderComponent(jLabel);
@@ -122,59 +88,6 @@ public class ParametersPanel implements ParametersProvider {
         });
     }
 
-    private void setupFileSpecificEditor(Project project, VirtualFile cypherFile) {
-        if (project == null || cypherFile == null) {
-            return;
-        }
-        try {
-            String params = FileUtil.getParams(cypherFile);
-            LightVirtualFile lightVirtualFile = new LightVirtualFile("", JsonFileType.INSTANCE, params);
-            Document document = FileDocumentManager.getInstance().getDocument(lightVirtualFile);
-            fileSpecificParamEditor = createEditor(project, document);
-            VirtualFileManager.getInstance().addVirtualFileListener(new VirtualFileListener() {
-                @Override
-                public void contentsChanged(@NotNull VirtualFileEvent event) {
-                    if (event.getFile().equals(cypherFile) && document != null) {
-                        FileUtil.setParams(cypherFile, document.getText());
-                    }
-                }
-            });
-            JLabel jLabel = new JLabel("<html>Parameters for data source <b>" +
-                    getTabTitle(cypherFile) + "</b>:</html>");
-            jLabel.setIcon(ICON_HELP);
-            jLabel.setToolTipText("Enter parameters in JSON format. Will be applied to <b>" + getTabTitle(cypherFile) +
-                    "</b> data source when executed");
-            fileSpecificParamEditor.setHeaderComponent(jLabel);
-            if (document != null) {
-                setInitialContent(document);
-            }
-            graphConsoleView.getFileSpecificParametersTab().add(fileSpecificParamEditor.getComponent(), BorderLayout.CENTER);
-        } catch (Throwable e) {
-            Throwables.throwIfUnchecked(e);
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void releaseFileSpecificEditor(VirtualFile oldFile) {
-        if (fileSpecificParamEditor != null) {
-            // set params in fileSpecificParamDocument.addDocumentListener() listener is a more universal but worse solution:
-            // gets triggered immediately, debounce required
-            FileUtil.setParams(oldFile, fileSpecificParamEditor.getDocument().getText());
-            graphConsoleView.getFileSpecificParametersTab().remove(fileSpecificParamEditor.getComponent());
-            if (!fileSpecificParamEditor.isDisposed()) {
-                EditorFactory.getInstance().releaseEditor(fileSpecificParamEditor);
-            }
-        }
-        fileSpecificParamEditor = null;
-    }
-
-    private String getTabTitle(VirtualFile file) {
-//        Window window = WindowManagerEx.getInstanceEx().getMostRecentFocusedWindow();
-//        EditorWindow editorWindow = FileEditorManagerEx.getInstanceEx(project).getSplittersFor(window).getCurrentWindow();
-//        return EditorTabPresentationUtil.getEditorTabTitle(project, file, editorWindow);
-        return EditorTabPresentationUtil.getEditorTabTitle(project, file);
-    }
-
     private void setInitialContent(Document document) {
         if (document != null && document.getText().isEmpty()) {
             final Runnable setTextRunner = () -> document.setText("{}");
@@ -186,5 +99,4 @@ public class ParametersPanel implements ParametersProvider {
     private static Editor createEditor(Project project, Document document) {
         return EditorFactory.getInstance().createEditor(document, project, JsonFileType.INSTANCE, false);
     }
-
 }

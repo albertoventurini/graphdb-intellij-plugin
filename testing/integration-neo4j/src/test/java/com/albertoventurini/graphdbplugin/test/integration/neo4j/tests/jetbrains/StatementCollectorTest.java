@@ -42,31 +42,16 @@ public class StatementCollectorTest extends BaseGenericTest {
             public String getGlobalParametersJson() {
                 return EMPTY_PARAMETERS;
             }
-
-            @Override
-            public String getFileSpecificParametersJson() {
-                return EMPTY_PARAMETERS;
-            }
         };
         validParametersProvider = new ParametersProvider() {
             @Override
             public String getGlobalParametersJson() {
                 return VALID_PARAMETERS;
             }
-
-            @Override
-            public String getFileSpecificParametersJson() {
-                return VALID_PARAMETERS;
-            }
         };
         wrongParametersProvider = new ParametersProvider() {
             @Override
             public String getGlobalParametersJson() {
-                return WRONG_PARAMETERS;
-            }
-
-            @Override
-            public String getFileSpecificParametersJson() {
                 return WRONG_PARAMETERS;
             }
         };

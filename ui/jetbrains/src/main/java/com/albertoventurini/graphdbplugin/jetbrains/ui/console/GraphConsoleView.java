@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.jetbrains.ui.console;
 
+import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.OpenTabEvent;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryPlanEvent;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.graph.GraphPanel;
@@ -14,17 +15,16 @@ import com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.Parameters
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.plan.QueryPlanPanel;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.status.ExecutionStatusBarWidget;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.table.TablePanel;
+import com.albertoventurini.graphdbplugin.platform.GraphConstants;
+import com.albertoventurini.graphdbplugin.platform.GraphConstants.ToolWindow.Tabs;
 import com.albertoventurini.graphdbplugin.visualization.services.LookAndFeelService;
 import com.intellij.ide.IdeEventQueue;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.ActionCallback;
-import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.WindowManager;
 import com.intellij.ui.JBSplitter;
 import com.intellij.ui.JBTabsPaneImpl;
 import com.intellij.ui.border.CustomLineBorder;
@@ -38,9 +38,6 @@ import com.intellij.ui.tabs.impl.JBTabsImpl;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
-import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
-import com.albertoventurini.graphdbplugin.platform.GraphConstants;
-import com.albertoventurini.graphdbplugin.platform.GraphConstants.ToolWindow.Tabs;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -61,28 +58,25 @@ public class GraphConsoleView implements Disposable {
     private boolean initialized;
 
     private ExecutionStatusBarWidget executionStatusBarWidget;
-    private JPanel consoleToolWindowContent;
+    @NotNull private JPanel consoleToolWindowContent;
     private JBTabsPaneImpl consoleTabsPane;
-    private JBTabsImpl consoleTabs;
+    @NotNull private JBTabsImpl consoleTabs;
 
     // Graph
-    private JPanel consoleToolbarPanel;
-    private JPanel graphCanvas;
-    private JBScrollPane entityDetailsScrollPane;
-    private Tree entityDetailsTree;
+    @NotNull private JPanel consoleToolbarPanel;
+    @NotNull private JPanel graphCanvas;
+    @NotNull private JBScrollPane entityDetailsScrollPane;
+    @NotNull private Tree entityDetailsTree;
 
     // Table
-    private JBScrollPane tableScrollPane;
-    private JBTable tableExecuteResults;
+    @NotNull private JBScrollPane tableScrollPane;
+    @NotNull private JBTable tableExecuteResults;
     private JPanel entityDetailsScrollContent;
-    private JPanel logTab;
-    private JPanel graphTab;
-    private JPanel parametersTab;
-    private JBTabbedPane defaultTabContainer;
+    @NotNull private JPanel logTab;
+    @NotNull private JPanel graphTab;
+    @NotNull private JPanel parametersTab;
+    @NotNull private JBTabbedPane defaultTabContainer;
     private JBSplitter graphSplitter;
-    private JPanel globalParametersTab;
-    private JPanel fileSpecificParametersTab;
-    private JBSplitter paramSplitter;
 
     private LookAndFeelService lookAndFeelService;
 
@@ -107,23 +101,41 @@ public class GraphConsoleView implements Disposable {
         graphPanel = new GraphPanel();
         logPanel = new LogPanel();
         parametersPanel = new ParametersPanel();
+
         lookAndFeelService = ApplicationManager.getApplication().getService(LookAndFeelService.class);
+
+        consoleToolWindowContent = new JPanel(new GridLayout());
+
+        entityDetailsScrollPane = new JBScrollPane();
+        logTab = new JPanel(new GridLayout());
+        graphTab = new JPanel(new GridLayout());
+        entityDetailsTree = new Tree();
+        graphCanvas = new JPanel();
+
+
+        defaultTabContainer = new JBTabbedPane();
+        entityDetailsScrollContent = new JPanel();
+        consoleToolbarPanel = new JPanel();
+
+        // Wire up the Table components
+        tableScrollPane = new JBScrollPane();
+        tableExecuteResults = new JBTable();
+        tableScrollPane.setViewportView(tableExecuteResults);
+
+        parametersTab = new JPanel(new BorderLayout());
     }
 
     public void initToolWindow(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
-        ContentFactory contentFactory = ContentFactory.getInstance();
-        Content content = contentFactory.createContent(consoleToolWindowContent, "", false);
-        toolWindow.getContentManager().addContent(content);
-
         if (!initialized) {
             updateLookAndFeel();
             //initializeWidgets(project);
             initializeUiComponents(project);
 
             // Hide standard tabs
-            defaultTabContainer.setVisible(false);
+            //defaultTabContainer.setVisible(false);
 
             // Tabs
+            consoleTabs = new JBTabsImpl(project);
             consoleTabs.setFirstTabOffset(0);
             consoleTabs.addTab(new TabInfo(logTab)
                 .setText(Tabs.LOG));
@@ -143,7 +155,7 @@ public class GraphConsoleView implements Disposable {
 
             AtomicInteger tabId = new AtomicInteger(0);
             project.getMessageBus().connect().subscribe(QueryPlanEvent.QUERY_PLAN_EVENT,
-                    (query, result) -> createNewQueryPlanTab(query, result, tabId.incrementAndGet()));
+                    (QueryPlanEvent) (query, result) -> createNewQueryPlanTab(query, result, tabId.incrementAndGet()));
 
             // Actions
             final ActionGroup consoleActionGroup = (ActionGroup)
@@ -153,6 +165,13 @@ public class GraphConsoleView implements Disposable {
             consoleToolbarPanel.add(consoleToolbar.getComponent(), BorderLayout.CENTER);
             consoleToolbarPanel.setBorder(new CustomLineBorder(0, 0, 0, 1));
             consoleToolbarPanel.validate();
+
+            ContentFactory contentFactory = ContentFactory.getInstance();
+            Content content = contentFactory.createContent(consoleToolWindowContent, "", false);
+
+            consoleToolWindowContent.add(consoleTabs);
+            toolWindow.getContentManager().addContent(content);
+
             initialized = true;
         }
     }
@@ -246,7 +265,7 @@ public class GraphConsoleView implements Disposable {
         return lookAndFeelService;
     }
 
-    public JPanel getGraphCanvas() {
+    @NotNull public JPanel getGraphCanvas() {
         return graphCanvas;
     }
 
@@ -254,27 +273,19 @@ public class GraphConsoleView implements Disposable {
         return entityDetailsTree;
     }
 
-    public JBTable getTableExecuteResults() {
+    public @NotNull JBTable getTableExecuteResults() {
         return tableExecuteResults;
     }
 
-    public JPanel getLogTab() {
+    public @NotNull JPanel getLogTab() {
         return logTab;
-    }
-
-    public JPanel getParametersTab() {
-        return parametersTab;
     }
 
     @Override
     public void dispose() {
     }
 
-    public JPanel getGlobalParametersTab() {
-        return globalParametersTab;
-    }
-
-    public JPanel getFileSpecificParametersTab() {
-        return fileSpecificParametersTab;
+    public JPanel getParametersTab() {
+        return parametersTab;
     }
 }

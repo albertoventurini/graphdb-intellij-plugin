@@ -50,12 +50,6 @@ public class ParametersService {
             return Collections.emptyMap();
         }
         Map<String, Object> allParameters = new HashMap<>();
-        if (isValidParametersMap(parametersProvider.getFileSpecificParametersJson())) {
-            Map<String, Object> parsedFileSpecific = MAPPER.readValue(parametersProvider.getFileSpecificParametersJson(),
-                    new TypeReference<Map<String, Object>>() {
-                    });
-            parsedFileSpecific.forEach(allParameters::putIfAbsent);
-        }
         if (isValidParametersMap(parametersProvider.getGlobalParametersJson())) {
             Map<String, Object> parsedGlobal = MAPPER.readValue(parametersProvider.getGlobalParametersJson(),
                     new TypeReference<Map<String, Object>>() {

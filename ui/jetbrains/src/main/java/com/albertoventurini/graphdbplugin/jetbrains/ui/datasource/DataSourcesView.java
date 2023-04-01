@@ -22,10 +22,12 @@ import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.ui.ToolbarDecorator;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import com.intellij.ui.content.ContentManager;
 import com.intellij.ui.treeStructure.PatchedDefaultMutableTreeNode;
 import com.intellij.ui.treeStructure.Tree;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourcesComponentMetadata;
 
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -52,27 +54,25 @@ public class DataSourcesView implements Disposable {
     private PatchedDefaultMutableTreeNode treeRoot;
     private DefaultTreeModel treeModel;
 
-    private JPanel toolWindowContent;
-    private JPanel treePanel;
+    private final @NotNull JPanel toolWindowContent;
     private Tree dataSourceTree;
     private ToolbarDecorator decorator;
     private DataSourceMetadataUpdateService dataSourceMetadataUpdateService;
 
     public DataSourcesView() {
         initialized = false;
+        toolWindowContent = new JPanel(new GridLayout(1, 1));
     }
 
     public void initToolWindow(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         if (!initialized) {
-            ContentFactory contentFactory = ContentFactory.getInstance();
-            Content content = contentFactory.createContent(toolWindowContent, "", false);
-            toolWindow.getContentManager().addContent(content);
-
             component = project.getService(DataSourcesComponent.class);
             componentMetadata = project.getService(DataSourcesComponentMetadata.class);
             dataSourceMetadataUpdateService = project.getService(DataSourceMetadataUpdateService.class); //  new DataSourceMetadataUi(componentMetadata);
             treeRoot = new PatchedDefaultMutableTreeNode(new RootTreeNodeModel());
             treeModel = new DefaultTreeModel(treeRoot, false);
+            dataSourceTree = new Tree(treeModel);
+
             decorator = ToolbarDecorator.createDecorator(dataSourceTree);
             decorator.addExtraAction(new RefreshDataSourcesAction(this));
 
@@ -81,9 +81,13 @@ public class DataSourcesView implements Disposable {
 
             interactions = new DataSourceInteractions(project, this);
 
-            replaceTreeWithDecorated();
             showDataSources();
             refreshDataSourcesMetadata();
+
+            ContentFactory contentFactory = ContentFactory.getInstance();
+            Content content = contentFactory.createContent(toolWindowContent, "", false);
+            toolWindowContent.add(dataSourceTree);
+            toolWindow.getContentManager().addContent(content);
 
             initialized = true;
         }
@@ -110,7 +114,6 @@ public class DataSourcesView implements Disposable {
     }
 
     private void createUIComponents() {
-        treePanel = new JPanel(new GridLayout(0, 1));
     }
 
     private void configureDataSourceTree() {
@@ -125,11 +128,6 @@ public class DataSourcesView implements Disposable {
     private void decorateDataSourceTree() {
         decorator.setPanelBorder(BorderFactory.createEmptyBorder());
         decorator.setToolbarPosition(ActionToolbarPosition.TOP);
-    }
-
-    private void replaceTreeWithDecorated() {
-        JPanel panel = decorator.createPanel();
-        treePanel.add(panel);
     }
 
     private void showDataSources() {

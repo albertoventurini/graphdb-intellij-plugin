@@ -10,6 +10,4 @@ public interface ParametersProvider {
 
     String getGlobalParametersJson();
 
-    String getFileSpecificParametersJson();
-
 }
