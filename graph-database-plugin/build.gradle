@@ -8,7 +8,7 @@ apply plugin: "org.jetbrains.intellij"
 
 dependencies {
     implementation project(':language:cypher')
-    implementation project(':ui:jetbrains')
+    implementation project(path: ':ui:jetbrains', configuration: 'instrumentedJar')
 }
 
 intellij {
