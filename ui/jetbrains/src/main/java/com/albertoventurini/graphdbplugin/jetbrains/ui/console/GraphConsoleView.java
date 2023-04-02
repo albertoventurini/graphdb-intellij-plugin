@@ -120,11 +120,7 @@ public class GraphConsoleView implements Disposable {
     public void initToolWindow(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
         if (!initialized) {
             updateLookAndFeel();
-            //initializeWidgets(project);
             initializeUiComponents(project);
-
-            // Hide standard tabs
-            //defaultTabContainer.setVisible(false);
 
             // Tabs
             consoleTabs = new JBTabsImpl(project);
@@ -178,28 +174,6 @@ public class GraphConsoleView implements Disposable {
 
         throw new IllegalArgumentException("No tab found with name: " + name);
     }
-//
-//    private void createUIComponents() {
-//        graphCanvas = new JPanel(new GridLayout(0, 1));
-//        consoleTabsPane = new JBTabsPaneImpl(null, SwingConstants.TOP, this);
-//        consoleTabs = (JBTabsImpl) consoleTabsPane.getTabs();
-//
-//        consoleTabs.addTabMouseListener(new MouseAdapter() {
-//            @Override
-//            public void mouseReleased(MouseEvent e) {
-//                if (UIUtil.isCloseClick(e, MouseEvent.MOUSE_RELEASED)) {
-//                    final TabInfo info = consoleTabs.findInfo(e);
-//                    if (info != null) {
-//                        String tabTitle = info.getText();
-//                        if (tabTitle.startsWith(PROFILE_PLAN_TITLE) || tabTitle.startsWith(EXPLAIN_PLAN_TITLE)) {
-//                            IdeEventQueue.getInstance().blockNextEvents(e);
-//                            consoleTabs.removeTab(info);
-//                        }
-//                    }
-//                }
-//            }
-//        });
-//    }
 
     private void updateLookAndFeel() {
         tableScrollPane.setBorder(JBUI.Borders.empty());
@@ -215,12 +189,6 @@ public class GraphConsoleView implements Disposable {
         logPanel.initialize(this, project);
         parametersPanel.initialize(this, project);
     }
-
-//    private void initializeWidgets(Project project) {
-//        StatusBar statusBar = WindowManager.getInstance().getStatusBar(project);
-//        executionStatusBarWidget = new ExecutionStatusBarWidget(project.getMessageBus());
-//        statusBar.addWidget(executionStatusBarWidget, "before Position");
-//    }
 
     private void createNewQueryPlanTab(String originalQuery,
                                        GraphQueryResult result, int tabId) {
