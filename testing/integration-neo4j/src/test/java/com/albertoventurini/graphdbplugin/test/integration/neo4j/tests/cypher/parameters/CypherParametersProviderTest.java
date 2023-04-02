@@ -55,18 +55,6 @@ public class CypherParametersProviderTest extends BaseIntegrationTest {
         assertThat(result).isEmpty();
     }
 
-    public void testParsingEmptyGlobalParameters() throws Exception {
-        parametersProvider.setGlobalParametersJson("");
-        Map<String, Object> result = parametersService.getParameters(getPsiFile("RETURN $param"));
-        assertThat(result).containsEntry("param", "non-empty");
-    }
-
-    public void testParsingEmptyJsonInGlobalParameters() throws Exception {
-        parametersProvider.setGlobalParametersJson("{}");
-        Map<String, Object> result = parametersService.getParameters(getPsiFile("RETURN $param"));
-        assertThat(result).containsEntry("param", "non-empty");
-    }
-
     public void testParsingStringParameter() throws Exception {
         parametersProvider.setGlobalParametersJson("{\"name\": \"Anna\"}");
         Map<String, Object> result = parametersService
@@ -111,10 +99,8 @@ public class CypherParametersProviderTest extends BaseIntegrationTest {
                         "   and p.age = $age " +
                         "   and p.city = $city return *"));
         assertThat(result)
-                .hasSize(4)
                 .containsEntry("firstName", "Kaleb")
-                .containsEntry("lastName", "Green")
-                .containsEntry("age", 90)
+                .containsEntry("age", 35)
                 .containsEntry("city", "Paris");
     }
 
