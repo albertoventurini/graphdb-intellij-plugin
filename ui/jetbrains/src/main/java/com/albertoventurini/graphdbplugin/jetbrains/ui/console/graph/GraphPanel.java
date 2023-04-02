@@ -107,7 +107,7 @@ public class GraphPanel {
             }
         });
 
-        messageBus.connect().subscribe(PluginSettingsUpdated.TOPIC, visualization::updateSettings);
+        messageBus.connect().subscribe(PluginSettingsUpdated.TOPIC, (PluginSettingsUpdated) visualization::updateSettings);
 
         // Tooltips
         balloonBuilder();

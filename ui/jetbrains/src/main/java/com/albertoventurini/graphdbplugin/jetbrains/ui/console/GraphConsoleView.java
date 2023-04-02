@@ -13,23 +13,18 @@ import com.albertoventurini.graphdbplugin.jetbrains.ui.console.graph.GraphPanel;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.log.LogPanel;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.params.ParametersPanel;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.plan.QueryPlanPanel;
-import com.albertoventurini.graphdbplugin.jetbrains.ui.console.status.ExecutionStatusBarWidget;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.table.TablePanel;
 import com.albertoventurini.graphdbplugin.platform.GraphConstants;
 import com.albertoventurini.graphdbplugin.platform.GraphConstants.ToolWindow.Tabs;
 import com.albertoventurini.graphdbplugin.visualization.services.LookAndFeelService;
-import com.intellij.ide.IdeEventQueue;
 import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.ActionCallback;
 import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.ui.JBSplitter;
-import com.intellij.ui.JBTabsPaneImpl;
 import com.intellij.ui.border.CustomLineBorder;
 import com.intellij.ui.components.JBScrollPane;
-import com.intellij.ui.components.JBTabbedPane;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import com.intellij.ui.table.JBTable;
@@ -37,13 +32,10 @@ import com.intellij.ui.tabs.TabInfo;
 import com.intellij.ui.tabs.impl.JBTabsImpl;
 import com.intellij.ui.treeStructure.Tree;
 import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -57,33 +49,28 @@ public class GraphConsoleView implements Disposable {
     public static final String EXPLAIN_PLAN_TITLE = "Explain";
     private boolean initialized;
 
-    private ExecutionStatusBarWidget executionStatusBarWidget;
-    @NotNull private JPanel consoleToolWindowContent;
-    private JBTabsPaneImpl consoleTabsPane;
-    @NotNull private JBTabsImpl consoleTabs;
+    @NotNull private final JPanel consoleToolWindowContent;
+    private JBTabsImpl consoleTabs;
 
     // Graph
-    @NotNull private JPanel consoleToolbarPanel;
-    @NotNull private JPanel graphCanvas;
-    @NotNull private JBScrollPane entityDetailsScrollPane;
-    @NotNull private Tree entityDetailsTree;
+    @NotNull private final JPanel consoleToolbarPanel;
+    @NotNull private final JPanel graphCanvas;
+    @NotNull private final JBScrollPane entityDetailsScrollPane;
+    @NotNull private final Tree entityDetailsTree;
 
     // Table
-    @NotNull private JBScrollPane tableScrollPane;
-    @NotNull private JBTable tableExecuteResults;
-    private JPanel entityDetailsScrollContent;
-    @NotNull private JPanel logTab;
-    @NotNull private JPanel graphTab;
-    @NotNull private JPanel parametersTab;
-    @NotNull private JBTabbedPane defaultTabContainer;
-    private JBSplitter graphSplitter;
+    @NotNull private final JBScrollPane tableScrollPane;
+    @NotNull private final JBTable tableExecuteResults;
+    @NotNull private final JPanel logTab;
+    @NotNull private final JPanel graphTab;
+    @NotNull private final JPanel parametersTab;
 
-    private LookAndFeelService lookAndFeelService;
+    private final LookAndFeelService lookAndFeelService;
 
-    private TablePanel tablePanel;
-    private GraphPanel graphPanel;
-    private LogPanel logPanel;
-    private ParametersPanel parametersPanel;
+    private final TablePanel tablePanel;
+    private final GraphPanel graphPanel;
+    private final LogPanel logPanel;
+    private final ParametersPanel parametersPanel;
 
     private static final DateTimeFormatter QUERY_PLAN_TIME_FORMAT = new DateTimeFormatterBuilder()
             .appendValue(HOUR_OF_DAY, 2)
@@ -106,23 +93,28 @@ public class GraphConsoleView implements Disposable {
 
         consoleToolWindowContent = new JPanel(new GridLayout());
 
-        entityDetailsScrollPane = new JBScrollPane();
         logTab = new JPanel(new GridLayout());
-        graphTab = new JPanel(new GridLayout());
-        entityDetailsTree = new Tree();
-        graphCanvas = new JPanel();
 
-
-        defaultTabContainer = new JBTabbedPane();
-        entityDetailsScrollContent = new JPanel();
         consoleToolbarPanel = new JPanel();
 
-        // Wire up the Table components
+        // Table tab components
         tableScrollPane = new JBScrollPane();
         tableExecuteResults = new JBTable();
         tableScrollPane.setViewportView(tableExecuteResults);
 
+        // Parameters tab
         parametersTab = new JPanel(new BorderLayout());
+
+        // Graph tab
+        graphTab = new JPanel(new BorderLayout());
+
+        graphCanvas = new JPanel(new GridLayout(0, 1));
+        graphTab.add(graphCanvas);
+
+        entityDetailsTree = new Tree();
+        entityDetailsScrollPane = new JBScrollPane();
+        entityDetailsScrollPane.setViewportView(entityDetailsTree);
+        graphTab.add(entityDetailsScrollPane, BorderLayout.LINE_END);
     }
 
     public void initToolWindow(@NotNull final Project project, @NotNull final ToolWindow toolWindow) {
@@ -151,7 +143,7 @@ public class GraphConsoleView implements Disposable {
                 return callback;
             });
 
-            project.getMessageBus().connect().subscribe(OpenTabEvent.OPEN_TAB_TOPIC, this::selectTab);
+            project.getMessageBus().connect().subscribe(OpenTabEvent.OPEN_TAB_TOPIC, (OpenTabEvent) this::selectTab);
 
             AtomicInteger tabId = new AtomicInteger(0);
             project.getMessageBus().connect().subscribe(QueryPlanEvent.QUERY_PLAN_EVENT,
@@ -186,28 +178,28 @@ public class GraphConsoleView implements Disposable {
 
         throw new IllegalArgumentException("No tab found with name: " + name);
     }
-
-    private void createUIComponents() {
-        graphCanvas = new JPanel(new GridLayout(0, 1));
-        consoleTabsPane = new JBTabsPaneImpl(null, SwingConstants.TOP, this);
-        consoleTabs = (JBTabsImpl) consoleTabsPane.getTabs();
-
-        consoleTabs.addTabMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if (UIUtil.isCloseClick(e, MouseEvent.MOUSE_RELEASED)) {
-                    final TabInfo info = consoleTabs.findInfo(e);
-                    if (info != null) {
-                        String tabTitle = info.getText();
-                        if (tabTitle.startsWith(PROFILE_PLAN_TITLE) || tabTitle.startsWith(EXPLAIN_PLAN_TITLE)) {
-                            IdeEventQueue.getInstance().blockNextEvents(e);
-                            consoleTabs.removeTab(info);
-                        }
-                    }
-                }
-            }
-        });
-    }
+//
+//    private void createUIComponents() {
+//        graphCanvas = new JPanel(new GridLayout(0, 1));
+//        consoleTabsPane = new JBTabsPaneImpl(null, SwingConstants.TOP, this);
+//        consoleTabs = (JBTabsImpl) consoleTabsPane.getTabs();
+//
+//        consoleTabs.addTabMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseReleased(MouseEvent e) {
+//                if (UIUtil.isCloseClick(e, MouseEvent.MOUSE_RELEASED)) {
+//                    final TabInfo info = consoleTabs.findInfo(e);
+//                    if (info != null) {
+//                        String tabTitle = info.getText();
+//                        if (tabTitle.startsWith(PROFILE_PLAN_TITLE) || tabTitle.startsWith(EXPLAIN_PLAN_TITLE)) {
+//                            IdeEventQueue.getInstance().blockNextEvents(e);
+//                            consoleTabs.removeTab(info);
+//                        }
+//                    }
+//                }
+//            }
+//        });
+//    }
 
     private void updateLookAndFeel() {
         tableScrollPane.setBorder(JBUI.Borders.empty());
@@ -251,10 +243,6 @@ public class GraphConsoleView implements Disposable {
         String planType = result.isProfilePlan() ? PROFILE_PLAN_TITLE : EXPLAIN_PLAN_TITLE;
         consoleTabs.addTab(tabInfo.setText(String.format("%1s %2d - %3s", planType, tabId,
                 LocalDateTime.now().format(QUERY_PLAN_TIME_FORMAT))));
-    }
-
-    public TablePanel getTablePanel() {
-        return tablePanel;
     }
 
     public GraphPanel getGraphPanel() {
