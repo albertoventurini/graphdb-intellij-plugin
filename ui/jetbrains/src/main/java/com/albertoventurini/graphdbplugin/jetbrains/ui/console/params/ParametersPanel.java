@@ -92,7 +92,9 @@ public class ParametersPanel implements ParametersProvider {
             // If file opened, fileOpenedSync->selectionChanged->fileOpened are called
             @Override
             public void selectionChanged(@NotNull FileEditorManagerEvent event) {
-                releaseFileSpecificEditor(event.getOldFile());
+                if (event.getOldFile() != null) {
+                    releaseFileSpecificEditor(event.getOldFile());
+                }
                 VirtualFile newFile = event.getNewFile();
                 if (newFile != null && FileTypeExtensionUtil.isCypherFileTypeExtension(newFile.getExtension()) &&
                         project.getService(DataSourcesComponent.class).getDataSourceContainer().isDataSourceExists(getTabTitle(newFile))) {
