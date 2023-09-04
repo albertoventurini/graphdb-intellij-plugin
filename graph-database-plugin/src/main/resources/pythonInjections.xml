@@ -13,4 +13,30 @@
         <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("run", 0, "py2neo.cypher.core.CypherResource"))]]></place>
         <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("stream", 0, "py2neo.cypher.core.CypherResource"))]]></place>
     </injection>
+
+    <injection language="Cypher" injector-id="python">
+        <display-name>Neo4j - neo4j Driver.class (neo4j.Driver)</display-name>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("execute_query", 0, "neo4j._sync.driver.Driver"))]]></place>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("execute_query", 0, "neo4j._async.driver.AsyncDriver"))]]></place>
+    </injection>
+
+    <injection language="Cypher" injector-id="python">
+        <display-name>Neo4j - neo4j Driver.Session.class (neo4j.Session)</display-name>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("run", 0, "neo4j.work.simple.Session"))]]></place>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("run", 0, "neo4j._sync.work.session.Session"))]]></place>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("run", 0, "neo4j._async.work.session.AsyncSession"))]]></place>
+    </injection>
+
+    <injection language="Cypher" injector-id="python">
+        <display-name>Neo4j - neo4j Driver.Session.class (neo4j.Transaction)</display-name>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("run", 0, "neo4j.work.transaction.Transaction"))]]></place>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("run", 0, "neo4j._sync.work.transaction.TransactionBase"))]]></place>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("run", 0, "neo4j._async.work.transaction.AsyncTransactionBase"))]]></place>
+    </injection>
+
+    <injection language="Cypher" injector-id="python">
+        <display-name>Neo4j - neo4j Query.class (neo4j.Query)</display-name>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("Query", 0, "neo4j.work.simple.Query"))]]></place>
+        <place><![CDATA[pyLiteralExpression().and(pyMethodArgument("Query", 0, "neo4j._work.query.Query"))]]></place>
+    </injection>
 </component>
