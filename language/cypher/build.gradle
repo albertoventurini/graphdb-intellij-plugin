@@ -14,14 +14,14 @@ intellij {
 }
 
 tasks.register("generateCypherLexer", GenerateLexerTask.class) {
-    source = "src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/CypherLexer.flex"
+    sourceFile = new File("src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/CypherLexer.flex")
     targetDir = "src/main/gen/com/albertoventurini/graphdbplugin/language/cypher/lexer/"
     targetClass = "CypherLexer"
     purgeOldFiles = true
 }
 
 tasks.register("generateCypherParser", GenerateParserTask.class) {
-    source = "src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/Cypher.bnf"
+    sourceFile = new File("src/main/java/com/albertoventurini/graphdbplugin/language/cypher/lexer/Cypher.bnf")
     targetRoot = "src/main/gen"
     pathToParser = "com/albertoventurini/graphdbplugin/language/cypher/CypherParser.java"
     pathToPsiRoot = "com/albertoventurini/graphdbplugin/language/cypher/psi"
