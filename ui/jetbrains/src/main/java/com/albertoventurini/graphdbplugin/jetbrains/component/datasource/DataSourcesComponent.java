@@ -57,9 +57,7 @@ public class DataSourcesComponent implements PersistentStateComponent<DataSource
     }
 
     public void refreshAllMetadata() {
-        getDataSourceContainer().getDataSources().forEach(d -> {
-            componentMetadata.getMetadata(d);
-        });
+        getDataSourceContainer().getDataSources().forEach(componentMetadata::updateMetadata);
     }
 //
 //    @NotNull

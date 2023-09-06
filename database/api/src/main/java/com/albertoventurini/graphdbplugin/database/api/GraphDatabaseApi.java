@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.database.api;
 
+import com.albertoventurini.graphdbplugin.database.api.data.GraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.database.api.data.GraphMetadata;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
 
@@ -18,4 +19,6 @@ public interface GraphDatabaseApi {
     GraphQueryResult execute(String query, Map<String, Object> statementParameters);
 
     GraphMetadata metadata();
+
+    GraphDatabaseVersion getVersion();
 }

@@ -20,36 +20,42 @@ import static java.util.stream.Collectors.toList;
 public class DiffService {
 
     private final QueryExecutionService service;
+    private final VersionService versionService;
 
     public DiffService(Project project) {
-        this.service = new QueryExecutionService(project, project.getMessageBus());
+        service = new QueryExecutionService(project, project.getMessageBus());
+        versionService = project.getService(VersionService.class);
     }
 
     public void updateNode(DataSourceApi api, GraphEntity oldNode, GraphEntity newNode) {
-
-        String query = "MATCH (n) WHERE ID(n) = $id " +
-                diffLabels(oldNode.getTypes(), newNode.getTypes()) +
-                " SET n = $props" +
-                " RETURN n";
-        service.executeQuery(api, new ExecuteQueryPayload(query,
-                ImmutableMap.of(
-                        "id", Long.parseLong(oldNode.getId()),
-                        "props", newNode.getPropertyContainer().getProperties()),
-                null));
+        versionService.getVersion(api)
+                .thenAccept(version -> {
+                    String query = "MATCH (n) WHERE " + version.idFunction() + "(n) = $id " +
+                            diffLabels(oldNode.getTypes(), newNode.getTypes()) +
+                            " SET n = $props" +
+                            " RETURN n";
+                    service.executeQuery(api, new ExecuteQueryPayload(query,
+                            ImmutableMap.of(
+                                    "id", version.idToParameter(oldNode.getId()),
+                                    "props", newNode.getPropertyContainer().getProperties()),
+                            null));
+                });
     }
 
 
     public void updateRelationShip(DataSourceApi api, GraphEntity relationship,
                                    GraphEntity updatedRel) {
-
-        String query = "MATCH ()-[n]->() WHERE ID(n) = $id " +
-                " SET n = $props" +
-                " RETURN n";
-        service.executeQuery(api, new ExecuteQueryPayload(query,
-                ImmutableMap.of(
-                        "id", Long.parseLong(relationship.getId()),
-                        "props", updatedRel.getPropertyContainer().getProperties()),
-                null));
+        versionService.getVersion(api)
+                .thenAccept(version -> {
+                    String query = "MATCH ()-[n]->() WHERE " + version.idFunction() + "(n) = $id " +
+                            " SET n = $props" +
+                            " RETURN n";
+                    service.executeQuery(api, new ExecuteQueryPayload(query,
+                            ImmutableMap.of(
+                                    "id", version.idToParameter(relationship.getId()),
+                                    "props", updatedRel.getPropertyContainer().getProperties()),
+                            null));
+                });
     }
 
     public void saveNewNode(DataSourceApi api, GraphEntity newNode) {

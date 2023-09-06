@@ -59,15 +59,15 @@ public final class DataSourceMetadataUpdateService {
         final DataSourceType sourceType = nodeDataSource.getDataSourceType();
 
         return treeUpdaters.get(sourceType)
-                .map(updater -> getMetadataAndApplyHandler(updater, node, nodeDataSource))
+                .map(updater -> updateMetadataAndApplyHandler(updater, node, nodeDataSource))
                 .orElse(completedFuture(false));
     }
 
-    private CompletableFuture<Boolean> getMetadataAndApplyHandler(
+    private CompletableFuture<Boolean> updateMetadataAndApplyHandler(
             final DataSourceTreeUpdater updater,
             final PatchedDefaultMutableTreeNode node,
             final DataSourceApi nodeDataSource) {
-        return dataSourcesComponent.getMetadata(nodeDataSource)
+        return dataSourcesComponent.updateMetadata(nodeDataSource)
                 .thenApply(data -> data.map(d -> {
                         updater.updateTree(node, d);
                         return true;

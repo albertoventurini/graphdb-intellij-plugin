@@ -7,9 +7,12 @@
 package com.albertoventurini.graphdbplugin.database.neo4j.bolt;
 
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
+import com.albertoventurini.graphdbplugin.database.api.data.GraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.database.api.data.GraphMetadata;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jGraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResult;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultRow;
 import org.neo4j.driver.AuthToken;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
@@ -21,13 +24,20 @@ import org.neo4j.driver.SessionConfig;
 import org.neo4j.driver.exceptions.ClientException;
 
 import java.nio.channels.UnresolvedAddressException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 /**
  * Communicates with Neo4j 3.0+ database using Bolt driver.
  */
 public class Neo4jBoltDatabase implements GraphDatabaseApi {
+
+    private static final String VERSION_QUERY = """
+            CALL dbms.components() YIELD versions
+            RETURN versions[0] AS version
+            """;
 
     private final String url;
     private final AuthToken auth;
@@ -109,5 +119,20 @@ public class Neo4jBoltDatabase implements GraphDatabaseApi {
     @Override
     public GraphMetadata metadata() {
         throw new IllegalStateException("Not implemented");
+    }
+
+    @Override
+    public GraphDatabaseVersion getVersion() {
+        var result = execute(VERSION_QUERY);
+        var row = result.getRows().get(0);
+        var neo4jRow = (Neo4jBoltQueryResultRow) row;
+        var rawVersion = neo4jRow.getValue("version").asString();
+        var parsedVersion = IntStream.concat(
+                Arrays.stream(rawVersion.split("\\.", 4))
+                        .limit(3)
+                        .mapToInt(Integer::parseInt),
+                IntStream.generate(() -> 0)
+        ).limit(3).toArray();
+        return new Neo4jGraphDatabaseVersion(parsedVersion[0], parsedVersion[1], parsedVersion[2]);
     }
 }

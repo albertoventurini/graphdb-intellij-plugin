@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jGraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.*;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.impl.DataSourceV1;
@@ -58,6 +59,7 @@ public class Neo4JBoltTreeUpdaterTest {
                 "List all labels in the database.");
 
         final Neo4jMetadata metadata = new Neo4jMetadata(
+                new Neo4jGraphDatabaseVersion(0, 0, 0),
                 Collections.emptyList(),
                 Collections.singletonList(procedure),
                 Collections.singletonList(constraintMetadata),

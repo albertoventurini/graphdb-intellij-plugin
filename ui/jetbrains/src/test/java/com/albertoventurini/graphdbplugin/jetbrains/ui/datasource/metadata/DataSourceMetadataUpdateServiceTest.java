@@ -33,7 +33,7 @@ public class DataSourceMetadataUpdateServiceTest extends LightJavaCodeInsightFix
         final var treeUpdaters = mock(DataSourceTreeUpdaters.class);
 
         final var dataSourceMetadata = mock(DataSourceMetadata.class);
-        when(metadataComponent.getMetadata(any()))
+        when(metadataComponent.updateMetadata(any()))
                 .thenReturn(CompletableFuture.completedFuture(Optional.of(dataSourceMetadata)));
 
         final var treeUpdater = mock(DataSourceTreeUpdater.class);
