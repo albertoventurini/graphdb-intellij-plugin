@@ -44,7 +44,7 @@ public class DataSourceMetadataTest extends AbstractDataSourceMetadataTest {
     public void testGetVersion() {
         var metadata = (Neo4jMetadata) getMetadata();
         var version = (Neo4jGraphDatabaseVersion) metadata.version();
-        assertEquals(version.major(), 5);
-        assertEquals(version.minor(), 2);
+        assertEquals(5, version.major());
+        assertEquals(2, version.minor());
     }
 }
