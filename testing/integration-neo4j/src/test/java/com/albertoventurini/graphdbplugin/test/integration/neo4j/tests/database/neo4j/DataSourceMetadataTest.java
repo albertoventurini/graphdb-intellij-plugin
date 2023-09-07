@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.test.integration.neo4j.tests.database.neo4j;
 
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jGraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jFunctionMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jProcedureMetadata;
@@ -38,5 +39,12 @@ public class DataSourceMetadataTest extends AbstractDataSourceMetadataTest {
                 p.name().equals("db.labels")
                         && p.signature().equals("db.labels() :: (label :: STRING?)")
                         && p.description().equals("List all available labels in the database.")));
+    }
+
+    public void testGetVersion() {
+        var metadata = (Neo4jMetadata) getMetadata();
+        var version = (Neo4jGraphDatabaseVersion) metadata.version();
+        assertEquals(version.major(), 5);
+        assertEquals(version.minor(), 2);
     }
 }

@@ -12,6 +12,7 @@ dependencies {
     testImplementation project(':graph-database-plugin')
     testImplementation project(':ui:jetbrains')
     testImplementation project(':language:cypher')
+    testImplementation project(':database:api')
     testImplementation project(':database:neo4j')
     testImplementation project(':testing:common')
     testImplementation project(':platform')
