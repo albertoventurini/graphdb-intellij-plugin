@@ -27,6 +27,7 @@ public final class GraphIcons {
     }
 
     public static final class Nodes {
+        public static final Icon VERSION = AllIcons.Actions.InlayGear;
         public static final Icon INDEX = AllIcons.Nodes.ResourceBundle;
         public static final Icon CONSTRAINT = AllIcons.Nodes.C_protected;
         public static final Icon LABEL = AllIcons.Nodes.Class;

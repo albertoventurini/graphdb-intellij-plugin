@@ -26,12 +26,12 @@ public class Neo4jBoltRelationship implements GraphRelationship {
     private GraphNode endNode;
 
     public Neo4jBoltRelationship(Relationship rel) {
-        this.id = String.valueOf(rel.id());
+        this.id = String.valueOf(rel.elementId());
         this.types = Collections.singletonList(rel.type());
         this.propertyContainer = new Neo4jBoltPropertyContainer(rel.asMap());
 
-        this.startNodeId = String.valueOf(rel.startNodeId());
-        this.endNodeId = String.valueOf(rel.endNodeId());
+        this.startNodeId = String.valueOf(rel.startNodeElementId());
+        this.endNodeId = String.valueOf(rel.endNodeElementId());
     }
 
     public Neo4jBoltRelationship(String id, List<String> types, GraphPropertyContainer propertyContainer, String startNodeId, String endNodeId) {

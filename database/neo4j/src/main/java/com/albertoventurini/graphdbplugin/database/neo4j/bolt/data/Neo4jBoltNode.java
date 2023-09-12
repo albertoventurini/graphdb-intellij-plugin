@@ -21,7 +21,7 @@ public class Neo4jBoltNode implements GraphNode {
     private final List<String> types;
 
     public Neo4jBoltNode(Node value) {
-        this.id = String.valueOf(value.id());
+        this.id = String.valueOf(value.elementId());
         this.types = Iterables.asList(value.labels());
         this.propertyContainer = new Neo4jBoltPropertyContainer(value.asMap());
     }

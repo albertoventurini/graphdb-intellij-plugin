@@ -6,6 +6,7 @@
  */
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jGraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.DataSourceType;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.*;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.dto.DataSourceContextMenu;
@@ -28,11 +29,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 
-import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 
 /**
  * Test that the correct context menu is associated with
@@ -71,6 +68,7 @@ public class ContextMenuTest extends LightJavaCodeInsightFixtureTestCase {
                 "List all labels in the database.");
 
         final Neo4jMetadata metadata = new Neo4jMetadata(
+                new Neo4jGraphDatabaseVersion(0, 0, 0),
                 Collections.emptyList(),
                 Collections.singletonList(procedure),
                 Collections.singletonList(constraintMetadata),

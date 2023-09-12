@@ -6,10 +6,12 @@
  */
 package com.albertoventurini.graphdbplugin.jetbrains.ui.console.log;
 
+import com.albertoventurini.graphdbplugin.database.api.data.GraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.jetbrains.actions.execute.ExecuteQueryPayload;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryExecutionProcessEvent;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.QueryParametersRetrievalErrorEvent;
+import com.albertoventurini.graphdbplugin.jetbrains.ui.console.event.VersionFetchingProcessEvent;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.interactions.DataSourceDialog;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.MetadataRetrieveEvent;
 import com.intellij.execution.filters.TextConsoleBuilderFactory;
@@ -17,7 +19,6 @@ import com.intellij.execution.ui.ConsoleView;
 import com.intellij.execution.ui.ConsoleViewContentType;
 import com.intellij.icons.AllIcons;
 import com.intellij.openapi.Disposable;
-import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.popup.IconButton;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
@@ -26,7 +27,6 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.messages.MessageBus;
 import com.intellij.util.ui.JBUI;
 import com.albertoventurini.graphdbplugin.database.api.query.GraphQueryResult;
-import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.console.GraphConsoleView;
 import org.jetbrains.annotations.Nullable;
 
@@ -104,6 +104,26 @@ public class LogPanel implements Disposable {
             @Override
             public void executionCompleted(ExecuteQueryPayload payload) {
                 newLine();
+            }
+        });
+
+        messageBus.connect().subscribe(VersionFetchingProcessEvent.VERSION_FETCHING_PROCESS_TOPIC, new VersionFetchingProcessEvent() {
+            @Override
+            public void processStarted(DataSourceApi dataSource) {
+                info(String.format("Fetching database version for %s:", dataSource.getName()));
+                newLine();
+            }
+
+            @Override
+            public void versionReceived(GraphDatabaseVersion version) {
+                info(String.format("Version discovered: %s", version));
+                newLine();
+            }
+
+            @Override
+            public void handleError(Exception exception) {
+                error("Error occurred: ");
+                printException(exception);
             }
         });
 

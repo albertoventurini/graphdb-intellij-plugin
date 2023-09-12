@@ -9,6 +9,7 @@ package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree;
 public enum Neo4jTreeNodeType implements NodeType {
     ROOT,
     DATASOURCE,
+    VERSION,
     INDEXES,
     INDEX,
     CONSTRAINTS,

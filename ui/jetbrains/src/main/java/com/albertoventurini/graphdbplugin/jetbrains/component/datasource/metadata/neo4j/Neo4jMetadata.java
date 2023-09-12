@@ -1,10 +1,12 @@
 package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j;
 
+import com.albertoventurini.graphdbplugin.database.api.data.GraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 
 import java.util.*;
 
 public record Neo4jMetadata(
+        GraphDatabaseVersion version,
         List<Neo4jFunctionMetadata> functions,
         List<Neo4jProcedureMetadata> procedures,
         List<Neo4jConstraintMetadata> constraints,

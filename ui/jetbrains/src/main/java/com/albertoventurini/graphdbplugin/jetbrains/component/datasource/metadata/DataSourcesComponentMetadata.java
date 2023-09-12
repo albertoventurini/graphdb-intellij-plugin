@@ -12,6 +12,7 @@ import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadat
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jMetadataBuilder;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.Neo4jRelationshipTypeMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
+import com.albertoventurini.graphdbplugin.jetbrains.database.VersionService;
 import com.albertoventurini.graphdbplugin.jetbrains.services.ExecutorService;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata.MetadataRetrieveEvent;
 import com.intellij.openapi.application.ApplicationManager;
@@ -31,16 +32,18 @@ public class DataSourcesComponentMetadata {
     private CypherMetadataProviderService cypherMetadataProviderService;
     private ExecutorService executorService;
     private MessageBus messageBus;
+    private VersionService versionService;
 
     public DataSourcesComponentMetadata(final Project project) {
         messageBus = project.getMessageBus();
         cypherMetadataProviderService = project.getService(CypherMetadataProviderService.class);
         executorService = ApplicationManager.getApplication().getService(ExecutorService.class);
+        versionService = project.getService(VersionService.class);
 
         handlers.put(DataSourceType.NEO4J_BOLT, new Neo4jMetadataBuilder());
     }
 
-    public CompletableFuture<Optional<DataSourceMetadata>> getMetadata(DataSourceApi dataSource) {
+    public CompletableFuture<Optional<DataSourceMetadata>> updateMetadata(DataSourceApi dataSource) {
         MetadataRetrieveEvent metadataRetrieveEvent = messageBus.syncPublisher(MetadataRetrieveEvent.METADATA_RETRIEVE_EVENT);
 
         metadataRetrieveEvent.startMetadataRefresh(dataSource);
@@ -84,5 +87,7 @@ public class DataSourcesComponentMetadata {
         metadata.propertyKeys().forEach(container::addPropertyKey);
         metadata.procedures().forEach(p -> container.addProcedure(p.name(), p.signature(), p.description()));
         metadata.functions().forEach(f -> container.addFunction(f.name(), f.signature(), f.description()));
+
+        versionService.updatedVersion(dataSource, metadata.version());
     }
 }

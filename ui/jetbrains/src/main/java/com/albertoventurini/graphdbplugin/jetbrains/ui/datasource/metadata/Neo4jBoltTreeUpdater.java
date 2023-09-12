@@ -1,5 +1,6 @@
 package com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.metadata;
 
+import com.albertoventurini.graphdbplugin.database.api.data.GraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j.*;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.state.DataSourceApi;
 import com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.LabelTreeNodeModel;
@@ -20,6 +21,7 @@ import static com.albertoventurini.graphdbplugin.jetbrains.ui.datasource.tree.Ne
  */
 final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jMetadata> {
 
+    private static final String VERSION_TITLE = "version: %s";
     private static final String RELATIONSHIP_TYPES_TITLE = "relationship types (%s)";
     private static final String PROPERTY_KEYS_TITLE = "property keys";
     private static final String LABELS_TITLE = "labels (%s)";
@@ -38,6 +40,7 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jMetadata>
         TreeNodeModelApi model = (TreeNodeModelApi) dataSourceRootTreeNode.getUserObject();
         DataSourceApi dataSourceApi = model.getDataSourceApi();
 
+        dataSourceRootTreeNode.add(createVersionNode(neo4jMetadata.version(), dataSourceApi));
         dataSourceRootTreeNode.add(createConstraintsNode(neo4jMetadata.constraints(), dataSourceApi));
         dataSourceRootTreeNode.add(createIndexesNode(neo4jMetadata.indexes(), dataSourceApi));
         dataSourceRootTreeNode.add(createLabelsNode(neo4jMetadata, dataSourceApi));
@@ -53,6 +56,16 @@ final class Neo4jBoltTreeUpdater implements DataSourceTreeUpdater<Neo4jMetadata>
         }
     }
 
+    @NotNull
+    private PatchedDefaultMutableTreeNode createVersionNode(
+            final GraphDatabaseVersion version,
+            final DataSourceApi dataSourceApi) {
+        return of(new MetadataTreeNodeModel(
+                VERSION,
+                dataSourceApi,
+                VERSION_TITLE.formatted(version.toString()),
+                GraphIcons.Nodes.VERSION));
+    }
     @NotNull
     private PatchedDefaultMutableTreeNode createFunctionNode(
             final List<Neo4jFunctionMetadata> functionMetadata,

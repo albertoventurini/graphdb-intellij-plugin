@@ -1,6 +1,8 @@
 package com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.neo4j;
 
 import com.albertoventurini.graphdbplugin.database.api.GraphDatabaseApi;
+import com.albertoventurini.graphdbplugin.database.api.data.GraphDatabaseVersion;
+import com.albertoventurini.graphdbplugin.database.neo4j.bolt.data.Neo4jGraphDatabaseVersion;
 import com.albertoventurini.graphdbplugin.database.neo4j.bolt.query.Neo4jBoltQueryResultRow;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.DataSourceMetadata;
 import com.albertoventurini.graphdbplugin.jetbrains.component.datasource.metadata.MetadataBuilder;
@@ -50,6 +52,7 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
         final var databaseManager = ApplicationManager.getApplication().getService(DatabaseManagerService.class);
         final GraphDatabaseApi db = databaseManager.getDatabaseFor(dataSource);
 
+        GraphDatabaseVersion version = new Neo4jGraphDatabaseVersion(0, 0, 0);
         final List<Neo4jIndexMetadata> indexes = new ArrayList<>();
         final List<Neo4jProcedureMetadata> procedures = new ArrayList<>();
         final List<Neo4jConstraintMetadata> constraints = new ArrayList<>();
@@ -60,8 +63,9 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
             procedures.addAll(getProcedures(db));
             constraints.addAll(getConstraints(db));
             functions.addAll(getFunctions(db));
+            version = db.getVersion();
         } catch (Exception e) {
-            LOG.warn("Unable to load indexes, constraints, procedures, or functions from the current database. Please upgrade to Neo4j 4.2+ to fix this.");
+            LOG.warn("Unable to load indexes, constraints, procedures, functions, or version from the current database. Please upgrade to Neo4j 4.2+ to fix this.");
         }
 
         final var propertyKeys = getPropertyKeys(db);
@@ -69,6 +73,7 @@ public class Neo4jMetadataBuilder implements MetadataBuilder {
         final var relationshipTypes = getRelationshipTypes(db);
 
         return new Neo4jMetadata(
+                version,
                 functions,
                 procedures,
                 constraints,
