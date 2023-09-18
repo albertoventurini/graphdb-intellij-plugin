@@ -97,6 +97,23 @@
 
     <!-- Spring Data Neo4j -->
     <injection language="Cypher" injector-id="java">
+        <display-name>Neo4j - SDN7 @Query (org.springframework.data.neo4j.repository.query)</display-name>
+        <place>
+            <![CDATA[
+            psiMethod().withName("countQuery")
+                    .withParameters()
+                    .definedInClass("org.springframework.data.neo4j.repository.query.Query")
+            ]]>
+        </place>
+        <place>
+            <![CDATA[
+            psiMethod().withName("value")
+                    .withParameters()
+                    .definedInClass("org.springframework.data.neo4j.repository.query.Query")
+            ]]>
+        </place>
+    </injection>
+    <injection language="Cypher" injector-id="java">
         <display-name>Neo4j - SDN4 @Query (org.springframework.data.neo4j.annotation)</display-name>
         <place>
             <![CDATA[
