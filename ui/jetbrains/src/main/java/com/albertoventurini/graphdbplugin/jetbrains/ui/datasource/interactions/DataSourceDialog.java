@@ -29,7 +29,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Optional;
 
-import static org.apache.commons.lang.exception.ExceptionUtils.getCause;
+import static org.codehaus.plexus.util.ExceptionUtils.getCause;
 
 public abstract class DataSourceDialog extends DialogWrapper {
     public static final int THICKNESS = 10;

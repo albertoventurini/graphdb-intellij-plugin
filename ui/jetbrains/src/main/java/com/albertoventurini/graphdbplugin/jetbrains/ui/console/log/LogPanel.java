@@ -34,8 +34,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
-import static org.apache.commons.lang.exception.ExceptionUtils.getCause;
-import static org.apache.commons.lang.exception.ExceptionUtils.getStackTrace;
+import static org.codehaus.plexus.util.ExceptionUtils.getCause;
+import static org.codehaus.plexus.util.ExceptionUtils.getStackTrace;
 
 public class LogPanel implements Disposable {
     private static final String SHOW_DETAILS = "Details...";
